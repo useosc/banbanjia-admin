@@ -1,0 +1,293 @@
+body {
+    font-family: Helvetica, STHeiti, "Microsoft YaHei", Verdana, Arial, Tahoma, sans-serif;
+    background: #f2f2f2
+}
+
+body {
+    background: #e7e8eb;
+}
+
+.panel {
+    box-shadow: 0 0 0
+}
+
+a:focus {
+    text-decoration: none
+}
+
+ul {
+    list-style: none;
+    padding: 0
+}
+
+.panel-default {
+    border-color: #eee;
+    border-radius: 0
+}
+
+.panel-default>.panel-heading {
+    border-color: #eee;
+    background: #fafafa;
+    border-radius: 0
+}
+
+a:hover, a:focus {
+    cursor: pointer;
+    text-decoration: none
+}
+
+/* web端消息 */
+
+.panel-message .message-icon {
+    width: 100px
+}
+
+/* .panel-message .fa */
+
+/*侧边栏 */
+
+#app-sidebar {
+    position: fixed;
+    top: 0px;
+    left: 0;
+    bottom: 0;
+    width: 220px;
+    -webkit-box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2);
+    z-index: 99;
+}
+
+/* 一级分类 */
+
+#app-first-sidebar {
+    position: fixed;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+    background: #1f3240;
+}
+
+#app-first-sidebar .team-logo-wrap {
+    display: block;
+    width: 90px;
+}
+
+#app-first-sidebar .team-logo {
+    margin: 15px auto 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 32px;
+    overflow: hidden;
+}
+
+#app-first-sidebar .plateform-name {
+    display: block;
+    color: #fff;
+    text-align: center;
+    padding: 0 18px;
+    font-size: 14px;
+    height: 36px;
+    line-height: 36px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* 导航菜单 */
+
+#app-first-sidebar .nav {
+    padding: 0 0 60px 0;
+    width: 100px;
+}
+
+#app-first-sidebar .nav ul li {
+    font-size: 14px;
+    height: 36px;
+    line-height: 36px;
+    margin-bottom: 14px;
+    cursor: pointer;
+}
+
+#app-first-sidebar .nav ul li.active {
+    background: #f8f8f8;
+}
+
+#app-first-sidebar .nav ul li.active a {
+    color: #333;
+}
+
+#app-first-sidebar .nav ul li a {
+    color: #CACACA;
+    display: block;
+    padding-left: 18px;
+}
+
+#app-first-sidebar .nav ul li a .icon {
+    font-size: 16px;
+    position: relative;
+    top: 1px;
+}
+
+/* 二级分类 */
+
+#app-second-sidebar {
+    position: fixed;
+    top: 0px;
+    bottom: 0;
+    left: 100px;
+    width: 120px;
+    background: #fff;
+}
+
+#app-second-sidebar .second-sidebar-title {
+    padding-left: 20px;
+    font-size: 14px;
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+#app-second-sidebar .nav {
+    width: 120px;
+    padding: 13px 10px;
+    height: auto;
+}
+
+#app-second-sidebar .nav .menu-header {
+    padding: 0 10px 0 3px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+#app-second-sidebar .nav ul li {
+    font-size: 14px;
+    margin-bottom: 0px;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+#app-second-sidebar .nav ul li a {
+    display: inline-block;
+    min-width: 60px;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 8px 0 18px;
+    color: #7c838a;
+    position: relative;
+}
+
+#app-second-sidebar .nav ul li.active {
+    background: #f2f2f2;
+}
+
+#app-second-sidebar .nav ul li.active a {
+    color: #0292a5;
+}
+
+#app-second-sidebar .nav ul li:hover a {
+    color: #0292a5;
+}
+
+#app-second-sidebar .nav .menu-item:last-child {
+    margin-bottom: 50px;
+}
+
+/* 三级分类 顶部导航栏 */
+
+#app-container {
+    margin-left: 220px;
+    background: #f2f2f2;
+}
+
+#app-third-sidebar {
+    background: #fff;
+    padding: 0 5px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+#app-third-sidebar .nav-list {
+    float: left;
+    margin-bottom: 0;
+}
+
+#app-third-sidebar .nav-list li {
+    padding: 0 20px;
+    float: left;
+}
+
+#app-third-sidebar .nav-list li:first-child {
+    padding-left: 7px;
+}
+
+#app-third-sidebar .nav-list li a {
+    display: block;
+    height: 49px;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    font-weight: bold;
+    font-size: 14px;
+    color: #666666;
+    line-height: 48px;
+}
+
+#app-third-sidebar .navbar-right {
+    margin-right: 5px;
+}
+
+#app-third-sidebar .navbar-right a {
+    color: #333;
+    padding: 0 15px;
+    height: 49px;
+    line-height: 48px
+}
+
+#app-third-sidebar .navbar-right a:hover {
+    color: #0292a5;
+}
+
+#app-third-sidebar .navbar-right a.account-info {
+    font-weight: bold
+}
+
+#app-third-sidebar .navbar-right a.account-info .pic {
+    width: 35px;
+    height: 35px;
+    margin-right: 7px;
+    display: inline-block
+}
+
+#app-third-sidebar .navbar-right a.account-info img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+}
+
+#app-third-sidebar .navbar-right .dropdown-menu a {
+    height: 35px;
+    line-height: 35px
+}
+
+#app-third-sidebar .navbar-right .dropdown-menu a i.icon {
+    font-size: 16px;
+    position: relative;
+    top: 2px;
+}
+
+#app-third-sidebar .navbar-right .dropdown-menu li a:hover {
+    color: #1ab394;
+    background-color: #FFF
+}
+
+/* 主内容区 */
+
+#app-inner {
+    background: #fff;
+    margin: 10px 10px 0 10px;
+    padding: 15px;
+    min-width: 750px;
+    min-height: 500px;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2);
+}

@@ -40,15 +40,66 @@
     <bindings>
         <menu>
             <entry title="后台管理" do="web" state="" direct="false"/>
+            <entry title="测试" do="test" state="" direct="false"/>
         </menu>
     </bindings>
     <install>
-        <![CDATA[]]>
+        <![CDATA[
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_members`(
+         `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+         `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+         `uid` int(10) unsigned NOT NULL DEFAULT '0',
+         `openid` varchar(50) NOT NULL,
+         `avatar` varchar(255) NOT NULL,
+         `nickname` varchar(50) NOT NULL,
+         `sex` varchar(5) NOT NULL,
+         `realname` varchar(20) NOT NULL,
+         `mobile` varchar(20) NOT NULL,
+         `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+         `salt` varchar(10) NOT NULL,
+         `password` varchar(32) NOT NULL,
+         `token` varchar(50) NOT NULL,
+         `register_type` varchar(20) NOT NULL DEFAULT 'wechat',
+         `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+         `is_spread` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否是推广员',
+         `spreadtime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '成为推广员的时间',
+         PRIMARY KEY(`id`)
+         ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+         
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_plugin`(
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `name` varchar(100) NOT NULL,
+            `type` varchar(20) NOT NULL DEFAULT '',
+            `title` varchar(100) NOT NULL,
+            `thumb` varchar(255) DEFAULT '',
+            `version` varchar(10) NOT NULL DEFAULT '',
+            `ability` varchar(255) NOT NULL,
+            `status` int(10) DEFAULT '0',
+            `is_show` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            PRIMARY KEY (`id`),
+            KEY `name` (`name`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
+        
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_config`(
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sysset` text NOT NULL,
+            `pluginset` text NOT NULL,
+            `siteroot` varchar(1000) NOT NULL,
+            `time` varchar(100) NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=50000 DEFAULT CHARSET=utf8;
+
+        ]]>
     </install>
     <uninstall>
         <![CDATA[]]>
     </uninstall>
     <upgrade>
-        <![CDATA[]]>
+        <![CDATA[DROP TABLE IF EXISTS `ims_hello_banbanjia_members`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_plugin`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_config`;
+        ]]>
     </upgrade>
 </manifest>

@@ -1,0 +1,28 @@
+<div class="second-sidebar-title">
+    概况
+</div>
+<div class="nav slimscroll">
+    {ifp 'dashboard.index'}
+        <div class="menu-header">运营</div>
+        <ul class="menu-item">
+            <li {if $_W['_ac']== 'index'}class="active"{/if}> 
+                <a href="{php echo iurl('dashboard/index');}">运营概况</a>
+            </li>
+        </ul> 
+    {/if} 
+    {ifp 'dashboard.ad' || 'dashboard.slide' || 'dashboard.nav' || 'dashboard.notice' || 'dashboard.cube'}
+        <div class="menu-header">首页</div>
+        <ul class="menu-item">
+            {ifp 'dashboard.ad'}
+                <li {if $_W['_ac'] == 'ad'}class="active"{/if}>
+                    <a href="{php echo iurl('dashboard/ad');}">引导页</a>
+                </li>
+            {/if}
+            {ifp 'dashboard.slide'}
+                <li {if $_W['_ac'] == 'slide'}class="active"{/if}>
+                    <a href="{php echo iurl('dashboard/slide');}">幻灯片</a>
+                </li>
+            {/if}
+        </ul>
+    {/if}
+</div>
