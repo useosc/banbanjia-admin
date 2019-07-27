@@ -91,6 +91,19 @@
             KEY `uniacid` (`uniacid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=50000 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_slide`(
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(30) NOT NULL,
+            `thumb` varchar(255) NOT NULL,
+            `link` varchar(255) NOT NULL,
+            `type` varchar(20) NOT NULL DEFAULT 'homeTop',
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '是否显示：1显示，0不显示',
+            `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+            `wxapp_link` varchar(255) NOT NULL COMMENT '跳转微信小程序链接',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
         ]]>
     </install>
     <uninstall>
@@ -100,6 +113,7 @@
         <![CDATA[DROP TABLE IF EXISTS `ims_hello_banbanjia_members`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_plugin`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_config`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_slide`;
         ]]>
     </upgrade>
 </manifest>

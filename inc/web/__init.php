@@ -3,6 +3,7 @@ defined("IN_IA") or exit("Access Denied");
 global $_W;
 global $GPC;
 mload()->lfunc("web"); //创建二级菜单函数
+mload()->lfunc("tpl.web");
 mload()->lmodel("common"); //权限检查
 
 $_W["we7_hello_banbanjia"]["global"] = get_global_config(); //全局配置

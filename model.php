@@ -63,7 +63,7 @@ function iurl($segment, $params = array(), $addhost = false) //生成链接
 {
     global $_W;
     list($ctrl, $ac, $op, $ta) = explode("/", $segment);
-    $params = array_merge(array("ctrl" => $ctrl, "ac" => $ac, "op" => $op, "ta" => $ta, "do" => "web", "m" => "we7_hello_banbanjia"), $params);
+    $params = array_merge(array("ctrl" => $ctrl, "ac" => $ac, "op" => $op, "ta" => $ta, "do" => "web", "m" => "hello_banbanjia"), $params);
     $url = iwurl("site/entry", $params);
     if ($addhost) {
         $url = $_W["siteroot"] . "web/" . substr($url, 2);
@@ -89,4 +89,28 @@ function iwurl($segment, $params = array(), $script = "./index.php?") //转换�
         $url .= $queryString;
     }
     return $url;
+}
+
+function ifilter_url($params) //替换参数重新生成链接
+{
+    global $_W;
+    if (empty($params)) {
+        return "";
+    }
+    $query_arr = array();
+    $parse = parse_url($_W["siteurl"]);
+    if (!empty($parse["query"])) {
+        $query = $parse["query"];
+        parse_str($query, $query_arr);
+    }
+    $params = explode(",", $params);
+    foreach ($params as $val) {
+        if (!empty($val)) {
+            $data = explode(":", $val);
+            $query_arr[$data[0]] = trim($data[1]);
+        }
+    }
+    $query_arr["page"] = 1;
+    $query = http_build_query($query_arr);
+    return "./index.php?" . $query;
 }

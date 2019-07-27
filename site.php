@@ -25,7 +25,14 @@ class Hello_banbanjiaModuleSite extends WeModuleSite
     {
         ini_set("display_errors", "1"); //显示出错信息
         // error_reporting(E_ALL ^ E_NOTICE);
+        // error_reporting(E_ALL);
         $this->router(); //路由函数
+    }
+
+    public function doMobileMobile() //接口
+    {
+        ini_set("display_errors", "1"); //显示出错信息
+        $this->router();
     }
 
     public function router() //路由函数

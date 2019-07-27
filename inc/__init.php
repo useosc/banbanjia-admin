@@ -25,7 +25,7 @@ if (strexists($_W["siteurl"], "web/index.php")) { //判断是否是后台管理�
     }
 }
 
-if (defined("IN_SYS")) { //web/index 入口文件进入
+if (defined("IN_SYS")) { //web/index 后台入口文件进入
     if (empty($_W["uniacid"])) {
         message("公众号信息错误，请重新管理公众号", url("account/display"), "info");
     }
@@ -42,6 +42,21 @@ if (defined("IN_SYS")) { //web/index 入口文件进入
 
     if (is_file($file_init)) { //引入初始化文件
         require $file_init;
+    }
+} else { //api接口路由
+    $_W["ochannel"] = "wxapp";
+    $_W["channel"] = $_W["ochannel"];
+    if ($_GPC["from"] == "wxapp") {
+        defined("IN_WXAPP", 1);
+    }
+    require WE7_BANBANJIA_PATH . "inc/wxapp/__init.php";
+    $file_init = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W["_ctrl"] . "/__init.php";
+    $file_path = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W["_ctrl"] . "/" . $_W["_ac"] . "/" . $_W["_op"] . ".inc.php";
+    if (is_file($file_init)) {
+        require $file_init;
+    }
+    if (!is_file($file_path)) {
+        imessage(error(-1, "控制器wxapp " . $_W["_ctrl"] . " 方法 " . $_W["_ac"] . "/" . $_W["_op"] . " 未找到!"), "", "ajax");
     }
 }
 
