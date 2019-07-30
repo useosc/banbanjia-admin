@@ -3,7 +3,7 @@ defined("IN_IA") or exit("Access Denied");
 global $_W;
 global $_GPC;
 mload()->lfunc("common"); //模板编译等函数相关
-// mload()->lclass("TyAccount");
+mload()->lclass("TyAccount"); //微信小程序账号
 $routers = str_replace("//", "/", trim($_GPC["r"], "/"));
 $routers = explode(".", $routers);
 $_W["_do"] = !empty($_W["_do"]) ? $_W["_do"] : trim($_GPC["do"]);
@@ -44,10 +44,15 @@ if (defined("IN_SYS")) { //web/index 后台入口文件进入
         require $file_init;
     }
 } else { //api接口路由
-    $_W["ochannel"] = "wxapp";
+    $_W["ochannel"] = "wxapp";  //小程序端
     $_W["channel"] = $_W["ochannel"];
     if ($_GPC["from"] == "wxapp") {
-        defined("IN_WXAPP", 1);
+        define("IN_WXAPP", 1);
+    }else{
+        if($_GPC['form'] == 'wap'){ //web手机端
+            $_W['ochannel'] = 'wap';
+            define('IN_WAP',1);
+        }
     }
     require WE7_BANBANJIA_PATH . "inc/wxapp/__init.php";
     $file_init = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W["_ctrl"] . "/__init.php";

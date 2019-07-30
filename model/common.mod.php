@@ -101,3 +101,19 @@ function check_permit($permit, $redirct = false)
     }
     return false;
 }
+//插件配置
+if (!function_exists('get_plugin_config')) {
+    function get_plugin_config($key = '')
+    {
+        global $_W;
+        $_W['uniacid'] = intval($_W['uniacid']);
+        $config = pdo_get('hello_banbanjia_config', array('uniacid' => $_W['uniacid']), array('pluginset'));
+        if (empty($config)) {
+            return array();
+        }
+        $pluginset = iunserializer($config["pluginset"]);
+        if (empty($key)) {
+            return $pluginset;
+        }
+    }
+}

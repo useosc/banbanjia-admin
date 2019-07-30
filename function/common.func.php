@@ -69,3 +69,18 @@ function itemplate_parse($str, $inmodule = false) //字符串解析函数
     $str = "<?php defined('IN_IA') or exit('Access Denied');?>" . $str;
     return $str;
 }
+
+function iaes_pkcs7_decode($encrypt_data, $key, $iv = false) //微信小程序解密函数
+{
+    mload()->lclass("pkcs7");
+    $encrypt_data = base64_decode($encrypt_data);
+    if (!empty($iv)) {
+        $iv = base64_decode($iv);
+    }
+    $pc = new Prpcrypt($key);
+    $result = $pc->decrypt($encrypt_data, $iv);
+    if ($result[0] != 0) {
+        return error($result[0], "解密失败");
+    }
+    return $result[1];
+}
