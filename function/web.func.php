@@ -6,9 +6,11 @@ function build_menu()
 {
     global $_W;
     global $_GPC;
-
-    include itemplate((string) $_W["_ctrl"] . "/tabs");
-
+    if (defined('IN_PLUGIN')) {
+        include itemplate('tabs');
+    } else {
+        include itemplate((string) $_W["_ctrl"] . "/tabs");
+    }
     return true;
 }
 
@@ -49,6 +51,6 @@ function imessage($msg, $redirect = "", $type = "")
     if ($type == "ajax" || $type == "sql") {
         $label = "warning";
     }
-    include itemplate("public/message",TEMPLATE_INCLUDEPATH);
+    include itemplate("public/message", TEMPLATE_INCLUDEPATH);
     exit;
 }

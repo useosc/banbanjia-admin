@@ -2,7 +2,7 @@
 
 defined("IN_IA") or exit("Access Denied");
 !defined("WE7_BANBANJIA_PATH") and define("WE7_BANBANJIA_PATH", IA_ROOT . "/addons/hello_banbanjia/");
-!defined("WE7_BANBANJIA_PLUGIN_PATH") and define("WE7_BANBANJIA_PLUGIN_PATH", WE7_BANBANJIA_PATH . "/plugin/");
+!defined("WE7_BANBANJIA_PLUGIN_PATH") and define("WE7_BANBANJIA_PLUGIN_PATH", WE7_BANBANJIA_PATH . "plugin/");
 !defined("WE7_BANBANJIA_URL") and define("WE7_BANBANJIA_URL", $_W["siteroot"] . "addons/hello_banbanjia/");
 !defined("WE7_BANBANJIA_URL_NOHTTPS") and define("WE7_BANBANJIA_URL_NOHTTPS", str_replace("https://", "http://", $_W["siteroot"]) . "addons/hello_banbanjia/");
 !defined("WE7_BANBANJIA_STATIC") and define("WE7_BANBANJIA_STATIC", WE7_BANBANJIA_URL . "/static/");

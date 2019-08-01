@@ -115,5 +115,115 @@ if (!function_exists('get_plugin_config')) {
         if (empty($key)) {
             return $pluginset;
         }
+        $keys = explode('.', $key);
+        $plugin = $keys[0];
+        if (!empty($plugin)) {
+            $config_plugin = $pluginset[$plugin];
+            if (!is_array($config_plugin)) {
+                return array();
+            }
+            $count = count($keys);
+            if ($count == 2) {
+                return $config_plugin[$keys[1]];
+            }
+            if ($count == 3) {
+                return $config_plugin[$keys[1]][$keys[2]];
+            }
+            return $config_plugin;
+        }
     }
+}
+//检查公众号对插件的权限
+function get_account_permit($key = '', $uniacid = 0)
+{
+    global $_W;
+    if (empty($uniacid)) {
+        $uniacid = $_W['uniacid'];
+    }
+    $permit = pdo_get('hello_banbanjia_permit_account', array('uniacid' => $uniacid));
+    if (empty($permit)) {
+        return false;
+    }
+    if (!empty($permit)) {
+        $permit["plugins"] = iunserializer($permit["plugins"]);
+        if (!is_array($permit["plugins"])) {
+            $permit["plugins"] = array();
+        }
+        if (empty($permit["plugins"])) {
+            $permit["plugins"] = array("none");
+        }
+        if (!empty($key)) {
+            return $permit[$key];
+        }
+    }
+    return $permit;
+}
+//设置插件配置
+function set_plugin_config($key, $value)
+{
+    global $_W;
+    $keys = explode(".", $key);
+    $counts = count($keys);
+    $pluginset = get_plugin_config();
+    $config_plugin = $pluginset[$keys[0]];
+    if ($counts == 1) {
+        $config_plugin = $value;
+    } else {
+        if ($counts == 2) {
+            $config_plugin[$keys[1]] = $value;
+        } else {
+            if ($counts == 3) {
+                $config_plugin[$keys[1]][$keys[2]] = $value;
+            }
+        }
+    }
+    $pluginset[$keys[0]] = $config_plugin;
+    pdo_update("hello_banbanjia_config", array("pluginset" => iserializer($pluginset)), array("uniacid" => $_W["uniacid"]));
+    return true;
+}
+//日志
+function mlog($type, $log_id = 0, $message = '')
+{
+    global $_W;
+    if (empty($type)) {
+        return error(-1, '日志类型不能为空');
+    }
+    $type_info = mlog_types($_W["role"], $type);
+    if (empty($type_info["type"])) {
+        return error(-1, "日志类型有误");
+    }
+    $content = sprintf($type_info["content"], $log_id, $message);
+    $data = array('uniacid'=> $_W['uniacid'],'username' => $_W['role_cn'],'uid'=>$_W['uid'],'role'=>$_W['role'],'type'=>$type,'content'=>$content,'ip'=>CLIENT_IP,'address'=>'','source'=>'','addtime'=>TIMESTAMP);
+    pdo_insert('hello_banbanjia_operate_log',$data);
+    return true;
+}
+//日志类型
+function mlog_types($role = '', $value = 0)
+{
+    if ($role == 'operator') {
+        $role = 'manager';
+    }
+    $common = array('1000' => array('key' => 1000, 'type' => '订单完成', 'content' => "订单完成(订单id:%s)"), '1002' => array('key' => 1002, 'type' => '订单取消', 'content' => "订单取消(订单id:%s)"), '3000' => array('key' => 3000, 'type' => '添加员工', 'content' => "添加员工(员工id:%s),详情：%s"), '3002' => array('key' => 3002, 'type' => '删除员工', 'content' => "删除员工(员工id:%s),详情:%s"), '4000' => array('key' => 4000, 'type' => '添加搬运工', 'content' => "添加搬运工(搬运工id:%s),详情：%s"), '4002' => array('key' => 4002, 'type' => '删除搬运工', 'content' => "删除搬运工(搬运工id:%s),详情：%s"));
+    $type_all = array("manager" => array("1001" => array("key" => 1001, "type" => "订单部分退款", "content" => "平台发起订单部分退款(退款id:%s)"), "1004" => array("key" => 1004, "type" => "订单已退款", "content" => "平台将订单设为已退款(订单id:%s)"), "1005" => array("key" => 1005, "type" => "订单发起退款", "content" => "平台发起订单退款(订单id:%s)"), "2000" => array("key" => 2000, "type" => "添加商户", "content" => "平台后台添加商户(商户id:%s)"), "2001" => array("key" => 2001, "type" => "删除商户", "content" => "平台后台删除商户(商户id:%s)"), "2002" => array("key" => 2002, "type" => "商户加入回收站", "content" => "平台后台将商户加入回收站(商户id:%s)"), "2003" => array("key" => 2003, "type" => "商户入驻审核通过", "content" => "商户入驻审核通过(商户id:%s), 备注：%s"), "2004" => array("key" => 2004, "type" => "商户入驻审核不通过", "content" => "商户入驻审核不通过(商户id:%s), 备注：%s"), "2005" => array("key" => 2005, "type" => "平台变动商户账户", "content" => "后台变动商户账户(记录id:%s), 备注：%s"), "2006" => array("key" => 2006, "type" => "撤销商户提现", "content" => "撤销商户提现(记录id:%s), 备注：%s"), "2007" => array("key" => 2007, "type" => "商户提现打款", "content" => "商户提现打款(记录id:%s), 结果:%s"), "2008" => array("key" => 2008, "type" => "商户提现设为已处理", "content" => "商户提现设为已处理(记录id:%s)"), "2010" => array("key" => 2010, "type" => "平台创建商户活动", "content" => "平台创建商户活动，详情：%s"), "2011" => array("key" => 2011, "type" => "更改商户提现账户", "content" => "平台更改商户提现账户(商户id:%s)"), "2012" => array("key" => 2012, "type" => "更改商户营业状态", "content" => "平台更改商户营业状态(商户id:%s)"), "3001" => array("key" => 3001, "type" => "编辑店员", "content" => "平台编辑店员(店员id:%s)"), "4001" => array("key" => 4001, "type" => "编辑配送员", "content" => "平台编辑配送员(配送员id:%s)"), "4003" => array("key" => 4003, "type" => "后台变动配送员账户", "content" => "后台变动配送员账户(记录id:%s)"), "4004" => array("key" => 4004, "type" => "撤销配送员提现", "content" => "撤销配送员提现(记录id:%s), 备注：%s"), "4005" => array("key" => 4005, "type" => "配送员提现打款", "content" => "配送员提现打款(记录id:%s), 结果:%s"), "4006" => array("key" => 4006, "type" => "配送员提现设为已处理", "content" => "配送员提现设为已处理(记录id:%s)"), "4007" => array("key" => 4007, "type" => "配送员加入回收站", "content" => "平台将配送员加入回收站(配送员id:%s)"), "4008" => array("key" => 4008, "type" => "将配送员从回收站中恢复", "content" => "平台将配送员从回收站中恢复(配送员id:%s)"), "5000" => array("key" => 5000, "type" => "添加代理", "content" => "平台后台添加代理(代理id:%s)"), "5001" => array("key" => 5001, "type" => "删除代理", "content" => "平台后台删除代理(代理id:%s)"), "5002" => array("key" => 5002, "type" => "平台变动代理账户", "content" => "平台变动代理账户(记录id:%s), 备注：%s"), "5003" => array("key" => 5003, "type" => "撤销代理提现", "content" => "撤销代理提现(记录id:%s, 备注：%s)"), "5004" => array("key" => 5004, "type" => "代理提现打款", "content" => "代理提现打款(记录id:%s), 结果:%s"), "5005" => array("key" => 5005, "type" => "代理提现设为已处理", "content" => "代理提现设为已处理(记录id:%s)"), "5007" => array("key" => 5007, "type" => "更改代理提现账户", "content" => "平台更改代理提现账户(代理id:%s)"), "6000" => array("key" => 6000, "type" => "顾客加入黑名单", "content" => "顾客加入黑名单(顾客id:%s)"), "6001" => array("key" => 6001, "type" => "删除顾客", "content" => "平台后台删除顾客(uid:%s)"), "6002" => array("key" => 6002, "type" => "平台变动顾客账户", "content" => "平台变动顾客账户(uid:%s), 详情:%s"), "6003" => array("key" => 6003, "type" => "平台编辑顾客", "content" => "平台编辑顾客(uid:%s)"), "6004" => array("key" => 6004, "type" => "平台设置顾客等级", "content" => "平台设置顾客等级(uid:%s), 设置等级id:%s"), "6005" => array("key" => 6005, "type" => "平台设置顾客配送会员卡", "content" => "平台设置顾客配送会员卡(uid:%s), 详情:%s"), "6006" => array("key" => 6006, "type" => "平台设置顾客超级会员", "content" => "平台设置顾客超级会员(uid:%s), 详情:%s"), "6007" => array("key" => 6007, "type" => "顾客移出黑名单", "content" => "顾客移出黑名单(顾客id:%s)")), "agenter" => array("1001" => array("key" => 1001, "type" => "订单部分退款", "content" => "代理发起订单部分退款(退款id:%s)"), "1004" => array("key" => 1004, "type" => "订单已退款", "content" => "代理将订单设为已退款(订单id:%s)"), "1005" => array("key" => 1005, "type" => "订单发起退款", "content" => "代理发起订单退款(订单id:%s)"), "2000" => array("key" => 2000, "type" => "添加商户", "content" => "代理后台添加商户(商户id:%s)"), "2001" => array("key" => 2001, "type" => "删除商户", "content" => "代理后台删除商户(商户id:%s)"), "2002" => array("key" => 2002, "type" => "商户加入回收站", "content" => "代理后台将商户加入回收站(商户id:%s)"), "2003" => array(
+        "key" => 2003, "type" => "商户入驻审核通过", "content" => "代理商户入驻审核通过(商户id:%s), 备注：%s"
+    ), "2004" => array("key" => 2004, "type" => "商户入驻审核不通过", "content" => "代理商户入驻审核不通过(商户id:%s), 备注：%s"), "2011" => array("key" => 2011, "type" => "更改商户提现账户", "content" => "代理更改商户提现账户(商户id:%s)"), "2012" => array("key" => 2012, "type" => "更改商户营业状态", "content" => "代理更改商户营业状态(商户id:%s)"), "3001" => array("key" => 3001, "type" => "编辑店员", "content" => "代理编辑店员(店员id:%s)"), "4001" => array("key" => 4001, "type" => "编辑配送员", "content" => "代理编辑配送员(配送员id:%s)"), "4007" => array("key" => 4007, "type" => "配送员加入回收站", "content" => "代理将配送员加入回收站(配送员id:%s)"), "4008" => array("key" => 4008, "type" => "将配送员从回收站中恢复", "content" => "代理将配送员从回收站中恢复(配送员id:%s)"), "5006" => array("key" => 5006, "type" => "代理发起提现申请", "content" => "代理发起提现申请(记录id:%s)"), "5007" => array("key" => 5007, "type" => "更改代理提现账户", "content" => "代理更改提现账户(代理id:%s)")), "clerker" => array("1001" => array("key" => 1001, "type" => "订单部分退款", "content" => "商户发起订单部分退款(退款id:%s)"), "2009" => array("key" => 2009, "type" => "商户发起提现申请", "content" => "商户发起提现申请(记录id:%s)"), "2011" => array("key" => 2011, "type" => "更改商户提现账户", "content" => "商户更改提现账户(商户id:%s)"), "2012" => array("key" => 2012, "type" => "更改商户营业状态", "content" => "商户更改营业状态(商户id:%s)")));
+    if (!empty($value)) {
+        $type = $common[$value];
+        if (empty($type)) {
+            if ($role == 'founder') {
+                $type = $type_all['manager'][$value];
+            } else {
+                $type = $type_all[$role][$value];
+            }
+        }
+    }
+    if (empty($role) || $role == "founder") {
+        $types = array_merge($common, $type_all["manager"], $type_all["agenter"], $type_all["clerker"]);
+    } else {
+        $types = array_merge($common, $type_all[$role]);
+    }
+    if (empty($value)) {
+        return $types;
+    }
+    return $type;
 }

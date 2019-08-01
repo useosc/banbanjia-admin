@@ -7,9 +7,20 @@ function itemplate($filename, $flag = TEMPLATE_DISPLAY)
     $module = "hello_banbanjia";
 
     if (defined("IN_SYS")) {
-        $source = WE7_BANBANJIA_PATH . "template/web/" . $filename . ".html";
+        if (!defined('IN_PLUGIN')) {
+            $source = WE7_BANBANJIA_PATH . "template/web/" . $filename . ".html";
+        } else { //编译插件
+            $filename_old = $filename;
+            $filename = (string) $_W['_plugin']['name'] . '/template/web/' . $filename . '.html';
+            $source = WE7_BANBANJIA_PLUGIN_PATH . $filename;
+            if (!is_file($source)) {
+                $source = WE7_BANBANJIA_PATH . 'template/web/' . $filename_old . '.html';
+            }
+        }
         $compile = IA_ROOT . "/data/tpl/web" . $_W["template"] . "/" . $module . "/" . $filename . ".tpl.php";
     }
+
+    //开始编译
     if (!is_file($source)) {
         exit("Error: template file '" . $filename . "' is not exist!");
     }

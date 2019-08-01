@@ -1,4 +1,90 @@
 {itemplate 'public/header'}
+{if $op == 'info'}
+<div class="page clearfix">
+    <h2>顾客信息</h2>
+    <form action="" class="form-horizontal form form-validate" id="form1" method="POST" enctype="multipart/form-data">
+        <h3>基本信息</h3>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">UID</label>
+            <div class="col-sm-9 col-xs-12">
+                <p class="form-control-static">{$member['uid']}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">顾客头像</label>
+            <div class="col-sm-9 col-xs-12">
+                <img src="{$member['avatar']}" alt="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">顾客昵称</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" name="nickname" value="{$member['nickname']}" class="form-control" required="true">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">顾客姓名</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" name="realname" value="{$member['realname']}" class="form-control" required="true">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">公众号Openid</label>
+            <div class="col-sm-9 col-xs-12">
+                {if !empty($member['openid'])}
+                    <p class="form-control-static"><a href="javascript: ;" class="js-clip" data-href="{$member['openid']}">{$member['openid']}</a></p>
+                {else}
+                    <p class="form-control-static">未绑定公众号</p>
+                {/if}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">小程序Openid</label>
+            <div class="col-sm-9 col-xs-12">
+                {if !empty($member['openid_wxapp'])}
+                <p class="form-control-static"><a href="javascript: ;" class="js-clip" data-href="{$member['openid_wxapp']}">{$member['openid_wxapp']}</a></p>
+                {else}
+                <p class="form-control-static">未绑定小程序</p>
+                {/if}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">统一unionId</label>
+            <div class="col-sm-9 col-xs-12">
+                {if !empty($member['unionId'])}
+                    <p class="form-control-static"><a href="javascript: ;" class="js-clip" data-href="{$member['unionId']}">{$member['unionId']}</a></p>
+                {else}
+                    <p class="form-control-static">未获取到</p>
+                {/if}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">加入时间</label>
+            <div class="col-sm-9 col-xs-12">
+                <p class="form-control-static">{php echo date('Y-m-d H:i', $member['addtime'])}</p>
+            </div>
+        </div>
+        <h3>账号设置</h3>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">手机号</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" name="mobile" value="{$member['mobile']}" class="form-control" placeholder="用于账号登录" required="true">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">登录密码</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="password" name="password" value="" class="form-control" placeholder="" {if !$uid}required="true"{/if}>
+                <div class="help-block">请填写密码，长度为 8-20 位数字和字母的组合。{if $uid > 0}如果不更改密码此处请留空{/if}</div>
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <input type="submit" value="提交" class="btn btn-primary">
+            <input type="hidden" name="token" value="{$_W['token']}" />
+        </div>
+    </form>
+</div>
+{else}
 <form action="" class="form-table form" method="post">
     <div class="panel panel-table">
         <div class="panel-body table-responsive js-table">
@@ -33,10 +119,112 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    {loop $data $dca}
+                    <tr>
+                        <td>{$dca['uid']}</td>
+                        <td>
+                            {if !empty($dca['avatar']) || !empty($dca['nickname'])}
+                            <img src="{php echo tomedia($dca['avatar']);}" alt="" width="50">
+                            {$dca['nickname']}
+                            {else}
+                            未更新
+                            {/if}
+                        </td>
+                        <td>
+                            {$dca['realname']}
+                            <br>
+                            {$dca['mobile']}
+                        </td>
+                        <td>
+                            {$dca['groupname']}
+                        </td>
+                        <td>
+                            <span class="label label-info">积分 {$dca['credit1']}</span>
+                            <br>
+                            <span class="label label-warning label-br">余额 {$dca['credit2']}</span>
+                            <br>
+                        </td>
+                        <td>
+                            <span class="label label-success">{$dca['success_num']}次 / {$dca['success_price']}元</span>
+                            <br>
+                            <span class="label label-danger label-br">{$dca['cancel_num']}次 /
+                                {$dca['cancel_price']}元</span>
+                        </td>
+                        <td>
+                            {if !empty($dca['success_first_time'])}
+                            {php echo date('Y-m-d H:i', $dca['success_first_time']);}
+                            {/if}
+                            <br>
+                            {if !empty($dca['success_last_time'])}
+                            {php echo date('Y-m-d H:i', $dca['success_last_time']);}
+                            {/if}
+                            <br>
+                            {php echo date('Y-m-d H:i', $dca['addtime']);}
+                        </td>
+                        <td>
+                            {if !empty($dca['openid'])}
+                            <span class="label label-success">
+                                已绑定公众号
+                            </span>
+                            <br>
+                            {/if}
+                            {if !empty($dca['openid_wxapp'])}
+                            <span class="label label-primary {if !empty($dca['openid'])}label-br{/if}">
+                                已绑定小程序
+                            </span>
+                            {/if}
+                        </td>
+                        <td>
+                            {if !empty($dca['card'])}
+                            <span class="label label-info">
+                                {$dca['card']}
+                            </span>
+                            {/if}
+                            <br>
+                            {if $dca['setmeal_starttime'] != 0 && $dca['setmeal_endtime'] !=0}
+                            <span class="label label-success label-br">
+                                开始时间 {php echo date('Y-m-d', $dca['setmeal_starttime']);}
+                            </span>
+                            <br>
+                            <span class="label label-danger label-br">
+                                结束时间 {php echo date('Y-m-d', $dca['setmeal_endtime']);}
+                            </span>
+                            {if $dca['setmeal_endtime'] <= time()} <br>
+                                <span class="label label-warning label-br">已到期</span>
+                                {/if}
+                                {/if}
+                        </td>
+                        <td>
+                            {if $dca['svip_status'] == 1}
+                            <span class="label label-success label-br">已购买</span>
+                            <br>
+                            <span class="label label-primary label-br">
+                                开始时间 {php echo date('Y-m-d', $dca['svip_starttime']);}
+                            </span>
+                            <br>
+                            <span class="label label-danger label-br">
+                                结束时间 {php echo date('Y-m-d', $dca['svip_endtime']);}
+                            </span>
+                            {elseif $dca['svip_status'] == 2}
+                            <span class="label label-warning label-br">已到期</span>
+                            {else}
+                            <span class="label label-danger label-br">未购买</span>
+                            {/if}
+                        </td>
+                        <td style="text-align: right;">
+                            <div style="margin-top: 5px">
+                                <a href="{php echo iurl('member/list/info',array('uid' => $dca['uid']))}"
+                                    class="btn btn-info btn-sm">顾客信息</a>
+                                <a href="{php echo iurl('member/list/del', array('uid' => $dca['uid'], 'id' => $dca['id']))}"
+                                    class="btn btn-danger btn-sm js-post" data-confirm="确认删除吗？">删除</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {/loop}
                 </tbody>
             </table>
         </div>
     </div>
 </form>
+{/if}
 {itemplate 'public/footer'}

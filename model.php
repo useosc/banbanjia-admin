@@ -114,3 +114,25 @@ function ifilter_url($params) //替换参数重新生成链接
     $query = http_build_query($query_arr);
     return "./index.php?" . $query;
 }
+//检查插件是否存在
+function check_plugin_exist($name){
+    global $_W;
+    static $_plugins_exist = array();
+    if(isset($_plugins_exist[$name])){
+        return $_plugins_exist[$name];
+    }
+    if(!empty($_W['_plugins'])){
+        $_plugins_exist[$name] = false;
+        if(in_array($name,array_keys($_W['_plugins']))){
+            $_plugins_exist[$name] = true;
+        }
+    }else{
+        $plugin = pdo_get('hello_banbanjia_plugin',array('name' => $name),array('id','name'));
+        if(empty($plugin)){
+            $_plugins_exist[$name] = false;
+            return $_plugins_exist[$name];
+        }
+        $_plugins_exist[$name] = true;
+    }
+    return $_plugins_exist[$name];
+}

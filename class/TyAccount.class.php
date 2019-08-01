@@ -10,5 +10,18 @@ abstract class TyAccount
             $acc = new WxAccount($acidOrAccount);
             return $acc;
         }
+        if (empty($acidOrAccount)) {
+            $acidOrAccount = $_W["acid"];
+        }
+        if (is_array($acidOrAccount)) {
+            $account = $acidOrAccount;
+        } else {
+            $wxapp = get_plugin_config("wxapp.basic");
+            $account = array("key" => $wxapp["key"], "secret" => $wxapp["secret"]);
+        }
+        mload()->lclass("wxapp");
+        return new Wxapp($account);
     }
 }
+
+?>

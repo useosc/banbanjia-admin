@@ -110,6 +110,7 @@
             `version` varchar(10) NOT NULL DEFAULT '',
             `ability` varchar(255) NOT NULL,
             `status` int(10) DEFAULT '0',
+            `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
             `is_show` tinyint(3) unsigned NOT NULL DEFAULT '1',
             PRIMARY KEY (`id`),
             KEY `name` (`name`)
@@ -126,6 +127,21 @@
             KEY `uniacid` (`uniacid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=50000 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_operate_log` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) NOT NULL DEFAULT '0',
+            `username` varchar(50) NOT NULL,
+            `uid` int(10) NOT NULL DEFAULT '0',
+            `role` varchar(20) NOT NULL,
+            `type` smallint(5) unsigned NOT NULL DEFAULT '0',
+            `content` varchar(500) NOT NULL,
+            `ip` varchar(20) NOT NULL,
+            `address` varchar(50) NOT NULL,
+            `source` varchar(20) NOT NULL,
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=500 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_slide`(
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -139,6 +155,9 @@
             PRIMARY KEY (`id`),
             KEY `uniacid` (`uniacid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+
+        INSERT INTO ims_hello_banbanjia_plugin VALUES
+        ('40','wxapp','biz','搬搬家小程序','../addons/hello_banbanjia/static/img/plugin/wxapp.jpg','','搬搬家，国内一流搬家平台','1','0','1');
         ]]>
     </install>
     <uninstall>

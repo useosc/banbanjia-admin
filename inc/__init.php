@@ -14,8 +14,9 @@ $_W["_ta"] = trim($_GPC["ta"]);
 $_W["_router"] = implode("/", array($_W["_ctrl"], $_W["_ac"], $_W["_op"])); //路由
 $_plugins = pdo_getall("hello_banbanjia_plugin", array(), array("name", "title"), "name"); //插件
 $_W["_plugins"] = $_plugins;
+// var_dump($_plugins);exit;
+//检测是否是插件
 in_array($_W["_ctrl"], array_keys($_plugins)) and define("IN_PLUGIN", 1);
-
 if (strexists($_W["siteurl"], "web/index.php")) { //判断是否是后台管理页面
     define("IN_MANAGE", 1);
 } else {
@@ -40,18 +41,29 @@ if (defined("IN_SYS")) { //web/index 后台入口文件进入
     $file_init = WE7_BANBANJIA_PATH . "inc/web/" . $_W["_ctrl"] . "/__init.php";
     $file_path = WE7_BANBANJIA_PATH . "inc/web/" . $_W["_ctrl"] . "/" . $_W["_ac"] . ".inc.php";
 
+    //插件入口
+    if (defined('IN_PLUGIN')) {
+        $plugin_init = WE7_BANBANJIA_PLUGIN_PATH . "__init.php";
+        require $plugin_init;
+        $file_init = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W['_ctrl'] . '/inc/web/__init.php';
+        $file_path = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W["_ctrl"] . "/inc/web/" . $_W["_ac"] . ".inc.php";
+    }
+
     if (is_file($file_init)) { //引入初始化文件
         require $file_init;
+    }
+    if (!is_file($file_path)) {
+        imessage("控制器 " . $_W["_ctrl"] . " 方法 " . $_W["_ac"] . " 未找到!", "", "info");
     }
 } else { //api接口路由
     $_W["ochannel"] = "wxapp";  //小程序端
     $_W["channel"] = $_W["ochannel"];
     if ($_GPC["from"] == "wxapp") {
         define("IN_WXAPP", 1);
-    }else{
-        if($_GPC['form'] == 'wap'){ //web手机端
+    } else {
+        if ($_GPC['form'] == 'wap') { //web手机端
             $_W['ochannel'] = 'wap';
-            define('IN_WAP',1);
+            define('IN_WAP', 1);
         }
     }
     require WE7_BANBANJIA_PATH . "inc/wxapp/__init.php";
