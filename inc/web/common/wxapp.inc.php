@@ -5,7 +5,6 @@ defined("IN_IA") or exit("Access Denied");
 global $_W;
 global $_GPC;
 $op = trim($_GPC["op"]);
-echo $op;
 if ($op == "link") {
 	$getScene = trim($_GPC["scene"]);
 	if (empty($getScene)) {
@@ -14,7 +13,7 @@ if ($op == "link") {
 	$getScene == 'vuepage' ? 'vuepage' : '';
 	$type = trim($_GPC['type']);
 	if (empty($type)) {
-		$type = 'wmall';
+		$type = 'mall';
 	}
 	$data = wxapp_urls($type);
 	if ($getScene == 'menu') {

@@ -65,6 +65,10 @@ function iurl($segment, $params = array(), $addhost = false) //生成链接
     list($ctrl, $ac, $op, $ta) = explode("/", $segment);
     $params = array_merge(array("ctrl" => $ctrl, "ac" => $ac, "op" => $op, "ta" => $ta, "do" => "web", "m" => "hello_banbanjia"), $params);
     $url = iwurl("site/entry", $params);
+    if(($_W['_ctrl'] == 'store' || $ctrl == 'store')){
+        $params['i'] = $_W['uniacid'];
+        $url = iwurl('site/entry',$params,'./business.php?');
+    }
     if ($addhost) {
         $url = $_W["siteroot"] . "web/" . substr($url, 2);
     }
@@ -115,24 +119,38 @@ function ifilter_url($params) //替换参数重新生成链接
     return "./index.php?" . $query;
 }
 //检查插件是否存在
-function check_plugin_exist($name){
+function check_plugin_exist($name)
+{
     global $_W;
     static $_plugins_exist = array();
-    if(isset($_plugins_exist[$name])){
+    if (isset($_plugins_exist[$name])) {
         return $_plugins_exist[$name];
     }
-    if(!empty($_W['_plugins'])){
+    if (!empty($_W['_plugins'])) {
         $_plugins_exist[$name] = false;
-        if(in_array($name,array_keys($_W['_plugins']))){
+        if (in_array($name, array_keys($_W['_plugins']))) {
             $_plugins_exist[$name] = true;
         }
-    }else{
-        $plugin = pdo_get('hello_banbanjia_plugin',array('name' => $name),array('id','name'));
-        if(empty($plugin)){
+    } else {
+        $plugin = pdo_get('hello_banbanjia_plugin', array('name' => $name), array('id', 'name'));
+        if (empty($plugin)) {
             $_plugins_exist[$name] = false;
             return $_plugins_exist[$name];
         }
         $_plugins_exist[$name] = true;
     }
     return $_plugins_exist[$name];
+}
+
+//获取轮播图
+function sys_fetch_slide($type = 'homeTop', $format = false)
+{
+    global $_W;
+    $slides = pdo_fetchall("select * from" . tablename("hello_banbanjia_slide") . "where uniacid = :uniacid  and type = :type and status = 1 order by displayorder desc", array(":uniacid" => $_W["uniacid"], ":type" => $type));
+    if($format){
+        foreach($slides as &$slide){
+            $slide['thumb'] = tomedia($slide['thumb']);
+        }
+    }
+    return $slides;
 }

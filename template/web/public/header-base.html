@@ -48,13 +48,18 @@
 			'module' : {'url' : '{if defined('MODULE_URL')}{MODULE_URL}{/if}', 'name' : '{if defined('IN_MODULE')}{IN_MODULE}{/if}'},
 			'cookie' : {'pre': '{$_W['config']['cookie']['pre']}'},
 			'account' : {php echo json_encode($_W['account'])},
+            'merchant' : {php echo defined('IN_MERCHANT') ? 1 : 0},
         }
     </script>
     <script src="{$_W['siteroot']}web/resource/js/app/util.js"></script>
     <script src="{$_W['siteroot']}web/resource/js/app/common.min.js"></script>
     <script src="{$_W['siteroot']}web/resource/js/require.js"></script>
     <script src="{$_W['siteroot']}web/resource/js/app/config.js?t={php echo time();}"></script>
-    
     <script src="{php echo WE7_BANBANJIA_LOCAL}static/js/iconfig-web.js?t={php echo time();}"></script>
+    <style>
+		{if $_W['role'] == 'merchanter'}
+			.material-content .material-body .item:hover .del{display: none}
+		{/if}
+	</style>
 </head>
 <body>

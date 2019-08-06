@@ -156,8 +156,114 @@
             KEY `uniacid` (`uniacid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_diypage`(
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `type` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `name` varchar(255) NOT NULL DEFAULT '',
+            `data` longtext NOT NULL,
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `updatetime` int(10) unsigned NOT NULL DEFAULT '0',
+            `diymenu` int(10) unsigned NOT NULL DEFAULT '0',
+            `version` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `type` (`type`),
+            KEY `addtime` (`addtime`),
+            KEY `version` (`version`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=60 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_permit_role`(
+            `id` int(10) NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) NOT NULL DEFAULT '0',
+            `rolename` varchar(255) NOT NULL DEFAULT '',
+            `status` tinyint(3) NOT NULL DEFAULT '0',
+            `permits` text NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_permit_user` (
+            `id` int(10) NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) NOT NULL DEFAULT '0',
+            `uid` int(10) NOT NULL DEFAULT '0',
+            `roleid` int(10) NOT NULL DEFAULT '0',
+            `status` tinyint(3) NOT NULL DEFAULT '0',
+            `permits` text NOT NULL,
+            `realname` varchar(255) NOT NULL DEFAULT '',
+            `mobile` varchar(255) NOT NULL DEFAULT '',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `uid` (`uid`),
+            key `roleid` (`roleid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `cid` varchar(50) NOT NULL,
+            `title` varchar(30) NOT NULL,
+            `logo` varchar(100) NOT NULL,
+            `telephone` varchar(15) NOT NULL,
+            `business_hours` varchar(200) NOT NULL,
+            `is_in_business` tinyint(3) unsigned NOT NULL  DEFAULT '1',
+            `description` text NOT NULL,
+            `thumbs` varchar(1000) NOT NULL,
+            `address` varchar(50) NOT NULL,
+            `location_x` varchar(15) NOT NULL,
+            `location_y` varchar(15) NOT NULL,
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `displayorder` int(10) unsigned NOT NULL DEFAULT '0',
+            `content` varchar(255) NOT NULL,
+            `payment` varchar(255) NOT NULL,
+            `score` varchar(10) NOT NULL COMMENT '评分',
+            `addtype` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '1:后台添加，2:申请入驻',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `data` text NOT NULL,
+            `deltime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `title` (`title`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=1500 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_clerk` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(15) NOT NULL,
+            `nickname` varchar(15) NOT NULL,
+            `openid` varchar(60) NOT NULL,
+            `mobile` varchar(20) NOT NULL,
+            `password` varchar(32) NOT NULL,
+            `salt` varchar(6) NOT NULL,
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `updatetime` int(10) unsigned NOT NULL DEFAULT '0',
+            `avatar` varchar(255) NOT NULL,
+            `token` varchar(50) NOT NULL,
+            `openid_wxapp` varchar(60) NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `status` (`status`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_clerk` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `clerk_id` int(10) unsigned NOT NULL DEFAULT '0',
+            `role` varchar(20) NOT NULL,
+            `extra` varchar(500) NOT NULL,
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `sid` (`sid`),
+            KEY `clerk_id` (`clerk_id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=600 DEFAULT CHARSET=utf8;
+
         INSERT INTO ims_hello_banbanjia_plugin VALUES
-        ('40','wxapp','biz','搬搬家小程序','../addons/hello_banbanjia/static/img/plugin/wxapp.jpg','','搬搬家，国内一流搬家平台','1','0','1');
+        ('40','wxapp','biz','搬搬家','../addons/hello_banbanjia/static/img/plugin/wxapp.jpg','','搬搬家，国内一流搬家平台','1','0','1');
+        INSERT INTO ims_hello_banbanjia_plugin VALUES 
+        ('41','diypage','biz','平台装修','../addons/hello_banbanjia/static/img/plugin/diypage.jpg','','可自定义底部菜单，自定义页面等','1','0','1');
         ]]>
     </install>
     <uninstall>
@@ -168,6 +274,12 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_plugin`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_config`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_slide`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_diypage`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_permit_role`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_permit_user`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_clerk`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_clerk`;
         ]]>
     </upgrade>
 </manifest>

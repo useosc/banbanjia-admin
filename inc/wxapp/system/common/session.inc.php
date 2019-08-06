@@ -1,4 +1,6 @@
 <?php
+// ini_set("display_errors", "1"); //显示出错信息
+// error_reporting(E_ALL);
 defined("IN_IA") or exit("Access Denied");
 global $_W;
 global $_GPC;
@@ -6,7 +8,7 @@ mload()->lclass("wxapp");
 load()->model("mc");
 $ta = trim($_GPC['ta']) ? trim($_GPC['ta']) : 'openid';
 $account_api = new Wxapp();
-if ($ta == 'openid') {
+if ($ta == 'openid') { //获取openid
     $code = $_GPC['code'];
     if (empty($code)) {
         imessage(error(-1, '通信错误，请在微信中重新发起请求'), '', 'ajax');
@@ -47,7 +49,7 @@ if ($ta == 'openid') {
         if (!empty($oauth["unionid"])) {
             $mall_member = get_member($oauth["unionid"], "unionId");
         }
-        if (empty($wmall_member)) {
+        if (empty($mall_member)) {
             $mall_member = get_member($oauth["openid"], "openid_wxapp");
         }
         if (empty($mall_member)) { //如果为空则新建用户
@@ -55,7 +57,7 @@ if ($ta == 'openid') {
             pdo_insert("hello_banbanjia_members", $mall_member);
         } else {
             $update = array("openid_wxapp" => $oauth["openid"]);
-            if (empty($wmall_member["uid"])) {
+            if (empty($mall_member["uid"])) {
                 $update["uid"] = $fans["uid"];
             }
             if (!empty($oauth["unionid"])) {
@@ -76,7 +78,7 @@ if ($ta == 'openid') {
         $account_api->result(2000, $oauth['message']);
     }
 } else {
-    if ($ta == 'userinfo') {
+    if ($ta == 'userinfo') { //保存微信用户信息
         $encrypt_data = $_GPC['encryptedData'];
         $iv = $_GPC['iv'];
         if (empty($_SESSION["session_key"]) || empty($encrypt_data) || empty($iv)) {
@@ -91,5 +93,52 @@ if ($ta == 'openid') {
         if (is_error($userinfo)) {
             $account_api->result(2002, "解密出错");
         }
+        $fans = mc_fansinfo($userinfo["openId"]);
+        $fans_update = array("nickname" => $userinfo["nickName"], "unionid" => $userinfo["unionId"], "tag" => base64_encode(iserializer(array("subscribe" => 1, "openid" => $userinfo["openId"], "nickname" => $userinfo["nickName"], "sex" => $userinfo["gender"], "language" => $userinfo["language"], "city" => $userinfo["city"], "province" => $userinfo["province"], "country" => $userinfo["country"], "headimgurl" => $userinfo["avatarUrl"]))));
+        pdo_update("mc_mapping_fans", $fans_update, array("fanid" => $fans["fanid"]));
+        if (!empty($userinfo["unionId"])) {
+            $mall_member = get_member($userinfo["unionId"], "unionId");
+        }
+        if (empty($mall_member)) {
+            $mall_member = get_member($userinfo["openId"], "openid_wxapp");
+        }
+        if (empty($mall_member)) {
+            $mall_member = array("uniacid" => $_W["uniacid"], "uid" => $fans["uid"] ? $fans["uid"] : date("His") . random(3, true), "openid_wxapp" => $userinfo["openId"], "unionId" => $userinfo["unionId"], "nickname" => $userinfo["nickName"], "realname" => "", "mobile" => "", "sex" => $userinfo["gender"] == 1 ? "男" : "女", "avatar" => rtrim(rtrim($userinfo["avatarUrl"], "0"), 132) . 132, "is_sys" => 1, "status" => 1, "token" => random(32), "addtime" => TIMESTAMP);
+            pdo_insert("hello_banbanjia_members", $mall_member);
+        } else {
+            $update = array("openid_wxapp" => $userinfo["openId"], "nickname" => $userinfo["nickName"], "sex" => $userinfo["gender"] == 1 ? "男" : "女", "avatar" => rtrim(rtrim($userinfo["avatarUrl"], "0"), 132) . 132);
+            if (empty($mall_member["uid"])) {
+                $update["uid"] = $fans["uid"];
+            }
+            if (!empty($userinfo["unionId"])) {
+                $update["unionId"] = $userinfo["unionId"];
+                pdo_update("hello_banbanjia_members", $update, array("uniacid" => $_W["uniacid"], "unionId" => $userinfo["unionId"]));
+            }
+            pdo_update("hello_banbanjia_members", $update, array("uniacid" => $_W["uniacid"], "openid_wxapp" => $userinfo["openId"]));
+        }
+        $member = get_member($userinfo["openId"], "openid_wxapp");
+        unset($member["password"]);
+        unset($member["salt"]);
+        $account_api->result(0, "", $member);
+    } else if ($ta == 'wxbind') { //绑定微信手机号
+        $encrypt_data = $_GPC['encryptedData'];
+        $iv = $_GPC['iv'];
+        if (empty($_SESSION["session_key"]) || empty($encrypt_data) || empty($iv)) {
+            $account_api->result(2001, "请先登录");
+        }
+        $phoneinfo = $account_api->pkcs7Encode($encrypt_data, $iv);
+        //保存手机号
+        if(!bind_phone($phoneinfo['phoneNumber'])){
+            $account_api->result(1, "绑定手机号错误");
+        }
+        if (is_error($phoneinfo)) {
+            $account_api->result(2002, "解密出错");
+        } else {
+            $account_api->result(0, $phoneinfo);
+        }
+    } else if ($ta == 'phbind') { //绑定手机号（验证码）
+        // $account_api->result(0, $_W['fans']['uid']);
+        $test = $_W["we7_hello_banbanjia"]["config"];
+        var_dump($test);
     }
 }

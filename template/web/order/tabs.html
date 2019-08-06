@@ -1,0 +1,56 @@
+<div class="second-sidebar-title">订单</div>
+<div class="nav slimscroll">
+		<div class="menu-header">搬运</div>
+		<ul class="menu-item">
+			<li {if $_W['_ac'] == 'carry' && $_GPC['filter_type'] == 'process'}class="active"{/if}>
+				<a href="{php echo iurl('order/carry/list', array('filter_type' => 'process'));}">
+					未完成
+					{if !empty($_W['_process'])}
+						<span class="badge">{$_W['_process']}</span>
+					{/if}
+				</a>
+			</li>
+			<li {if $_W['_ac'] == 'carry' && $_GPC['filter_type'] == 'is_remind'}class="active"{/if}>
+				<a href="{php echo iurl('order/carry/list', array('is_remind' => 1, 'filter_type' => 'is_remind'));}">
+					催单
+					{if !empty($_W['_remind'])}
+						<span class="badge">{$_W['_remind']}</span>
+					{/if}
+				</a>
+			</li>
+			<li {if $_W['_ac'] == 'carry' && $_GPC['filter_type'] == 'refund_status'}class="active"{/if}>
+				<a href="{php echo iurl('order/carry/list', array('refund_status' => 1, 'filter_type' => 'refund_status'));}">
+					退款单
+					{if !empty($_W['_refund'])}
+						<span class="badge">{$_W['_refund']}</span>
+					{/if}
+				</a>
+			</li>
+			<li {if $_W['_ac'] == 'carry' && $_GPC['filter_type'] == 'all'}class="active"{/if}>
+				<a href="{php echo iurl('order/carry/list', array('filter_type' => 'all'));}">所有订单</a>
+			</li>
+			{ifp 'order.distribute'}
+			<li {if $_W['_ac'] == 'distribute'}class="active"{/if}>
+				<a href="{php echo iurl('order/distribute/index');}">订单分布</a>
+			</li>
+			{/if}
+		</ul>
+	{ifp 'order.dispatch' || 'order.records'}
+		<div class="menu-header">调度中心</div>
+		<ul class="menu-item">
+			{ifp 'order.dispatch'}
+				<li {if $_W['_ac'] == 'dispatch'}class="active"{/if}>
+					<a href="{php echo iurl('order/dispatch/map');}">待指派</a>
+				</li>
+			{/if}
+			{ifp 'order.records'}
+				<li {if $_W['_ac'] == 'records' && $_W['_op'] == 'stat'}class="active"{/if}>
+					<a href="{php echo iurl('order/records/stat');}">接单统计</a>
+				</li>
+				<li {if $_W['_ac'] == 'records' && $_W['_op'] == 'list'}class="active"{/if}>
+					<a href="{php echo iurl('order/records/list');}">接单记录</a>
+				</li>
+			{/if}
+		</ul>
+	{/if}
+</div>

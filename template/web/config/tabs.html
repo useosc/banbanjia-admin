@@ -11,12 +11,6 @@
 			<li {if $_W['_router'] == 'config/mall/follow'}class="active"{/if}>
 				<a href="{php echo iurl('config/mall/follow');}">分享及关注</a>
 			</li>
-			<li {if $_W['_router'] == 'config/mall/close'}class="active"{/if}>
-				<a href="{php echo iurl('config/mall/close');}">平台状态</a>
-			</li>
-			<li {if $_W['_router'] == 'config/mall/oauth'}class="active"{/if}>
-			<a href="{php echo iurl('config/mall/oauth');}">oAuth设置</a>
-			</li>
 		</ul>
 	{/if}
 	{ifp 'config.trade'}
@@ -24,9 +18,6 @@
 		<ul class="menu-item">
 			<li {if $_W['_router'] == 'config/trade/payment'}class="active"{/if}>
 				<a href="{php echo iurl('config/trade/payment');}">支付方式</a>
-			</li>
-			<li {if $_W['_router'] == 'config/trade/paycallback'}class="active"{/if}>
-			<a href="{php echo iurl('config/trade/paycallback');}">支付回调</a>
 			</li>
 			<li {if $_W['_router'] == 'config/trade/recharge'}class="active"{/if}>
 				<a href="{php echo iurl('config/trade/recharge');}">充值</a>
@@ -42,9 +33,6 @@
 			<li {if $_W['_router'] == 'config/notice/wxtemplate'}class="active"{/if}>
 				<a href="{php echo iurl('config/notice/wxtemplate');}">模板消息</a>
 			</li>
-			<li {if $_W['_router'] == 'config/notice/sms'}class="active"{/if}>
-				<a href="{php echo iurl('config/notice/sms');}">短信消息</a>
-			</li>
 		</ul>
 	{/if}
 	{ifp 'config.sms'}
@@ -56,24 +44,7 @@
 			<li {if $_W['_router'] == 'config/sms/template'}class="active"{/if}>
 				<a href="{php echo iurl('config/sms/template');}">短信模板</a>
 			</li>
-			<li {if $_W['_router'] == 'config/sms/verify'}class="active"{/if}>
-			<a href="{php echo iurl('config/sms/verify');}">短信验证</a>
-			</li>
 		</ul>
-	{/if}
-	{ifp 'config.takeout'}
-	<div class="menu-header">外卖</div>
-	<ul class="menu-item">
-		<li {if $_W['_router'] == 'config/takeout/range'}class="active"{/if}>
-		<a href="{php echo iurl('config/takeout/range');}">服务范围</a>
-		</li>
-		<li {if $_W['_router'] == 'config/takeout/order'}class="active"{/if}>
-			<a href="{php echo iurl('config/takeout/order');}" style="color:red">订单相关</a>
-		</li>
-		<!--<li {if $_W['_router'] == 'config/takeout/deliveryer'}class="active"{/if}>
-			<a href="{php echo iurl('config/takeout/deliveryer');}">配送员提成</a>
-		</li>-->
-	</ul>
 	{/if}
 	{ifp 'config.store'}
 		<div class="menu-header">商户</div>
@@ -143,26 +114,6 @@
 			<li {if $_W['_router'] == 'config/member/address'}class="active"{/if}>
 				<a href="{php echo iurl('config/member/address');}">收货地址设置</a>
 			</li>
-		</ul>
-	{/if}
-	{if 0 && (check_plugin_exist('managerApp') || check_plugin_exist('customerApp') || check_plugin_exist('deliveryerApp'))}
-		<div class="menu-header">APP设置</div>
-		<ul class="menu-item">
-			{if check_plugin_exist('deliveryerApp')}
-				<li {if $_W['_router'] == 'config/app/deliveryer'}class="active"{/if}>
-					<a href="{php echo iurl('config/app/deliveryer');}">配送员APP</a>
-				</li>
-			{/if}
-			{if check_plugin_exist('managerApp')}
-				<li {if $_W['_router'] == 'config/app/manager'}class="active"{/if}>
-					<a href="{php echo iurl('config/app/manager');}">商家APP</a>
-				</li>
-			{/if}
-			{if check_plugin_exist('customerApp')}
-				<li {if $_W['_router'] == 'config/app/customer'}class="active"{/if}>
-					<a href="{php echo iurl('config/app/customer');}">顾客APP</a>
-				</li>
-			{/if}
 		</ul>
 	{/if}
 	{ifp 'config.label' || 'config.report' || 'config.help'}

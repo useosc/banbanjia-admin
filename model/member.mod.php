@@ -69,7 +69,7 @@ function get_member($openid, $field = 'openid')
     $uid = intval($openid);
     $fields = array("id", "uid", "groupid", "groupid_updatetime", "openid", "openid_wxapp", "token", "credit1", "credit2", "avatar", "nickname", "sex", "realname", "mobile", "password", "mobile_audit", "setmeal_id", "setmeal_day_free_limit", "setmeal_deliveryfee_free_limit", "setmeal_starttime", "setmeal_endtime", "is_sys", "status", "addtime", "spread1", "spread2", "spreadcredit2", "spreadfixed", "svip_status", "svip_starttime", "svip_endtime", "svip_credit1", "account");
     if ($uid == 0) {
-        $info = pdo_get('hello_banbanjia_member', array('uniacid' => $_W['uniacid'], $field => $openid), $fields);
+        $info = pdo_get('hello_banbanjia_members', array('uniacid' => $_W['uniacid'], $field => $openid), $fields);
     } else {
         $info = pdo_get("hello_banbanjia_members", array("uniacid" => $_W["uniacid"], "uid" => $openid), $fields);
     }
@@ -94,8 +94,41 @@ function get_member($openid, $field = 'openid')
         return $info;
     }
 }
-function member_group()
+function member_groups()
 {
     global $_W;
     $config_member = $_W['we7_hello_banbanjia']['config']['member'];
+    return $config_member['group'];
+}
+//绑定手机号
+function bind_phone($phone){
+    global $_W;
+    $member_uid = $_W['fans']['uid'];
+    pdo_update("hello_banbanjia_members", array("mobile" => $phone, "mobile_audit" => 1), array("uid" => $member_uid, "uniacid" => $_W["uniacid"]));
+    return true;
+}
+//合并用户信息
+function member_union($unionId, $field = 'unionId')
+{
+    global $_W;
+    if (empty($unionId)) {
+        return false;
+    }
+    $fields = array("id", "uid", "groupid", "groupid_updatetime", "openid", "openid_wxapp", "token", "credit1", "credit2", "avatar", "nickname", "sex", "realname", "mobile", "password", "mobile_audit", "setmeal_id", "setmeal_day_free_limit", "setmeal_deliveryfee_free_limit", "setmeal_starttime", "setmeal_endtime", "is_sys", "status", "addtime", "spread1", "spread2", "spreadcredit2", "spreadfixed");
+    $fields_str = implode(',', $fields);
+    $members = pdo_fetchall("select" . $fields_str . " from " . tablename('hello_banbanjia_members') . " where uniacid = :uniacid and " . $field . " = :unionId order by id asc", array(":uniacid" => $_W['uniacid'], ":unionId" => $unionId));
+    if (empty($members) || count($members) == 1) {
+        return false;
+    }
+    $update = array();
+    $uids = $ids = array();
+    $setmeals = array();
+    foreach($members as $member){
+        $ids[] = $member['id'];
+        $uids[] = $member['uid'];
+        if (0 < $member["setmeal_endtime"]) {
+            $setmeals[$member["uid"]] = $member["setmeal_endtime"];
+        }
+    }
+    return true;
 }

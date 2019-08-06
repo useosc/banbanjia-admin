@@ -26,7 +26,7 @@ class Wxapp extends TyAccount
     // 微信小程序数据解密
     public function pkcs7Encode($encrypt_data, $iv)
     {
-        $key = base64_decode($_SESSION['session_key']);
+        $key =$_SESSION['session_key'];
         $result = iaes_pkcs7_decode($encrypt_data, $key, $iv);
         if (is_error($result)) {
             return error(1, "解密失败");

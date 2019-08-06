@@ -1,0 +1,43 @@
+<div class="second-sidebar-title">
+    企业
+</div>
+<div class="nav slimscroll">
+    {ifp 'merchant.store' || 'merchant.account' || 'merchant.activity'}
+        <div class="menu-header">管理</div>
+        <ul class="menu-item">
+            {ifp 'merchant.store'}
+                <li {if $_W['_ac'] == 'store'}class='active'{/if}>
+                    <a href="{php echo iurl('merchant/store/list');}">企业列表</a>
+                </li>
+            {/if}
+            {ifp 'merchant.account'}
+                <li {if $_W['_ac'] == 'account'}class='active'{/if}>
+                    <a href="{php echo iurl('merchant/account/index');}">企业账号</a>
+                </li>
+            {/if}
+            {ifp 'merchant.activity'}
+				<li {if $_W['_ac'] == 'activity' && $_W['op'] == 'index'}class="active"{/if}>
+					<a href="{php echo iurl('merchant/activity/index');}">企业活动</a>
+				</li>
+				<li {if $_W['_ac'] == 'activity' && $_W['op'] == 'index'}class="active"{/if}>
+					<a href="{php echo iurl('merchant/activity/displayorder');}">活动展示排序</a>
+				</li>
+			{/if}
+        </ul>
+    {/if}
+    {ifp 'merchant.settle' || 'merchant.storage'}
+    <div class="menu-header">入驻</div>
+    <ul class="menu-item">
+        {ifp 'merchant.settle'}
+            <li {if $_W['_ac'] == 'settle'}class="active"{/if}>
+                <a href="{php echo iurl('merchant/settle/list');}">入驻列表</a>
+            </li>
+        {/if}
+        {ifp 'merchant.storage'}
+            <li {if $_W['_ac'] == 'storage'}class="active"{/if}>
+                <a href="{php echo iurl('merchant/storage/list');}">商家回收站</a>
+            </li>
+        {/if}
+    </ul>
+{/if}
+</div>

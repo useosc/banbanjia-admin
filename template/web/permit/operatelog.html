@@ -1,0 +1,47 @@
+{itemplate 'public/header'}
+{if $op == 'list'}
+<form action="./index.php" class="form-horizontal form-filter">
+    <input type="hidden" name="days" value="{$days}"/>
+</form>
+
+<form action="" class="form-table form" method="post">
+	<div class="panel panel-table">
+		<div class="panel-body table-responsive js-table">
+			{if empty($logs)}
+				<div class="no-result">还没有相关数据</div>
+			{else}
+				<table class="table table-hover">
+					<thead class="navbar-inner">
+					<tr>
+						<th>操作人</th>
+						<th>操作编号</th>
+						<th>操作类型</th>
+						<th>操作详情</th>
+						<th>IP</th>
+						<th>操作时间</th>
+					</tr>
+					</thead>
+					<tbody>
+						{loop $logs $log}
+							<tr>
+								<td>{$log['username']}</td>
+								<td>{$log['type']}</td>
+								<td>{$log['type_cn']}</td>
+								<td>{$log['content']}</td>
+								<td>{$log['ip']}</td>
+								<td>{$log['addtime_cn']}</td>
+							</tr>
+						{/loop}
+					</tbody>
+				</table>
+				<div class="btn-region clearfix">
+					<div class="pull-right">
+						{$pager}
+					</div>
+				</div>
+			{/if}
+		</div>
+	</div>
+</form>
+{/if}
+{itemplate 'public/footer'}

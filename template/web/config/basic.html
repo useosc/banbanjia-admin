@@ -1,3 +1,105 @@
 {itemplate 'public/header'}
-    <h1>123</h1>
+<div class="page clearfix">
+    <h2>基础设置</h2>
+    <form action="" class="form-horizontal form form-validate" id="form1" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">平台名称</label>
+			<div class="col-sm-9 col-xs-12">
+				<input type="text" name="title" value="{$config['title']}" class="form-control" required>
+				<div class="help-block"></div>
+			</div>
+		</div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">平台LOGO</label>
+            <div class="col-sm-9 col-xs-12">
+				{php echo tpl_form_field_image('logo', $config['logo']);}
+				<div class="help-block">正方形图片</div>
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">平台客服电话</label>
+			<div class="col-sm-9 col-xs-12">
+				<input type="text" name="mobile" value="{$config['mobile']}" class="form-control" required>
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">是否跳转到离顾客最近的门店</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="radio radio-inline">
+					<input type="radio" value="1" name="is_to_nearest_store" id="is-to-nearest-store-1" {if $config['is_to_nearest_store'] == 1}checked{/if}>
+					<label for="is-to-nearest-store-1">是</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" value="0" name="is_to_nearest_store" id="is-to-nearest-store-0" {if $config['is_to_nearest_store'] == 0}checked{/if}>
+					<label for="is-to-nearest-store-0">否</label>
+				</div>
+				<div class="help-block text-danger">如果开启，用户进入时，会自动跳转到离顾客最近的门店</div>
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">首页商家排序方式</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="radio radio-inline">
+					<input type="radio" value="displayorder" name="store_orderby_type" id="store-orderby-type-displayorder" {if $config['store_orderby_type'] == 'displayorder'}checked{/if}>
+					<label for="store-orderby-type-displayorder">按排序大小排序</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" value="click" name="store_orderby_type" id="store-orderby-type-click" {if $config['store_orderby_type'] == 'click'}checked{/if}>
+					<label for="store-orderby-type-click">按热度排序</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" value="distance" name="store_orderby_type" id="store-orderby-type-distance" {if $config['store_orderby_type'] == 'distance' || !$config['store_orderby_type']}checked{/if}>
+					<label for="store-orderby-type-distance">离我最近</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" value="sailed" name="store_orderby_type" id="store-orderby-type-sailed" {if $config['store_orderby_type'] == 'sailed'}checked{/if}>
+					<label for="store-orderby-type-sailed">销量最高</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" value="score" name="store_orderby_type" id="store-orderby-type-score" {if $config['store_orderby_type'] == 'score'}checked{/if}>
+					<label for="store-orderby-type-score">评分最高</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" value="displayorderAndDistance" name="store_orderby_type" id="store-orderby-type-displayorderAndDistance" {if $config['store_orderby_type'] == 'displayorderAndDistance'}checked{/if}>
+					<label for="store-orderby-type-displayorderAndDistance">先按照排序大小,再按照距离排序</label>
+				</div>
+				<div class="help-block">
+					<span class="text-danger">热度: 体现在粉丝在点击“搜索”菜单时，系统会按照热度有大到小列出5个商家。</span>
+					<br>
+					<span class="text-danger">推荐: 体现在粉丝搜索门店或搬运工时，在搜索结果下面会列出平台推荐的商家。</span>
+				</div>
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">超出商家工作范围是否显示</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="radio radio-inline">
+					<input type="radio" value="1" name="store_overradius_display" id="store-overradius-display-1" {if $config['store_overradius_display'] == '1' || !$config['store_overradius_display']}checked{/if}>
+					<label for="store-overradius-display-1">显示</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" value="2" name="store_overradius_display" id="store-overradius-display-2" {if $config['store_overradius_display'] == '2'}checked{/if}>
+					<label for="store-overradius-display-2">不显示</label>
+				</div>
+				<div class="help-block hide">
+					<span>注意:设置为不显示时，还要根据商家的搬运相关设置进行判断。</span>
+					<br>
+					<span class="text-danger">商家还会在首页显示情况说明：<br>一、固定或者按距离收取费用，1允许在搬运半径之外下单，2不允许在搬运半径之外下单，但是顾客定位在商家搬运半径之内（直线距离）；<br> 二、按区域收取搬运费并且顾客定位在划分的区域。</span>
+				</div>
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">版权设置</label>
+			<div class="col-sm-9 col-xs-12">
+				{php echo tpl_ueditor('copyright', $config['copyright']);}
+			</div>
+        </div>
+        <div class="form-group">
+			<div class="col-sm-9 col-xs-9 col-md-9">
+				<input type="hidden" name="token" value="{$_W['token']}">
+				<input type="submit" value="提交" class="btn btn-primary">
+			</div>
+		</div>
+    </form>
+</div>
 {itemplate 'public/footer'}

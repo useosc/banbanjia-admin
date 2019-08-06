@@ -1,0 +1,203 @@
+<!-- <link rel="stylesheet" href="../addons/hello_banbanjia/plugin/diypage/static/css/diy.web.css?t={php echo time();}" type="text/css"/>
+<link rel="stylesheet" href="../addons/hello_banbanjia/plugin/diypage/static/css/diy.vue.preview.css?t={php echo time();}" type="text/css">
+<link href="https://cdn.bootcss.com/jqueryui/1.11.0/jquery-ui.css" rel="stylesheet"> -->
+<link href="../addons/we7_wmall/plugin/diypage/static/css/diy.vue.web.css?t={php echo time();}" rel="stylesheet" type="text/css"/>
+<link href="../addons/we7_wmall/plugin/diypage/static/css/diy.vue.purview.css?t={php echo time();}" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+
+
+<script type="text/html" id="tpl-parts">
+	<nav class="btn btn-link" data-id="page"><i class="fa fa-cog"></i> 页面设置</nav>
+	<(each initPart as part)>
+	<nav class="btn btn-link" data-id="<(part.id)>"><i class="fa fa-plus"></i> <(part.name)></nav>
+	<(/each)>
+</script>
+
+<script type="text/html" id="tpl-editor-page">
+	<div class="form-group">
+		<div class="col-sm-2 control-label">页面名称</div>
+		<div class="col-sm-10">
+			<input class="form-control input-sm diy-bind" data-bind="name" data-placeholder="请输入名称" placeholder="请输入名称" value="<(page.name)>" />
+			<div class="help-block">注意：页面名称是便于后台查找，页面标题是手机端标题。</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">页面标题</div>
+		<div class="col-sm-10">
+			<input class="form-control input-sm diy-bind" data-bind="title" data-placeholder="请输入标题" placeholder="请输入标题" value="<(page.title)>" />
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">页面介绍</div>
+		<div class="col-sm-10">
+			<textarea class="form-control richtext diy-bind" cols="70" rows="3" placeholder="请输入页面介绍" data-bind="desc" data-placeholder=""><(page.desc)></textarea>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">封面图</div>
+		<div class="col-sm-10">
+			<div class="input-group">
+				<input class="form-control input-sm diy-bind" data-bind="thumb" data-placeholder="" placeholder="" value="<(page.thumb)>" id="thumbsrc" />
+				<span data-input="#thumbsrc" data-element="#thumbimg" class="input-group-addon btn btn-default js-selectImg">选择图片</span>
+			</div>
+			<div class="input-group margin-t-5">
+				<img src="<(tomedia page.thumb)>" onerror="this.src='../addons/we7_wmall/static/img/nopic.jpg';" class="img-responsive img-thumbnail" width="150" id="thumbimg">
+				<em class="close" title="删除这张图片" onclick="$('#thumbsrc').val('').trigger('change');$(this).prev().attr('src', '')">×</em>
+			</div>
+			<span class="help-block">分享时调用</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">背景颜色</div>
+		<div class="col-sm-4">
+			<div class="input-group input-group-sm">
+				<input class="form-control input-sm diy-bind color" data-bind="background" value="<(page.background)>" type="color" />
+				<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#efeff4').trigger('propertychange')">重置</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group hide">
+		<div class="col-sm-2 control-label">导航栏背景色</div>
+		<div class="col-sm-4">
+			<div class="input-group input-group-sm">
+				<input class="form-control input-sm diy-bind color" data-bind="navigationbackground" value="<(page.navigationbackground)>" type="color" />
+				<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#000').trigger('propertychange')">重置</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group hide">
+		<div class="col-sm-2 control-label">导航栏字体颜色</div>
+		<div class="col-sm-4">
+			<div class="input-group input-group-sm">
+				<label class="radio-inline"><input type="radio" name="navigationtextcolor" value="#000000" class="diy-bind" data-bind="navigationtextcolor" <(if page.navigationtextcolor=='#000000' || !page.navigationtextcolor)>checked="checked"<(/if)> > 黑</label>
+				<label class="radio-inline"><input type="radio" name="navigationtextcolor" value="#ffffff" class="diy-bind" data-bind="navigationtextcolor" <(if page.navigationtextcolor=='#ffffff')>checked="checked"<(/if)>> 白</label>
+			</div>
+		</div>
+	</div>
+	<div class="line"></div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">底部菜单</div>
+		<div class="col-sm-10">
+			<select class="form-control input-sm diy-bind" data-bind="diymenu">
+				<option value="-1"<(if page.diymenu=='-1')>selected="selected"<(/if)>>不显示</option>
+				<option value="0" <(if page.diymenu=='0')>selected="selected"<(/if)>>系统默认</option>
+				<(each diymenu as menu)>
+					<option value="<(menu.id)>" <(if page.diymenu==menu.id)>selected="selected"<(/if)>><(menu.name)></option>
+				<(/each)>
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">关注条</div>
+		<div class="col-sm-10">
+			<label class="radio-inline"><input type="radio" name="followbar" value="0" class="diy-bind" data-bind="followbar" <(if page.followbar =='0' || !page.followbar)>checked="checked"<(/if)> > 不显示</label>
+			<label class="radio-inline"><input type="radio" name="followbar" value="1" class="diy-bind" data-bind="followbar" <(if page.followbar=='1')>checked="checked"<(/if)>> 显示</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-12">
+			<div class="alert alert-danger">
+				此两项设置仅对公众号有效。
+			</div>
+		</div>
+	</div>
+	<div class="line"></div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">导航栏背景色</div>
+		<div class="col-sm-4">
+			<div class="input-group input-group-sm">
+				<input class="form-control input-sm diy-bind color" data-bind="navigationbackground" value="<(page.navigationbackground)>" type="color" />
+				<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#000').trigger('propertychange')">重置</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">导航栏字体颜色</div>
+		<div class="col-sm-4">
+			<div class="input-group input-group-sm">
+				<label class="radio-inline"><input type="radio" name="navigationtextcolor" value="#000000" class="diy-bind" data-bind="navigationtextcolor" <(if page.navigationtextcolor=='#000000' || !page.navigationtextcolor)>checked="checked"<(/if)> > 黑</label>
+				<label class="radio-inline"><input type="radio" name="navigationtextcolor" value="#ffffff" class="diy-bind" data-bind="navigationtextcolor" <(if page.navigationtextcolor=='#ffffff')>checked="checked"<(/if)>> 白</label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-12">
+			<div class="alert alert-danger">
+				此两项设置仅对小程序有效。
+			</div>
+		</div>
+	</div>
+	<!--	<div class="form-group">
+			<div class="col-sm-2 control-label">下单提醒</div>
+			<div class="col-sm-10">
+				<label class="radio-inline"><input type="radio" name="danmu" value="0" class="diy-bind" data-bind="danmu" <(if page.danmu=='0' || !page.danmu)>checked="checked"<(/if)> > 不显示</label>
+				<label class="radio-inline"><input type="radio" name="danmu" value="1" class="diy-bind" data-bind="danmu" <(if page.danmu=='1')>checked="checked"<(/if)>> 显示</label>
+				<div class="help-block">提示：设置请至 <a href="{php echo iurl('diypage/danmu')}" target="_blank">下单提醒</a> 中设置 未设置则不显示</div>
+			</div>
+		</div>-->
+</script>
+
+<!--绑定手机-->
+<script type="text/html" id="tpl-show-memberBindMobile" >
+	<div class="drag" data-itemid="<(itemid)>" >
+		<div class="diy-mobile-bind " style="margin-top: <(style.margintop)>px;background: <(style.background)>;">
+			<div class="wui-cell">
+				<div class="wui-cell-text">
+					<i class="icon icon-phone1"></i>
+					<span style="color: <(style.titlecolor)>;">绑定手机号</span>
+					<div class="cell-text-info" style="color: <(style.placeholdercolor)>;"><(params.placeholdertext)></div>
+				</div>
+				<div class="wui-cell-remark icon icon-right1"></div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<!--会员中心绑定手机-->
+<script type="text/html" id="tpl-editor-memberBindMobile">
+	<div class="alert alert-info">提示：此元素仅在用户未绑定手机时显示。</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">上外边距</div>
+		<div class="col-sm-10">
+			<div class="form-group margin-t-5">
+				<div class="slider col-sm-8" data-value="<(style.margintop)>" data-min="0" data-max="50"></div>
+				<div class="col-sm-4 control-labe count"><span><(style.margintop)></span>px(像素)</div>
+				<input class="diy-bind input" data-bind-child="style" data-bind="margintop" value="<(style.margintop)>" type="hidden" />
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">背景颜色</div>
+		<div class="col-sm-4">
+			<div class="input-group" style="width: 160px;">
+				<input class="form-control input-sm diy-bind color" data-bind-child="style" data-bind="background" value="<(style.background)>" type="color" />
+				<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#ffffff').trigger('propertychange')">重置</span>
+			</div>
+		</div>
+	</div>
+	<div class="line"></div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">标题颜色</div>
+		<div class="col-sm-4">
+			<div class="input-group" style="width: 160px;">
+				<input class="form-control input-sm diy-bind color" data-bind-child="style" data-bind="titlecolor" value="<(style.titlecolor)>" type="color" />
+				<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#ff0011').trigger('propertychange')">重置</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">提示文字颜色</div>
+		<div class="col-sm-4">
+			<div class="input-group" style="width: 160px;">
+				<input class="form-control input-sm diy-bind color" data-bind-child="style" data-bind="placeholdercolor" value="<(style.placeholdercolor)>" type="color" />
+				<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#999999').trigger('propertychange')">重置</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">提示文字</div>
+		<div class="col-sm-10">
+			<input class="form-control input-sm diy-bind" data-bind-child="params" data-bind="placeholdertext" value="<(params.placeholdertext)>" placeholder="请输入绑定手机的提示信息" />
+		</div>
+	</div>
+</script>

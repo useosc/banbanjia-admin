@@ -41,12 +41,18 @@ if (defined("IN_SYS")) { //web/index 后台入口文件进入
     $file_init = WE7_BANBANJIA_PATH . "inc/web/" . $_W["_ctrl"] . "/__init.php";
     $file_path = WE7_BANBANJIA_PATH . "inc/web/" . $_W["_ctrl"] . "/" . $_W["_ac"] . ".inc.php";
 
-    //插件入口
-    if (defined('IN_PLUGIN')) {
-        $plugin_init = WE7_BANBANJIA_PLUGIN_PATH . "__init.php";
-        require $plugin_init;
-        $file_init = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W['_ctrl'] . '/inc/web/__init.php';
-        $file_path = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W["_ctrl"] . "/inc/web/" . $_W["_ac"] . ".inc.php";
+    if (defined('IN_MERCHANT')) {
+        $file_path = WE7_BANBANJIA_PATH . 'inc/web/' . $_W['_ctrl'] . '/' . $_W['_ac'] . '/' . $_W['_op'] . '.inc.php';
+        if (!is_file($file_path)) {
+            imessage("控制器 " . $_W["_ctrl"] . " 方法 " . $_W["_ac"] . "/" . $_W["_op"] . " 未找到!", "", "info");
+        }
+    } else {
+        if (defined('IN_PLUGIN')) {    //插件入口
+            $plugin_init = WE7_BANBANJIA_PLUGIN_PATH . "__init.php";
+            require $plugin_init;
+            $file_init = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W['_ctrl'] . '/inc/web/__init.php';
+            $file_path = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W["_ctrl"] . "/inc/web/" . $_W["_ac"] . ".inc.php";
+        }
     }
 
     if (is_file($file_init)) { //引入初始化文件

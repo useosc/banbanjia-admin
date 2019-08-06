@@ -42,6 +42,38 @@ if (!function_exists("get_system_config")) { //获取系统配置
     }
 }
 
+//设置
+function set_system_config($key, $value)
+{
+    global $_W;
+    $sysset = get_system_config();
+    $keys = explode('.', $key);
+    $counts = count($keys);
+    if ($counts == 1) {
+        $sysset[$keys[0]] = $value;
+    } else {
+        if ($counts == 2) {
+            if (!is_array($sysset[$keys[0]])) {
+                $sysset[$keys[0]] = array();
+            }
+            $sysset[$keys[0]][$keys[1]] = $value;
+        } else {
+            if ($counts == 3) {
+                if (!is_array($sysset[$keys[0]])) {
+                    $sysset[$keys[0]] = array();
+                } else {
+                    if (!is_array($sysset[$keys[0]][$keys[1]])) {
+                        $sysset[$keys[0]][$keys[1]] = array();
+                    }
+                }
+                $sysset[$keys[0]][$keys[1]][$keys[2]] = $value;
+            }
+        }
+    }
+    pdo_update('hello_banbanjia_config', array('sysset' => iserializer($sysset)), array('uniacid' => $_W['uniacid']));
+    return true;
+}
+
 function get_global_config($key = "") //获取全局配置
 
 {
@@ -193,8 +225,8 @@ function mlog($type, $log_id = 0, $message = '')
         return error(-1, "日志类型有误");
     }
     $content = sprintf($type_info["content"], $log_id, $message);
-    $data = array('uniacid'=> $_W['uniacid'],'username' => $_W['role_cn'],'uid'=>$_W['uid'],'role'=>$_W['role'],'type'=>$type,'content'=>$content,'ip'=>CLIENT_IP,'address'=>'','source'=>'','addtime'=>TIMESTAMP);
-    pdo_insert('hello_banbanjia_operate_log',$data);
+    $data = array('uniacid' => $_W['uniacid'], 'username' => $_W['role_cn'], 'uid' => $_W['uid'], 'role' => $_W['role'], 'type' => $type, 'content' => $content, 'ip' => CLIENT_IP, 'address' => '', 'source' => '', 'addtime' => TIMESTAMP);
+    pdo_insert('hello_banbanjia_operate_log', $data);
     return true;
 }
 //日志类型
@@ -226,4 +258,95 @@ function mlog_types($role = '', $value = 0)
         return $types;
     }
     return $type;
+}
+
+//获取所有日志信息
+function mlog_fetch_all($filter = array())
+{
+    global $_W;
+    global $_GPC;
+    if (empty($filter)) {
+        $filter = $_GPC;
+    }
+    $condition = " where uniacid = :uniacid";
+    $params = array(":uniacid" => $_W["uniacid"]);
+    $role = trim($filter["role"]);
+    if (!empty($role)) {
+        $condition .= " and role = :role";
+        $params[":role"] = $role;
+    }
+    $type = intval($filter["type"]);
+    if (!empty($type)) {
+        $condition .= " and type = :type";
+        $params[":type"] = $type;
+    }
+    $keyword = trim($filter["keyword"]);
+    if (!empty($keyword)) {
+        $condition .= " and username like :keyword";
+        $params[":keyword"] = "%" . $keyword . "%";
+    }
+    $page = max(1, intval($filter["page"]));
+    $psize = intval($filter["psize"]) ? intval($filter["psize"]) : 20;
+    $total = pdo_fetchcolumn("select count(*) from " . tablename("hello_banbanjia_operate_log") . $condition, $params);
+    $logs = pdo_fetchall("select * from " . tablename("hello_banbanjia_operate_log") . $condition . " order by id desc limit " . ($page - 1) * $psize . "," . $psize, $params);
+    if (!empty($logs)) {
+        foreach ($logs as &$val) {
+            $log_type = mlog_types($val["role"], $val["type"]);
+            $val["type_cn"] = $log_type["type"];
+            $val["addtime_cn"] = date("Y-m-d H:i", $val["addtime"]);
+        }
+    }
+    $pager = pagination($total, $page, $psize);
+    return array("logs" => $logs, "pager" => $pager);
+}
+
+//获取可用插件
+function get_available_plugin()
+{
+    global $_W;
+    mload()->lmodel('plugin');
+    $plugins = plugin_fetchall();
+    $array = array();
+    $plugin_config = get_plugin_config();
+    foreach ($plugins as $row) {
+        $array[] = $row["name"];
+    }
+    return $array;
+}
+
+//获取用户信息
+function get_user($uid = 0)
+{
+    global $_W;
+    if (empty($uid)) {
+        $uid = $_W['uid'];
+    }
+    $user = pdo_fetch("select a.*,b.permits as permits_role from " . tablename("hello_banbanjia_permit_user") . " as a left join " . tablename("hello_banbanjia_permit_role") . " as b on a.roleid = b.id where a.uniacid = :uniacid and a.uid = :uid", array(":uniacid" => $_W['uniacid'], ":uid" => $uid));
+    if (empty($user)) {
+        return false;
+    }
+    $user['permits_role'] = explode(',', $user['permits_role']);
+    $user['permits'] = explode(',', $user['permits']);
+    $user["permits"] = array_merge($user["permits"], $user["permits_role"]);
+    return $user;
+}
+
+//获取所有权限列表
+function get_all_permits($justkey = false)
+{
+    $all_permits = array('dashboard' => array('title' => '概况', 'permits' => array('dashboard.index' => '运营概况', 'dashboard.ad' => '引导页', 'dashboard.slide' => '幻灯片')), 'order' => array('title' => '订单', 'permits' => array('order.new' => '未完成', 'order.dispatch' => '调度中心-待指派', 'order.records' => '调度中心-接单统计/接单记录')), 'statcenter' => array('title' => '数据', 'permits' => array()));
+    if ($justkey) {
+        $permits = array();
+        foreach ($all_permits as $key => $item) {
+            $permits[] = $key;
+            if (!empty($item['permits'])) {
+                foreach ($item['permits'] as $key1 => $item1) {
+                    $permits[] = $key1;
+                }
+            }
+        }
+        return $permits;
+    } else {
+        return $all_permits;
+    }
 }

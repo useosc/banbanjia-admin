@@ -102,6 +102,49 @@ a:hover, a:focus {
     margin-top: 10px
 }
 
+/* 消息提示框 */
+
+.message-box {
+    position: fixed;
+    margin: auto;
+    height: 32px;
+    line-height: 32px;
+    top: -32px;
+    width: 100%;
+    text-align: center;
+    z-index: 11111111;
+    transition-duration: 300ms;
+    -webkit-transition-duration: 300ms;
+    opacity: 0;
+}
+
+.message-box.in {
+    top: 0;
+    opacity: 1;
+}
+
+.message-box .msg {
+    display: inline-block;
+    white-space: nowrap;
+    height: 32px;
+    line-height: 32px;
+    color: #fff;
+    font-size: 14px;
+    min-width: 350px;
+}
+
+.message-box .msg-success {
+    background: #1ab394
+}
+
+.message-box .msg-error {
+    background: #ed5565
+}
+
+.message-box .msg-info {
+    background: #eaa000
+}
+
 /* 表单 */
 
 /* 改变水平表单的样式 */
@@ -175,18 +218,22 @@ a:hover, a:focus {
     margin-right: 0px
 }
 
-.form-horizontal .form-filter {
+.form-horizontal.form-filter {
     max-width: 100%;
 }
 
-.form-horizontal .form-filter .form-group {
+.form-horizontal.form-filter .form-group {
     margin-left: 0;
     margin-right: 0;
     margin-bottom: 0;
     padding-top: 10px;
     padding-bottom: 10px
 }
-
+.form-horizontal.form-filter .control-label{max-width: 120px; padding-right: 0; padding-left: 0}
+.form-horizontal.form-filter .form-control{max-width: 300px;}
+.form-horizontal.form-filter .form-group{border-bottom: 1px solid #eff4f5}
+.form-horizontal.form-filter .form-group:last-child{margin-bottom: 10px; border: none}
+.form-horizontal.form-filter .form-control.select2-container {width: 140px}
 /* checkbox radio */
 
 .form-horizontal .checkbox, .form-horizontal .checkbox-inline, .form-horizontal .radio, .form-horizontal .radio-inline {
@@ -586,6 +633,11 @@ a:hover, a:focus {
     line-height: 48px;
 }
 
+#app-third-sidebar .nav-list li.active a {
+    color: #333;
+    border-bottom: 2px solid #06c1ae;
+}
+
 #app-third-sidebar .navbar-right {
     margin-right: 5px;
 }
@@ -729,6 +781,84 @@ a:hover, a:focus {
 
 .no-result p {
     margin-bottom: 0;
+}
+
+/* 插件应用列表 */
+
+.page-application h2 {
+    padding-left: 10px;
+    margin-bottom: 15px;
+    border-left: 3px solid #06c1ae;
+    font-size: 15px
+}
+
+.application-list .application-item {
+    float: left;
+    width: 350px;
+    background-color: #f8f8f8;
+    border: none;
+    padding: 15px;
+    border-radius: 3px;
+    margin: 0 15px 15px 0
+}
+
+.application-list .application-item:hover {
+    background-color: #f2f2f2;
+    cursor: pointer
+}
+
+.application-list .application-image {
+    float: left;
+    width: 54px;
+    height: 54px;
+    display: block;
+    text-align: center;
+    border-radius: 6px;
+    overflow: hidden
+}
+
+.application-list .application-image img {
+    width: 54px;
+    height: 54px;
+}
+
+.application-list .application-info {
+    float: left;
+    width: 245px;
+    margin-left: 15px;
+    padding-top: 4px
+}
+
+.application-list .application-info .application-name {
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #222222;
+}
+
+.application-list .application-info .application-description {
+    color: #999;
+    font-size: 12px;
+    margin-bottom: 0
+}
+
+/* 角色管理 */
+
+.system-permit .permit-container .category-permit {
+    margin-bottom: 10px;
+}
+
+.system-permit .permit-container .heading {
+    font-weight: bold;
+    padding: 5px 0;
+}
+
+.system-permit .permit-container .permit-list {
+    border-top: 1px dashed #ccc;
+}
+
+.system-permit .permit-container .checkbox-inline {
+    margin-left: 10px;
 }
 
 /* 修改微擎原始组件样式 */
@@ -1311,3 +1441,8 @@ select.we7-select+.we7-select, select+.we7-select {
     clear: both;
     box-sizing: border-box;
 }
+
+/* 地图 */
+.dispatch .map{position: relative;}
+.dispatch .map #allmap{height: 750px; z-index: 10;}
+.dispatch .map .deliveryer-container{display: none; width: 20%; padding-left: 10px; background: #fff; position: absolute; top: 0; right: 0; height: 750px; z-index: 11;}

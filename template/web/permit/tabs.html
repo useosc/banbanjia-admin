@@ -1,0 +1,22 @@
+<div class="second-sidebar-title">
+    权限系统
+</div>
+<div class="nav slimscroll">
+    <div class="menu-header">角色</div>
+    <ul class="menu-item">
+        <li {if $_W['_ac']=='role' }class='active' {/if}> <a href="{php echo iurl('permit/role/list');}">角色管理</a>
+        </li>
+    </ul>
+    <div class="menu-header">操作员</div>
+    <ul class="menu-item">
+		<li {if $_W['_ac'] == 'user'}class="active"{/if}>
+            <a href="{php echo iurl('permit/user/list');}">操作员管理</a>
+        </li>
+    </ul>
+    <div class="menu-header">操作日志</div>
+	<ul class="menu-item">
+		<li {if $_W['_ac'] == 'operatelog'}class="active"{/if}>
+			<a href="{php echo iurl('permit/operatelog/list');}">操作日志</a>
+		</li>
+	</ul>
+</div>

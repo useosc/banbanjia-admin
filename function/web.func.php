@@ -9,7 +9,11 @@ function build_menu()
     if (defined('IN_PLUGIN')) {
         include itemplate('tabs');
     } else {
-        include itemplate((string) $_W["_ctrl"] . "/tabs");
+        if (defined('IN_MERCHANT')) {
+            include itemplate((string) $_W["_ctrl"] . "/" . $_W["_ac"] . "/tabs");
+        } else {
+            include itemplate((string) $_W["_ctrl"] . "/tabs");
+        }
     }
     return true;
 }
