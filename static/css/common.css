@@ -70,6 +70,21 @@ a:hover, a:focus {
     background-color: #06c1ae
 }
 
+/* 统计列表 */
+.panel-stat{border: none}
+.panel-stat .panel-heading, .panel-display .panel-heading, .panel-trend .panel-heading{border: none; background-color: #f8f8f8;}
+.panel-stat .panel-heading h3, .panel-trend .panel-heading h3, .panel-display .panel-heading h3{display: inline-block; margin-top: 0; margin-bottom: 0; padding-left: 10px; font-size: 14px; font-weight: bold; border-left: 4px solid #0292a5}
+.panel-stat .panel-heading .pull-right a{color: #2A2A2A}
+.panel-stat .panel-body, .panel-trend .panel-body{margin-top: 15px; background-color: #f8f8f8;}
+.panel-stat .panel-body>div[class*=col-]{border-right: 1px dotted #ccc;}
+.panel-stat .panel-body>div[class*=col-]:last-child{border-right: none}
+.panel-stat .panel-body .title{text-align: center}
+.panel-stat .panel-body .num-wrapper{text-align: center; }
+.panel-stat .panel-body .num{color: #333; font-size: 40px; display: block}
+.panel-stat .panel-body .info{display: inline-block; color: #999}
+.panel-trend form{margin-top: 15px}
+.panel-trend .panel-body, .panel-display .panel-body{background-color: #FFF; border: 1px solid #e4e4e4; margin-top: 15px;}
+
 /* web端消息 */
 
 .panel-message .message-icon {
@@ -134,7 +149,7 @@ a:hover, a:focus {
 }
 
 .message-box .msg-success {
-    background: #1ab394
+    background: #08c
 }
 
 .message-box .msg-error {
@@ -318,8 +333,8 @@ a:hover, a:focus {
 }
 
 .checkbox input[type="checkbox"]:checked+label::before {
-    background-color: #1ab394;
-    border-color: #1ab394;
+    background-color: #08c;
+    border-color: #08c;
 }
 
 .checkbox input[type="checkbox"]:checked+label::after {
@@ -407,15 +422,15 @@ a:hover, a:focus {
 }
 
 .radio input[type="radio"]+label::after {
-    background-color: #1ab394;
+    background-color: #08c;
 }
 
 .radio input[type="radio"]:checked+label::before {
-    border-color: #1ab394;
+    border-color: #08c;
 }
 
 .radio input[type="radio"]:checked+label::after {
-    background-color: #1ab394;
+    background-color: #08c;
     color: #fff;
 }
 
@@ -682,7 +697,7 @@ a:hover, a:focus {
 }
 
 #app-third-sidebar .navbar-right .dropdown-menu li a:hover {
-    color: #1ab394;
+    color: #08c;
     background-color: #FFF
 }
 
@@ -1431,8 +1446,8 @@ select.we7-select+.we7-select, select+.we7-select {
 }
 
 .modal-header .material-nav a.active, .modal-header .material-nav a:hover {
-    color: #1ab394;
-    border-color: #1ab394;
+    color: #08c;
+    border-color: #08c;
 }
 
 .material-content .material-head {

@@ -55,6 +55,7 @@
             `sex` varchar(5) NOT NULL,
             `realname` varchar(20) NOT NULL,
             `mobile` varchar(20) NOT NULL,
+            `platform` tinyint(5) NOT NULL DEFAULT '0' COMMENT '0：微信小程序，1：web，2：微信小程序和web端',
             `setmeal_id` int(10) unsigned NOT NULL DEFAULT '0',
             `setmeal_day_free_limit` tinyint(3) unsigned NOT NULL DEFAULT '0',
             `setmeal_starttime` int(10) unsigned NOT NULL DEFAULT '0',
@@ -260,6 +261,172 @@
             KEY `clerk_id` (`clerk_id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=600 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_system_log` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `type` varchar(50) NOT NULL,
+            `title` varchar(50) NOT NULL,
+            `params` varchar(5000) NOT NULL,
+            `message` varchar(1000) NOT NULL,
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `type` (`type`),
+            KEY `addtime` (`addtime`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_room_category` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(30) NOT NULL,
+            `thumb` varchar(255) NOT NULL DEFAULT '',
+            `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_goods` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `cateid` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(100) NOT NULL DEFAULT '',
+            `thumb` varchar(255) NOT NULL DEFAULT '',
+            `volume` varchar(255) NOT NULL DEFAULT '' COMMENT '物品体积',
+            `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `is_display` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `title` (`title`),
+            KEY `cateid` (`cateid`),
+            KEY `uniacid` (`uniacid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_deliveryer` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(15) NOT NULL,
+            `nickname` varchar(15) NOT NULL,
+            `openid` varchar(60) NOT NULL,
+            `avatar` varchar(255) NOT NULL,
+            `mobile` varchar(15) NOT NULL,
+            `password` varchar(32) NOT NULL,
+            `salt` varchar(6) NOT NULL,
+            `token` varchar(32) NOT NULL,
+            `sex` varchar(5) NOT NULL,
+            `age` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `credit1` decimal(10,2) NOT NULL DEFAULT '0.00',
+            `credit2` decimal(10,2) NOT NULL DEFAULT '0.00',
+            `work_status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `location_x` varchar(20) NOT NULL,
+            `location_y` varchar(20) NOT NULL,
+            `order_carry_num` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `auth_info` varchar(500) NOT NULL,
+            `groupid` int(10) unsigned NOT NULL DEFAULT '0',
+            `is_carry` tinyint(3) NOT NULL DEFAULT '0',
+            `extra` varchar(500) NOT NULL,
+            `registration_id` varchar(50) NOT NULL,
+            `account` varchar(2000) NOT NULL,
+            `openid_wxapp` varchar(60) NOT NULL,
+            `collect_max_carry` int(10) NOT NULL,
+            `perm_transfer` varchar(200) NOT NULL,
+            `perm_cancel` varchar(200) NOT NULL,
+            `fee_delivery` varchar(500) NOT NULL,
+            `fee_getcash` varchar(500) NOT NULL,
+            `openid_wxapp_deliveryer` varchar(60) NOT NULL,
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `deltime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `work_status` (`work_status`),
+            KEY `token` (`token`),
+            KEY `is_carry` (`is_carry`),
+            KEY `openid_wxapp` (`openid_wxapp`),
+            KEY `openid` (`openid`),
+            KEY `registration_id` (`registration_id`),
+            KEY `uniacid_token` (`uniacid`,`token`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_deliveryer_location_log` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `deliveryer_id` int(10) unsigned NOT NULL DEFAULT '0',
+            `location_x` varchar(20) NOT NULL,
+            `location_y` varchar(20) NOT NULL,
+            `from` varchar(10) NOT NULL DEFAULT 'wxapp',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `addtime_cn` varchar(50) NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `deliveryer_id` (`deliveryer_id`),
+            KEY `addtime` (`addtime`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_text` (
+            `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `name` varchar(100) NOT NULL,
+            `value` text NOT NULL,
+            `title` varchar(20) NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_oauth_fans` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `appid` varchar(50) NOT NULL,
+            `openid` varchar(50) NOT NULL,
+            `oauth_openid` varchar(50) NOT NULL,
+            `type` varchar(10) NOT NULL DEFAULT 'wechat',
+            PRIMARY KEY (`id`),
+            KEY `appid` (`appid`),
+            KEY `openid` (`openid`),
+            KEY `oauth_openid` (`oauth_openid`),
+            KEY `appid_openid` (`appid`,`openid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=200 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_domestic_order` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `order_channel` varchar(20) NOT NULL DEFAULT 'wxapp',
+            `order_type` varchar(20) NOT NULL DEFAULT 'free' COMMENT 'free,share,company',
+            `goods_volume` varchar(10) NOT NULL,
+            `start_address` varchar(100) NOT NULL,
+            `end_address` varchar(100),
+            `start_location_x` varchar(20) NOT NULL,
+            `start_location_y` varchar(20) NOT NULL,
+            `end_location_x` varchar(2),
+            `end_location_y` varchar(20),
+            `service_type` varchar(20) NOT NULL DEFAULT 'indoor' COMMENT 'indoor,up,down',
+            `floor` varchar(5) NOT NULL DEFAULT '1',
+            `stairs_type` varchar(20) NOT NULL DEFAULT 'elevator' COMMENT 'elevator,stairs',
+            `distance` varchar(20),
+            `carry_time` varchar(30) NOT NULL,
+            `pay_type` varchar(15) NOT NULL,
+            `is_pay` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `paytime` int(10) unsigned NOT NULL DEFAULT '0',
+            `carry_status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `deliveryer_id` int(10) unsigned NOT NULL DEFAULT '0',
+            `carry_success_location_x` varchar(15) NOT NULL,
+            `carry_success_location_y` varchar(15) NOT NULL,
+            `carry_success_time` int(10) NOT NULL DEFAULT '0',
+            `status` tinyint(3) NOT NULL DEFAULT '1',
+            `carry_fee` varchar(10) NOT NULL,
+            `total_fee` varchar(10) NOT NULL,
+            `discount_fee` varchar(20) NOT NULL DEFAULT '0.00',
+            `final_fee` varchar(20) NOT NULL DEFAULT '0.00',
+            `remark` varchar(200) NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `uid` (`uid`),
+            KEY `addtime` (`addtime`),
+            KEY `paytime` (`paytime`),
+            KEY `is_pay` (`is_pay`),
+            KEY `pay_type` (`pay_type`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8;
+
         INSERT INTO ims_hello_banbanjia_plugin VALUES
         ('40','wxapp','biz','搬搬家','../addons/hello_banbanjia/static/img/plugin/wxapp.jpg','','搬搬家，国内一流搬家平台','1','0','1');
         INSERT INTO ims_hello_banbanjia_plugin VALUES 
@@ -280,6 +447,13 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_clerk`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_clerk`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_system_log`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_room_category`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_goods`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_deliveryer`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_text`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_oauth_fans`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_domestic_order`;
         ]]>
     </upgrade>
 </manifest>

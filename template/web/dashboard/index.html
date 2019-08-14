@@ -1,3 +1,36 @@
 {itemplate 'public/header'}
-<h1>template dashboard index</h1>
+<div class="clearfix">
+    <div class="panel panel-stat">
+		<div class="panel-heading">
+			<h3>搬运工概况</h3>
+		</div>
+		<div class="panel-body">
+			<div class="col-md-3">
+				<div class="title">全部搬运工</div>
+				<div class="num-wrapper">
+					<a class="num" href="{php echo iurl('deliveryer/plateform/list');}">{$deliveryer['total_deliveryer']}</a>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="title">接单中</div>
+				<div class="num-wrapper">
+					<a class="num" href="{php echo iurl('deliveryer/plateform/list', array('work_status' => 1));}">{$deliveryer['total_work_deliveryer']}</a>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="title">休息中</div>
+				<div class="num-wrapper">
+					<a class="num" href="{php echo iurl('deliveryer/plateform/list', array('work_status' => 0));}">{$deliveryer['total_rest_deliveryer']}</a>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="title">回收站</div>
+				<div class="num-wrapper">
+					<a class="num" href="{php echo iurl('deliveryer/storage/list');}">{$deliveryer['total_storage_deliveryer']}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 {itemplate 'public/footer'}

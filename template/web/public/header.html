@@ -1,5 +1,5 @@
 {itemplate 'public/header-base'}
-{if defined('IN_AGENT') || defined('IN_MERCHANT')}
+{if defined('IN_MERCHANT')}
 <style>
 	/*隐藏上传图片弹出层删除分组的按钮*/
 	#image .category .category-menu .ng-scope .edit .color-red {
@@ -39,6 +39,30 @@
 						<a href="{php echo iurl('order/carry/list');}">
 							<i class="icon icon-order"></i>
 							订单
+						</a>
+					</li>
+					{/if}
+					{ifp 'domestice'}
+					<li class="{if $_W['_ctrl'] == 'domestice'}active{/if}">
+						<a href="{php echo iurl('domestice/order/list');}">
+							<i class="icon icon-deliver"></i>
+							国内搬家
+						</a>
+					</li>
+					{/if}
+					{ifp 'global'}
+					<li class="{if $_W['_ctrl'] == 'global'}active{/if}">
+						<a href="{php echo iurl('global/order/list');}">
+							<i class="icon icon-global"></i>
+							国际搬家
+						</a>
+					</li>
+					{/if}
+					{ifp 'express'}
+					<li class="{if $_W['_ctrl'] == 'express'}active{/if}">
+						<a href="{php echo iurl('express/order/list');}">
+							<i class="icon icon-box"></i>
+							国际快递
 						</a>
 					</li>
 					{/if}

@@ -3,9 +3,24 @@
     <div class="menu-header">设置</div>
     <ul class="menu-item">
         {ifp 'wxapp.config'}
-            <li {if $_GPC['op'] == 'basic'}class="active"{/if}>
+            <li {if $_GPC['ac'] == 'config' && $_GPC['op'] == 'basic'}class="active"{/if}>
                 <a href="{php echo iurl('wxapp/config/basic');}">基础设置</a>
             </li>
+            <li {if $_GPC['op'] == 'payment'}class="active"{/if}>
+				<a href="{php echo iurl('wxapp/config/payment');}">支付方式</a>
+			</li>
         {/if}
     </ul>
+    <div class="menu-header">搬运工小程序</div>
+	<ul class="menu-item">
+		<li {if $_GPC['ac'] == 'deliveryer' && $_GPC['op'] == 'basic'}class="active"{/if}>
+			<a href="{php echo iurl('wxapp/deliveryer/basic');}">基础设置</a>
+		</li>
+		<li {if $_GPC['ac'] == 'deliveryer' && $_GPC['op'] == 'wxtemplate'}class="active"{/if}>
+			<a href="{php echo iurl('wxapp/deliveryer/wxtemplate');}">模板消息</a>
+		</li>
+		<li {if $_GPC['ac'] == 'deliveryer' && $_GPC['op'] == 'urls'}class="active"{/if}>
+			<a href="{php echo iurl('wxapp/deliveryer/urls');}">入口链接</a>
+		</li>
+	</ul>
 </div>

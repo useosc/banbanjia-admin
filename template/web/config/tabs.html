@@ -13,6 +13,21 @@
 			</li>
 		</ul>
 	{/if}
+	{ifp 'config.roomCategory' || 'config.goods'}
+	<div class="menu-header">体积估算</div>
+		<ul class="menu-item">
+			{ifp 'config.roomCategory'}
+				<li {if $_W['_ac'] == 'roomCategory'}class="active"{/if}>
+					<a href="{php echo iurl('config/roomCategory/list');}">房间类型</a>
+				</li>
+			{/if}
+			{ifp 'config.goods'}
+				<li {if $_W['_ac'] == 'goods'}class="active"{/if}>
+					<a href="{php echo iurl('config/goods/list');}">房内物品</a>
+				</li>
+			{/if}
+		</ul>
+	{/if}
 	{ifp 'config.trade'}
 		<div class="menu-header">交易</div>
 		<ul class="menu-item">
@@ -24,6 +39,17 @@
 			</li>
 			<li {if $_W['_router'] == 'config/trade/getcash'}class="active"{/if}>
 				<a href="{php echo iurl('config/trade/getcash');}">提现方式</a>
+			</li>
+		</ul>
+	{/if}
+	{ifp 'config.carry'}
+		<div class="menu-header">搬运</div>
+		<ul class="menu-item">
+			<li {if $_W['_router'] == 'config/carry/range'}class="active"{/if}>
+				<a href="{php echo iurl('config/carry/range');}">接单范围</a>
+			</li>
+			<li {if $_W['_router'] == 'config/carry/order'}class="active"{/if}>
+				<a href="{php echo iurl('config/carry/order');}">订单相关</a>
 			</li>
 		</ul>
 	{/if}
@@ -70,10 +96,10 @@
 		</ul>
 	{/if}
 	{ifp 'config.deliveryer'}
-	<div class="menu-header">配送员</div>
+	<div class="menu-header">搬运工</div>
 	<ul class="menu-item">
 		<li {if $_W['_router'] == 'config/deliveryer/settle'}class="active"{/if}>
-		<a href="{php echo iurl('config/deliveryer/settle');}">配送员申请</a>
+		<a href="{php echo iurl('config/deliveryer/settle');}">搬运工申请</a>
 		</li>
 		<li {if $_W['_router'] == 'config/deliveryer/cash'}class="active"{/if}>
 		<a href="{php echo iurl('config/deliveryer/cash');}">提成及提现</a>

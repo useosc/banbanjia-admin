@@ -75,6 +75,24 @@ function iurl($segment, $params = array(), $addhost = false) //生成链接
     return $url;
 }
 
+function imurl($segment, $params = array(), $addhost = false)
+{
+    global $_W;
+    list($ctrl, $ac, $op, $ta) = explode("/", $segment);
+    $basic = array("ctrl" => $ctrl, "ac" => $ac, "op" => $op, "ta" => $ta, "do" => "mobile", "m" => "hello_banbanjia");
+    $params = array_merge($basic, $params);
+    $url = murl("entry", $params);
+    if ($addhost) {
+        $oauth_host = $_W["siteroot"];
+        if (!empty($_W["we7_hello_banbanjia"]["config"]["oauth"]["oauth_host"])) {
+            $oauth_host = $_W["we7_hello_banbanjia"]["config"]["oauth"]["oauth_host"];
+        }
+        $oauth_host = rtrim($oauth_host, "/");
+        $url = $oauth_host . "/app/" . substr($url, 2);
+    }
+    return $url;
+}
+
 function iwurl($segment, $params = array(), $script = "./index.php?") //转换为完全链接
 {
     list($controller, $action, $do) = explode("/", $segment);
@@ -153,4 +171,28 @@ function sys_fetch_slide($type = 'homeTop', $format = false)
         }
     }
     return $slides;
+}
+//系统日志
+function slog($type, $title, $params, $message)
+{
+    global $_W;
+    if (empty($type)) {
+        return error(-1, "错误类型不能为空");
+    }
+    if (empty($message)) {
+        return error(-1, "错误信息不能为空");
+    }
+    $data = array("uniacid" => $_W["uniacid"], "type" => $type, "title" => $title, "params" => iserializer($params), "message" => iserializer($message), "addtime" => TIMESTAMP);
+    pdo_insert("hello_banbanjia_system_log", $data);
+    return true;
+}
+//检验验证码
+function icheck_verifycode($mobile, $code)
+{
+    global $_W;
+    $isexist = pdo_fetch("select * from " . tablename("uni_verifycode") . " where uniacid = :uniacid and receiver = :receiver and verifycode = :verifycode and createtime >= :createtime", array(":uniacid" => $_W["uniacid"], ":receiver" => $mobile, ":verifycode" => $code, ":createtime" => time() - 1800));
+    if (!empty($isexist)) {
+        return true;
+    }
+    return false;
 }

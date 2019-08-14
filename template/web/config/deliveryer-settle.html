@@ -1,0 +1,19 @@
+{itemplate 'public/header'}
+<div class="page clearfix page-config-store-delivery">
+	<h2>搬运工申请</h2>
+	<form class="form-horizontal form form-validate" id="form1" action="" method="post" enctype="multipart/form-data">
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">*</span>入驻协议</label>
+			<div class="col-sm-9 col-xs-12">
+				{php echo tpl_ueditor('agreement_delivery', $settle['agreement_delivery']);}
+				<div class="help-block">不填写时，搬运工申请页面将不显示：我已阅读并同意 《搬运工入驻协议》</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-9 col-xs-9 col-md-9">
+				<input type="submit" value="提交" class="btn btn-primary">
+			</div>
+		</div>
+	</form>
+</div>
+{itemplate 'public/footer'}

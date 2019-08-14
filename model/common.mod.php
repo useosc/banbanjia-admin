@@ -42,7 +42,7 @@ if (!function_exists("get_system_config")) { //获取系统配置
     }
 }
 
-//设置
+//系统设置
 function set_system_config($key, $value)
 {
     global $_W;
@@ -81,6 +81,30 @@ function get_global_config($key = "") //获取全局配置
     return $result;
 }
 
+//设置文章
+function set_config_text($title, $name, $value = "")
+{
+    global $_W;
+    $config = pdo_get("hello_banbanjia_text", array("uniacid" => $_W["uniacid"], "name" => $name));
+    if (empty($config)) {
+        $data = array("uniacid" => $_W["uniacid"], "name" => $name, "title" => $title, "value" => is_array($value) ? iserializer($value) : $value);
+        pdo_insert("hello_banbanjia_text", $data);
+    } else {
+        $data = array("uniacid" => $_W["uniacid"], "title" => $title, "value" => is_array($value) ? iserializer($value) : $value);
+        pdo_update("hello_banbanjia_text", $data, array("uniacid" => $_W["uniacid"], "name" => $name));
+    }
+    return true;
+}
+function get_config_text($name)
+{
+    global $_W;
+    $config = pdo_get("hello_banbanjia_text", array("uniacid" => $_W["uniacid"], "name" => $name));
+    if ($name = "carry_delivery_time") {
+        $config["value"] = iunserializer($config["value"]);
+    }
+    return $config["value"];
+}
+
 function check_permit($permit, $redirct = false)
 {
     global $_W;
@@ -108,12 +132,6 @@ function check_permit($permit, $redirct = false)
             $all_permits = get_all_permits(true);
         }
         if (!in_array($permit, $all_permits)) {
-            return true;
-        }
-    }
-    if ($_W["role"] == "agent_operator") {
-        $extrapermit = array("agent.loginout", "agent.setting", "oauth.login");
-        if (in_array($permit, $extrapermit)) {
             return true;
         }
     }
@@ -213,6 +231,8 @@ function set_plugin_config($key, $value)
     pdo_update("hello_banbanjia_config", array("pluginset" => iserializer($pluginset)), array("uniacid" => $_W["uniacid"]));
     return true;
 }
+
+
 //日志
 function mlog($type, $log_id = 0, $message = '')
 {
@@ -329,6 +349,17 @@ function get_user($uid = 0)
     $user['permits'] = explode(',', $user['permits']);
     $user["permits"] = array_merge($user["permits"], $user["permits_role"]);
     return $user;
+}
+
+// 检查缓存是否超时
+function check_cache_status($key, $timelimit = 300)
+{
+    global $_W;
+    $cache = cache_read($key);
+    if (empty($cache) || 0 < $cache["starttime"] && $cache["starttime"] + $timelimit < TIMESTAMP) {
+        return false;
+    }
+    return true;
 }
 
 //获取所有权限列表

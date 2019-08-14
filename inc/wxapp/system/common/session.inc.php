@@ -67,12 +67,14 @@ if ($ta == 'openid') { //获取openid
             pdo_update("hello_banbanjia_members", $update, array("uniacid" => $_W["uniacid"], "openid_wxapp" => $oauth["openid"]));
         }
         $member = get_member($oauth['openid'], 'openid_wxapp');
+        $_SESSION["member"] = $member;
         unset($member['password']);
         unset($member['salt']);
         $sessionid = $_W["session_id"];
         if ($_GPC["istate"]) {
             $sessionid = $member["openid_wxapp"];
         }
+        
         $account_api->result(0, '', array('sessionid' => $sessionid, 'member' => $member));
     } else {
         $account_api->result(2000, $oauth['message']);
@@ -85,7 +87,7 @@ if ($ta == 'openid') { //获取openid
             $account_api->result(2001, "请先登录");
         }
         $sign1 = sha1(htmlspecialchars_decode($_GPC["rawData"], ENT_QUOTES) . $_SESSION["session_key"]);
-        $sign2 = sha1($_POST["rawData"] . $_SESSION["session_key"]);
+        $sign2 = sha1($_GPC["rawData"] . $_SESSION["session_key"]);
         if ($sign1 !== $_GPC["signature"] && $sign2 !== $_GPC["signature"]) {
             $account_api->result(2010, "签名错误");
         }
@@ -136,9 +138,32 @@ if ($ta == 'openid') { //获取openid
         } else {
             $account_api->result(0, $phoneinfo);
         }
-    } else if ($ta == 'phbind') { //绑定手机号（验证码）
-        // $account_api->result(0, $_W['fans']['uid']);
-        $test = $_W["we7_hello_banbanjia"]["config"];
-        var_dump($test);
+    } else if ($ta == 'phonebind') { //绑定手机号（验证码）
+        $user = $_W["member"];
+        $id = $user["id"];
+        $mobile = trim($_GPC["mobile"]) ? trim($_GPC["mobile"]) : imessage(error(-1, "请输入手机号"), "", "ajax");
+        $code = trim($_GPC["code"]);
+        $status = icheck_verifycode($mobile, $code);
+        if (!$status) {
+            imessage(error(-1, "验证码错误"), "", "ajax");
+        }
+        $member = pdo_fetch("select * from " . tablename("hello_banbanjia_members") . " where uniacid = :uniacid and mobile = :mobile and id != :id", array(":uniacid" => $_W["uniacid"], ":mobile" => $mobile, ":id" => $id));
+        if (!empty($member) && empty($force)) {
+            imessage(error(-2, "该手机号已被其他用户绑定"), "", "ajax");
+        }
+        $salt = random(6, true);
+        $password = md5(md5($salt . $password) . $salt);
+        try{
+            pdo_update("hello_banbanjia_members", array("mobile" => $mobile, "password" => $password, "salt" => $salt, "mobile_audit" => 1), array("id" => $id, "uniacid" => $_W["uniacid"]));
+        }catch(Exception $e){
+            var_dump($e);
+        }
+        
+        imessage(error(0, "绑定成功"), "", "ajax");
+    }else if($ta == 'test'){
+        // echo $_W['we7_hello_banbanjia']['config']['mall']['logo'];exit;
+        $img = $_W['we7_hello_banbanjia']['config']['mall']['logo'];
+        var_dump(tomedia(''));exit;
+        // var_dump($_W["member"]);exit;
     }
 }

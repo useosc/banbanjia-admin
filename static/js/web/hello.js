@@ -5,7 +5,7 @@ define(["bootstrap"], function ($) {
             c = "ctrl=" + a[0] + "&ac=" + a[1] + "&op=" + a[2];
         a[3] && (c += "&ta=" + a[3]);
         var d = "./index.php?c=site&a=entry&m=hello_banbanjia&do=web&" + c;
-        return 1 == window.sysinfo.agent ? d = "./wagent.php?c=site&a=entry&m=we7_wmall&do=web&" + c + "&i=" + window.sysinfo.uniacid : 1 == window.sysinfo.merchant && (d = "./wmerchant.php?c=site&a=entry&m=we7_wmall&do=web&" + c + "&i=" + window.sysinfo.uniacid), b && ("object" == typeof b ? d += "&" + $.toQueryString(b) : "string" == typeof b && (d += "&" + b)), d
+        return d;
     }, hello.countDown = function (a, b, c, d, e, f) {
         if (!a) return !1;
         var g = "string" == typeof a ? new Date(a).getTime() / 1e3 : a,

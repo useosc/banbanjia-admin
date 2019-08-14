@@ -98,3 +98,11 @@ function iaes_pkcs7_decode($encrypt_data, $key, $iv = false) //微信小程序�
     }
     return $result[1];
 }
+//手机号是否合法
+function is_validMobile($mobile)
+{
+    if (preg_match("/^[01][3456789][0-9]{9}\$/", $mobile) || preg_match("/^[8][0-9]{11}\$/", $mobile)) {
+        return true;
+    }
+    return false;
+}

@@ -1,0 +1,90 @@
+{itemplate 'public/header'}
+<link href="../addons/hello_banbanjia/static/css/domestice/page.css?t={php echo time();}" rel="stylesheet"
+    type="text/css" />
+<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+<div class="clearfix">
+    <div class="app-preview">
+        <div class="app-header"></div>
+        <div class="app-body">
+            <div class="title" id="page">编辑国内搬家</div>
+            <div class="main" id="app-preview"></div>
+        </div>
+        <div class="app-footer"></div>
+    </div>
+    <div class="app-editor form-horizontal" id="app-editor">
+        <div class="editor-arrow"></div>
+        <div class="inner"></div>
+    </div>
+</div>
+<div class="app-action">
+    <div class="parts" id="parts"></div>
+    <div class="action">
+        <nav class="btn btn-default btn-sm pull-left" id="gotop">返回顶部</nav>
+        <nav class="btn btn-primary btn-sm btn-save">保存并设置</nav>
+    </div>
+</div>
+
+
+<script type="text/html" id="tpl-parts">
+    <nav class="btn btn-link" data-id="page"><i class="fa fa-cog">页面设置</i></nav>
+    <(each initPart as part)>
+        <(if part.id == 'basic')>
+            <nav class="btn btn-link" data-id="<(part.id)>" style="color: red"><i class="fa fa-plus"></i><(part.name)>(必选)</nav>
+        <(else)>
+            <nav class="btn btn-link" data-id="<(part.id)>"><i class="fa fa-plus"></i><(part.name)></nav>
+        <(/if)>
+    <(/each)>
+</script>
+<script type="text/html" id="tpl-editor-del">
+    <div class="btn-edit-del">
+        <div class="btn-edit">编辑</div>
+        <div class="btn-del">删除</div>
+    </div>
+</script>
+<script type="text/html" id="tpl-editor-page">
+    <div class="list-item">
+        <div class="form-group middle" style="margin:20px 0;">
+            <label class="col-sm-2 control-label">计价方式：</label>
+            <div class="col-sm-10">
+                <div class="radio radio-inline">
+                    <input id="fee_type_fee" type="radio" name="fee_type" value="fee" data-bind="fee_type" <(if fees.fee_type == 'fee')>checked(/if)>>
+                    <label for="fee_type_fee">固定金额</label>
+                </div>
+                <div class="radio radio-inline">
+					<input type="radio" name="fee_type" value="distance" class="diy-fee-bind" data-bind="fee_type" data-bind-init="true" id="fee_type_distance" <(if fees.fee_type == 'distance')>checked<(/if)>>
+					<label for="fee_type_distance">里程计价</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" name="fee_type" value="section" class="diy-fee-bind" data-bind="fee_type" data-bind-init="true" id="fee_type_section" <(if fees.fee_type == 'section')>checked<(/if)>>
+					<label for="fee_type_section">区间计价</label>
+				</div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/html" id="tpl-show-basic">
+    <div class="drag" data-itemid="<(itemid)>">
+        <div class="page-domestice-free" style="background-color: <(style.background)>;">
+            <h1>page-domestice-free</h1>
+        </div>
+    </div>
+</script>
+<script type="text/html" id="tpl-editor-basic">
+    <h1>freepage editor</h1>
+</script>
+
+<script type="text/javascript" src="./resource/components/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="./resource/components/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" src="./resource/components/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script>
+    var path = '../../static/js/domestice';
+    irequire([path,'tmodtpl'],function(diy,tmodtpl){
+        diy.init({
+            tmodtpl: tmodtpl,
+            attachurl: "{$_W['attachurl']}",
+            type: 'page',
+            data: {if !empty($page['data'])}{php echo json_encode($page['data'])}{else}null{/if},
+        });
+    });
+</script>
+{itemplate 'public/footer'}

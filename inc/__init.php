@@ -19,11 +19,6 @@ $_W["_plugins"] = $_plugins;
 in_array($_W["_ctrl"], array_keys($_plugins)) and define("IN_PLUGIN", 1);
 if (strexists($_W["siteurl"], "web/index.php")) { //判断是否是后台管理页面
     define("IN_MANAGE", 1);
-} else {
-    if (strexists($_W["siteurl"], "web/wagent.php")) {
-        define("IN_PLUGIN", 1);
-        define("IN_AGENT", 1);
-    }
 }
 
 if (defined("IN_SYS")) { //web/index 后台入口文件进入
