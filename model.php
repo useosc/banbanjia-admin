@@ -57,6 +57,7 @@ function mload() //返回加载器
         $mloader = new Mloader();
     }
     return $mloader;
+    ihttp_email();
 }
 
 function iurl($segment, $params = array(), $addhost = false) //生成链接

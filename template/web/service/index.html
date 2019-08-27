@@ -1,0 +1,127 @@
+{itemplate 'public/header'}
+<div class="clearfix">
+    <div class="panel panel-stat">
+        <div class="panel-heading">
+            <h3>总览</h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-md-3">
+                <div class="title">
+                    正在咨询的人数
+                    <i class="fa fa-info-circle" data-toggle="popover" data-placement="top" data-content="当前正在咨询的用户数"></i>
+                </div>
+                <div class="num-wrapper">
+                    <a href="javascript:;" class="num">
+                        <span>{$data['is_talking']}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="title">
+                    正在排队的用户
+                    <i class="fa fa-info-circle" data-toggle="popover" data-placement="top" data-content="当客服不够时，用户会进入等待状态"></i>
+                </div>
+                <div class="num-wrapper">
+                    <a href="javascript:;" class="num">
+                        <span>{$data['in_queue']}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="title">
+                    当前在线客服数
+                    <i class="fa fa-info-circle" data-toggle="popover" data-placement="top" data-content="在线的客服人数"></i>
+                </div>
+                <div class="num-wrapper">
+                    <a href="javascript:;" class="num">
+                        <span>{$data['online_kf']}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="title">
+                    接入会话量
+                    <i class="fa fa-info-circle" data-toggle="popover" data-placement="top" data-content="接入会话量"></i>
+                </div>
+                <div class="num-wrapper">
+                    <a href="javascript:;" class="num">
+                        <span>{$data['success_in']}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clearfix">
+    <div class="panel panel-trend">
+        <div class="panel-heading">
+            <h3>今日数据分析</h3>
+        </div>
+        <div class="panel-body">
+            <div id="chart-service-holder" style="width: 100%;height:400px;"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+irequire(['echarts'],function(echarts){
+    var option = {
+        color: ['#3398DB'],
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'line'
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        legend: {
+            data: ['正在咨询的用户','排队的用户','接入会话量','总会话量']
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00',
+                '18:00','19:00','20:00','21:00','22:00']
+        },
+        yAxis: 
+        {
+            type: 'value'
+        },
+        series: [
+            {
+                name: '正在咨询的用户',
+                type: 'line',
+                stack: '总量',
+                data: []
+            },
+            {
+                name:'排队的用户',
+                type:'line',
+                stack: '总量',
+                data: []
+            },
+            {
+                name:'接入会话量',
+                type:'line',
+                stack: '总量',
+                data: []
+            },
+            {
+                name:'总会话量',
+                type:'line',
+                stack: '总量',
+                data: []
+            }
+        ]
+    }
+    var myChart = echarts.init($('#chart-service-holder')[0]);
+    myChart.setOption(option);
+
+})
+</script>
+
+{itemplate 'public/footer'}

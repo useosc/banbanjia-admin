@@ -1,0 +1,72 @@
+{itemplate 'public/header'}
+<div class="clearfix service-box">
+    <input type="hidden" id="active-user" data-avatar>
+    <div class="service-side">
+        <ul class="unselect" id="user_list">
+            <!-- <li class="side-nav-item active">
+                <img src="http://banbanjia.useosc.com/attachment/headimg_1.jpg?time=1566349818">
+                <span class="user-name">会员1</span>
+            </li>
+            <li class="side-nav-item">
+                <img src="http://banbanjia.useosc.com/attachment/headimg_1.jpg?time=1566349818">
+                <span class="user-name">会员2</span>
+            </li> -->
+        </ul>
+    </div>
+    <div class="service-body">
+        <div class="service-chat">
+            <div class="chat-box">
+                <!-- <ul class="show-chat-detail">
+                    <li class="chat-mine">
+                        <div class="chat-user">
+                            <img src="http://banbanjia.useosc.com/attachment/headimg_1.jpg?time=1566349818">
+                            <cite><i>2019-08-22 15:01:54</i>
+                            "客服小白"
+                            </cite>
+                        </div>
+                        <div class="chat-text">hello</div>
+                    </li>
+                    <li>
+                        <div class="chat-user">
+                            <img src="http://banbanjia.useosc.com/attachment/headimg_1.jpg?time=1566349818">
+                            <cite>"会员11"<i>2019-08-22 15:01:54</i>
+                            </cite>
+                        </div>
+                        <div class="chat-text">我有问题想问下你</div>
+                    </li>
+                </ul> -->
+            </div>
+            <div class="msg-send">
+                <div class="tools-bar">
+
+                </div>
+                <div class="msg-box">
+                    <input type="hidden" data-avatar="" data-name="" data-id="" id="active-user">
+                    <textarea id="msg-area" class="msg-area"></textarea>
+                </div>
+                <div class="send-area">
+                    <button id='send'  class="btn btn-sm" style="float: right;">发送</button>
+                </div>
+            </div>
+        </div>
+        <div class="chat-right">
+            
+        </div>
+    </div>
+
+</div>
+
+
+{itemplate 'public/footer'}
+{ifp 'service.from'}
+	<script>
+        var chatLogUrl = "{php echo iurl('service/from/chatlog')}";
+		var uid = {$user['id']};
+		var uname = "{$user['user_name']}";
+		var avatar = "{php echo tomedia($user['user_avatar']);}";
+		var group = {$user['group_id']};
+        var socket_server = '118.24.86.194:8282';
+        var userList = {php echo $userList ? json_encode($userList) : '[]'};
+	</script>
+	<script src="{php echo WE7_BANBANJIA_LOCAL}static/js/web/service.js"></script>
+{/if}

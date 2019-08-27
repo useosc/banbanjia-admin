@@ -71,19 +71,71 @@ a:hover, a:focus {
 }
 
 /* 统计列表 */
-.panel-stat{border: none}
-.panel-stat .panel-heading, .panel-display .panel-heading, .panel-trend .panel-heading{border: none; background-color: #f8f8f8;}
-.panel-stat .panel-heading h3, .panel-trend .panel-heading h3, .panel-display .panel-heading h3{display: inline-block; margin-top: 0; margin-bottom: 0; padding-left: 10px; font-size: 14px; font-weight: bold; border-left: 4px solid #0292a5}
-.panel-stat .panel-heading .pull-right a{color: #2A2A2A}
-.panel-stat .panel-body, .panel-trend .panel-body{margin-top: 15px; background-color: #f8f8f8;}
-.panel-stat .panel-body>div[class*=col-]{border-right: 1px dotted #ccc;}
-.panel-stat .panel-body>div[class*=col-]:last-child{border-right: none}
-.panel-stat .panel-body .title{text-align: center}
-.panel-stat .panel-body .num-wrapper{text-align: center; }
-.panel-stat .panel-body .num{color: #333; font-size: 40px; display: block}
-.panel-stat .panel-body .info{display: inline-block; color: #999}
-.panel-trend form{margin-top: 15px}
-.panel-trend .panel-body, .panel-display .panel-body{background-color: #FFF; border: 1px solid #e4e4e4; margin-top: 15px;}
+
+.panel-stat {
+    border: none
+}
+
+.panel-stat .panel-heading, .panel-display .panel-heading, .panel-trend .panel-heading {
+    border: none;
+    background-color: #f8f8f8;
+}
+
+.panel-stat .panel-heading h3, .panel-trend .panel-heading h3, .panel-display .panel-heading h3 {
+    display: inline-block;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border-left: 4px solid #0292a5
+}
+
+.panel-stat .panel-heading .pull-right a {
+    color: #2A2A2A
+}
+
+.panel-stat .panel-body, .panel-trend .panel-body {
+    margin-top: 15px;
+    background-color: #f8f8f8;
+}
+
+.panel-stat .panel-body>div[class*=col-] {
+    border-right: 1px dotted #ccc;
+}
+
+.panel-stat .panel-body>div[class*=col-]:last-child {
+    border-right: none
+}
+
+.panel-stat .panel-body .title {
+    text-align: center
+}
+
+.panel-stat .panel-body .num-wrapper {
+    text-align: center;
+}
+
+.panel-stat .panel-body .num {
+    color: #333;
+    font-size: 40px;
+    display: block
+}
+
+.panel-stat .panel-body .info {
+    display: inline-block;
+    color: #999
+}
+
+.panel-trend form {
+    margin-top: 15px
+}
+
+.panel-trend .panel-body, .panel-display .panel-body {
+    background-color: #FFF;
+    border: 1px solid #e4e4e4;
+    margin-top: 15px;
+}
 
 /* web端消息 */
 
@@ -244,11 +296,30 @@ a:hover, a:focus {
     padding-top: 10px;
     padding-bottom: 10px
 }
-.form-horizontal.form-filter .control-label{max-width: 120px; padding-right: 0; padding-left: 0}
-.form-horizontal.form-filter .form-control{max-width: 300px;}
-.form-horizontal.form-filter .form-group{border-bottom: 1px solid #eff4f5}
-.form-horizontal.form-filter .form-group:last-child{margin-bottom: 10px; border: none}
-.form-horizontal.form-filter .form-control.select2-container {width: 140px}
+
+.form-horizontal.form-filter .control-label {
+    max-width: 120px;
+    padding-right: 0;
+    padding-left: 0
+}
+
+.form-horizontal.form-filter .form-control {
+    max-width: 300px;
+}
+
+.form-horizontal.form-filter .form-group {
+    border-bottom: 1px solid #eff4f5
+}
+
+.form-horizontal.form-filter .form-group:last-child {
+    margin-bottom: 10px;
+    border: none
+}
+
+.form-horizontal.form-filter .form-control.select2-container {
+    width: 140px
+}
+
 /* checkbox radio */
 
 .form-horizontal .checkbox, .form-horizontal .checkbox-inline, .form-horizontal .radio, .form-horizontal .radio-inline {
@@ -466,7 +537,7 @@ a:hover, a:focus {
     top: 0px;
     left: 0;
     bottom: 0;
-    width: 220px;
+    width: 240px;
     -webkit-box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2);
     box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2);
     z-index: 99;
@@ -479,7 +550,7 @@ a:hover, a:focus {
     top: 0px;
     bottom: 0;
     left: 0;
-    width: 100px;
+    width: 120px;
     background: #1f3240;
 }
 
@@ -550,7 +621,7 @@ a:hover, a:focus {
     position: fixed;
     top: 0px;
     bottom: 0;
-    left: 100px;
+    left: 120px;
     width: 120px;
     background: #fff;
 }
@@ -612,7 +683,7 @@ a:hover, a:focus {
 /* 三级分类 顶部导航栏 */
 
 #app-container {
-    margin-left: 220px;
+    margin-left: 240px;
     background: #f2f2f2;
 }
 
@@ -1457,7 +1528,165 @@ select.we7-select+.we7-select, select+.we7-select {
     box-sizing: border-box;
 }
 
+/* 客服 */
+.service-side .side-nav-item{
+    height: 60px;
+    padding: 5px 0px 0px 5px;
+    cursor: pointer;
+    border-bottom: 1px solid #fff;
+}
+.service-side .side-nav-item img{
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    display: inline-block;
+    border: none;
+    vertical-align: middle;
+}
+.service-side .side-nav-item.active{
+    background: #c2c2c2;
+    color: white;
+}
+.service-box {
+    min-height: 80vh;
+    overflow: "hidden";
+}
+
+.service-side {
+    float: left;
+    min-height: 80vh;
+    width: 200px;
+    background-color: #f2f2f2;
+    overflow-x: hidden;
+}
+
+.service-body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-left: 201px;
+    min-height: 80vh;
+    background-color: #d8d8d8;
+}
+
+.service-chat {
+    width: 70%;
+    height: 100%;
+    float: left;
+}
+
+.service-chat .chat-box {
+    width: 98%;
+    height: 60vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 2% 1%;
+}
+.chat-box ul{
+    display: none;
+}
+.chat-box ul.show-chat-detail{
+    display: block;
+}
+.chat-box  ul li{
+    position: relative;
+    margin-bottom: 10px;
+    padding-left: 60px;
+    min-height: 60px;
+}
+.chat-box  ul .chat-mine{
+    text-align: right;
+    padding-left: 0;
+    padding-right: 60px;
+}
+.chat-user, .chat-text{
+    display: inline-block;
+    vertical-align: top;
+    font-size: 14px;
+}
+.chat-user{
+    position: absolute;
+    left: 3px;
+}
+.chat-mine .chat-user{
+    left: auto;
+    right: 3px;
+}
+.chat-mine .chat-user cite{
+    left: auto;
+    right: 60px;
+    text-align: right;
+}
+.chat-user cite{
+    position: absolute;
+    left: 60px;
+    top: -2px;
+    line-height: 24px;
+    font-size: 12px;
+    color: #fff;
+    white-space: nowrap;
+    text-align: left;
+    font-style: normal;
+}
+.chat-user img{
+    display: inline-block;
+    border: none;
+    vertical-align: middle;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+}
+.chat-mine .chat-text{
+    margin-left: 0;
+    text-align: left;
+    background-color: #5FB878;
+    color: #fff;
+}
+.chat-text{
+    max-width: 462px;
+    position: relative;
+    line-height: 22px;
+    margin-top: 25px;
+    padding: 8px 15px;
+    border-radius: 3px;
+    color: #333;
+    word-break: break-all;
+}
+.service-chat .msg-send{
+    width: 100%;
+    height: 20vh;
+    background: white;
+}
+.msg-box{
+    width: 100%;
+    height: 65%;
+}
+.msg-box .msg-area{
+    width: 98%;
+    height: 98%;
+    padding: 0 1%;
+    resize: none;
+    border: none;
+    overflow-y: auto;
+}
 /* 地图 */
-.dispatch .map{position: relative;}
-.dispatch .map #allmap{height: 750px; z-index: 10;}
-.dispatch .map .deliveryer-container{display: none; width: 20%; padding-left: 10px; background: #fff; position: absolute; top: 0; right: 0; height: 750px; z-index: 11;}
+
+.dispatch .map {
+    position: relative;
+}
+
+.dispatch .map #allmap {
+    height: 750px;
+    z-index: 10;
+}
+
+.dispatch .map .deliveryer-container {
+    display: none;
+    width: 20%;
+    padding-left: 10px;
+    background: #fff;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 750px;
+    z-index: 11;
+}

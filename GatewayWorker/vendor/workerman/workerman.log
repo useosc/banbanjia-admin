@@ -1,0 +1,36 @@
+2019-08-22 18:06:45 pid:18466 Workerman[start.php] start in DEBUG mode
+2019-08-22 18:07:45 pid:18467 Worker process terminated with ERROR: E_ERROR "Uncaught exception 'PDOException' with message 'SQL:UPDATE `ims_hello_banbanjia_service_now_data` SET `is_talking` = :is_talking,`in_queue` = :in_queue,`online_kf` = :online_kf,`success_in` = :success_in,`total_in` = :total_in,`now_date` = :now_date WHERE id=1 SQLSTATE[42S22]: Column not found: 1054 Unknown column 'now_date' in 'field list'' in /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php:1772
+Stack trace:
+#0 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php(1830): Workerman\MySQL\Connection->execute('UPDATE `ims_hel...', Array)
+#1 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/Applications/helloService/Events.php(784): Workerman\MySQL\Connection->query()
+#2 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/Applications/helloService/Events.php(84): Events::writeLog(1)
+#3 [internal function]: Events::{closure}()
+#4 /www/wwwroot/banbanjia in /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php on line 1772"
+2019-08-22 18:07:45 pid:18466 worker[WhisperBusinessWorker:18467] exit with status 65280
+2019-08-22 18:08:45 pid:18605 Worker process terminated with ERROR: E_ERROR "Uncaught exception 'PDOException' with message 'SQL:UPDATE `ims_hello_banbanjia_service_now_data` SET `is_talking` = :is_talking,`in_queue` = :in_queue,`online_kf` = :online_kf,`success_in` = :success_in,`total_in` = :total_in,`now_date` = :now_date WHERE id=1 SQLSTATE[42S22]: Column not found: 1054 Unknown column 'now_date' in 'field list'' in /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php:1772
+Stack trace:
+#0 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php(1830): Workerman\MySQL\Connection->execute('UPDATE `ims_hel...', Array)
+#1 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/Applications/helloService/Events.php(784): Workerman\MySQL\Connection->query()
+#2 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/Applications/helloService/Events.php(84): Events::writeLog(1)
+#3 [internal function]: Events::{closure}()
+#4 /www/wwwroot/banbanjia in /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php on line 1772"
+2019-08-22 18:08:45 pid:18466 worker[WhisperBusinessWorker:18605] exit with status 65280
+2019-08-22 18:09:45 pid:18725 Worker process terminated with ERROR: E_ERROR "Uncaught exception 'PDOException' with message 'SQL:UPDATE `ims_hello_banbanjia_service_now_data` SET `is_talking` = :is_talking,`in_queue` = :in_queue,`online_kf` = :online_kf,`success_in` = :success_in,`total_in` = :total_in,`now_date` = :now_date WHERE id=1 SQLSTATE[42S22]: Column not found: 1054 Unknown column 'now_date' in 'field list'' in /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php:1772
+Stack trace:
+#0 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php(1830): Workerman\MySQL\Connection->execute('UPDATE `ims_hel...', Array)
+#1 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/Applications/helloService/Events.php(784): Workerman\MySQL\Connection->query()
+#2 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/Applications/helloService/Events.php(84): Events::writeLog(1)
+#3 [internal function]: Events::{closure}()
+#4 /www/wwwroot/banbanjia in /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php on line 1772"
+2019-08-22 18:09:45 pid:18466 worker[WhisperBusinessWorker:18725] exit with status 65280
+2019-08-22 18:10:17 pid:18466 Workerman[start.php] stopping ...
+2019-08-22 18:10:17 pid:18466 Workerman[start.php] has been stopped
+2019-08-22 18:10:20 pid:18955 Workerman[start.php] start in DEBUG mode
+2019-08-23 11:07:40 pid:12443 Workerman[start.php] start in DEBUG mode
+2019-08-26 14:12:31 pid:19067 Workerman[start.php] start in DEBUG mode
+2019-08-26 17:41:25 pid:19067 Workerman[start.php] stopping ...
+2019-08-26 17:41:26 pid:19067 Workerman[start.php] stopping ...
+2019-08-26 17:41:27 pid:19067 worker[WhisperBusinessWorker:19069] exit with status 9
+2019-08-26 17:41:27 pid:19067 worker[WhisperBusinessWorker:19070] exit with status 9
+2019-08-26 17:41:27 pid:19067 Workerman[start.php] has been stopped
+2019-08-26 17:41:34 pid:15208 Workerman[start.php] start in DEBUG mode

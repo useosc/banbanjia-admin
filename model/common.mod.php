@@ -365,7 +365,40 @@ function check_cache_status($key, $timelimit = 300)
 //获取所有权限列表
 function get_all_permits($justkey = false)
 {
-    $all_permits = array('dashboard' => array('title' => '概况', 'permits' => array('dashboard.index' => '运营概况', 'dashboard.ad' => '引导页', 'dashboard.slide' => '幻灯片')), 'order' => array('title' => '订单', 'permits' => array('order.new' => '未完成', 'order.dispatch' => '调度中心-待指派', 'order.records' => '调度中心-接单统计/接单记录')), 'statcenter' => array('title' => '数据', 'permits' => array()));
+    $all_permits = array(
+        'dashboard' => array(
+            'title' => '概况',
+            'permits' => array(
+                'dashboard.index' => '运营概况',
+                'dashboard.ad' => '引导页',
+                'dashboard.slide' => '幻灯片'
+            )
+        ),
+        'order' => array(
+            'title' => '订单',
+            'permits' => array(
+                'order.new' => '未完成',
+                'order.dispatch' => '调度中心-待指派',
+                'order.records' => '调度中心-接单统计/接单记录'
+            )
+        ),
+        'statcenter' => array( //
+            'title' => '数据',
+            'permits' => array()
+        ),
+        'service' => array(
+            'title' => '客服',
+            'permits' => array(
+                'service.index' => '数据概况',
+                'service.from' => '客服工作台（非客服不需要)',
+                'service.user' => '客服管理',
+                'service.group' => '分组管理',
+                'service.words' => '常用语管理',
+                'service.system' => '设置',
+                'service.chatlog' => '历史消息'
+            )
+        )
+    );
     if ($justkey) {
         $permits = array();
         foreach ($all_permits as $key => $item) {

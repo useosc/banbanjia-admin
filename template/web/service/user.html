@@ -1,0 +1,167 @@
+{itemplate 'public/header'}
+{if $op == 'list'}
+<form action="./index.php?" method="get" class="form-horizontal form-filter" role="form">
+	<input type="hidden" name="c" value="site">
+	<input type="hidden" name="m" value="hello_banbanjia">
+	<input type="hidden" name="a" value="entry">
+	<input type="hidden" name="ctrl" value="service">
+	<input type="hidden" name="ac" value="user">
+	<input type="hidden" name="op" value="list">
+	<input type="hidden" name="do" value="web">
+	<input type="hidden" name="createtime" value="">
+	<div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">客服所属分组</label>
+		<div class="col-sm-8 col-lg-9 col-xs-12">
+			<div class="btn-group">
+				<a href="{php echo iurl('service/user/list', array('groupid' => 0))}" class="btn {if $_GPC['groupid'] == 0}btn-primary{else}btn-default{/if}">全部</a>
+				{loop $groups $group}
+					<a href="{php echo iurl('service/user/list', array('groupid' => $group['id']))}" class="btn {if $_GPC['groupid'] == $group['id']}btn-primary{else}btn-default{/if}">{$group['name']}</a>
+				{/loop}
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">客服名</label>
+		<div class="col-sm-8 col-lg-3 col-xs-12">
+			<input class="form-control" name="user_name" id="" type="text" value="">
+		</div>
+		<div class="pull-left col-xs-12 col-sm-2 col-lg-2">
+			<button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+		</div>
+	</div>
+</form>
+<form action="" class="form-table form" method="post">
+    <div class="panel panel-table">
+        <div class="panel-heading">
+            <a href="{php echo iurl('service/user/post');}" class="btn btn-primary btn-sm">添加客服</a>
+        </div>
+        <div class="panel-body table-responsive js-table">
+            {if empty($users)}
+                <div class="no-result">
+                    <p>还没有相关数据</p>
+                </div>
+            {else}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="checkbox checkbox-inline">
+                                    <input type="checkbox" name="id[]">
+                                    <label></label>
+                                </div>
+                            </th>
+                            <th>登录名</th>
+                            <th>客服昵称</th>
+                            <th>头像</th>
+                            <th>所属分组</th>
+                            <th>状态</th>
+                            <th class="text-right">操作</th>
+                        </tr>
+                    </thead>
+                    {loop $users $user}
+                        <tr>
+                            <td>
+                                <div class="checkbox checkbox-inline">
+                                    <input type="checkbox" name="id[]" value="{$user['id']}"/>
+                                    <label></label>
+                                </div>
+                            </td>
+                            <input type="hidden" name="ids[]" value="{$user['id']}">
+                            <td>{$user['username']}</td>
+                            <td>
+                                <input type="text" name="user_name[]" value="{$user['user_name']}" class="form-control width-100" required="true">
+                            </td>
+                            <td><img src="{php echo tomedia($user['user_avatar']);}" width="50"></td>
+                            <td>{$user['gname']}</td>
+                            <td>
+                                <input type="checkbox" class="js-checkbox" data-on-text="启用" data-off-text="禁用" data-href="{php echo iurl('service/user/status',array('id'=> $user['id']));}" data-name="status" value="1" {if $user['status'] == 1}checked{/if}>
+                            </td>
+                            <td class="text-right">
+                                <a href="{php echo iurl('service/user/post',array('id' => $user['id']))}" class="btn btn-default btn-sm" title="编辑" data-toggle="tooltip" data-placement="top">编辑</a>
+                                <a href="{php echo iurl('service/user/del',array('id'=>$user['id']))}" class="btn btn-default btn-sm js-post" data-confirm="确认删除该客服？">删除</a>
+                            </td>
+                        </tr>
+                    {/loop}
+                </table>
+                <div class="btn-region clearfix">
+                    <div class="pull-left">
+                        <input type="hidden" name="token" value="{$_W['token']}"/>
+                        <input type="submit" class="btn btn-primary btn-sm" name="submit" value="提交修改">
+                        <a href="{php echo iurl('service/user/del')}" class="btn btn-primary btn-danger btn-sm js-batch" data-batch="remove" data-confirm="删除后将不可恢复，确定删除吗">删除</a>
+                    </div>
+                    <div class="pull-right">
+                        {$pager}
+                    </div>
+                </div>
+            {/if}
+        </div>
+    </div>
+</form>
+{/if}
+
+{if $op == 'post'}
+<div class="page clearfix">
+    <h2>编辑客服</h2>
+    <form action="" class="form-horizontal form form-validate" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">客服账号</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" class="form-control" name="name" value="{$user['name']}" required="true">
+                <span class="help-block">客服登录系统时的账号</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">客服密码</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" class="form-control" name="password" placeholder="*********">
+                <span class="help-block">客服登录系统时的密码</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">客服昵称</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" class="form-control" name="user_name" value="{$user['user_name']}" required="true">
+                <span class="help-block">名称会在用户端显示</span>
+            </div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">客服所属分组</label>
+			<div class="col-sm-8 col-lg-9 col-xs-12">
+				<select name="groupid" class="form-control">
+					<option value="0">==请选择客服所属分组==</option>
+					{loop $groups $group}
+						<option value="{$group['id']}" {if $group['id'] == $user['group_id']}selected{/if}>{$group['name']}</option>
+					{/loop}
+				</select>
+				<div class="help-block">还没有分组，点我 <a href="{php echo iurl('service/group/post')}"><i class="fa fa-plus-circle"></i> 添加分组</a></div>
+			</div>
+        </div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">头像</label>
+			<div class="col-sm-9 col-xs-12">
+				{php echo tpl_form_field_image('user_avatar', $user['user_avatar']);}
+			</div>
+		</div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否启用</label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="radio radio-inline">
+                    <input type="radio" name="status" value="1" id="status-1" {if $user['status'] == 1}checked{/if}>
+                    <label for="status-1">启用</label>
+                </div>
+                <div class="radio radio-inline">
+                    <input type="radio" name="status" value="0" id="status-0" {if $user['status'] == 0}checked{/if}>
+                    <label for="status-0">不启用</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-9 col-xs-9 col-md-9">
+                <input type="hidden" name="token" value="{$_W['token']}">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
+{/if}
+{itemplate 'public/footer'}

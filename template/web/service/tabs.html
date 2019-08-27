@@ -1,0 +1,64 @@
+<div class="second-sidebar-title">
+    概况
+</div>
+<div class="nav slimscroll">
+    {ifp 'service.index'}
+        <div class="menu-header">数据</div>
+        <ul class="menu-item">
+            <li {if $_W['_ac'] == 'index'}class="active"{/if}>
+                <a href="{php echo iurl('service/index');}">客服概况</a>
+            </li>
+        </ul>
+    {/if}
+    {ifp 'service.from'}
+    <div class="menu-header">工作台</div>
+    <ul class="menu-item">
+        <li {if $_W['_ac'] == 'from'}class="active"{/if}>
+            <a href="{php echo iurl('service/from');}">访客列表</a>
+        </li>
+    </ul>
+    {/if}
+    {ifp 'service.user'}
+        <div class="menu-header">客服管理</div>
+        <ul class="menu-item">
+            <li {if $_W['_ac'] == 'user'}class="active"{/if}>
+                <a href="{php echo iurl('service/user');}">客服列表</a>
+            </li>
+        </ul>
+    {/if}
+    {ifp 'service.group'}
+        <div class="menu-header">分组管理</div>
+        <ul class="menu-item">
+            <li {if $_W['_ac'] == 'group'}class="active"{/if}>
+                <a href="{php echo iurl('service/group');}">分组列表</a>
+            </li>
+        </ul>
+    {/if}
+    {ifp 'service.words'}
+        <div class="menu-header">常用语管理</div>
+        <ul class="menu-item">
+            <li {if $_W['_ac'] == 'words'}class="active"{/if}>
+                <a href="{php echo iurl('service/words');}">常用列表</a>
+            </li>
+        </ul>
+    {/if}
+    {ifp 'service.system'}
+        <div class="menu-header">设置</div>
+        <ul class="menu-item">
+            <li {if $_W['_op'] == 'reply'}class="active"{/if}>
+                <a href="{php echo iurl('service/system/reply');}">自动回复</a>
+            </li>
+            <li {if $_W['_op'] == 'customer'}class="active"{/if}>
+                <a href="{php echo iurl('service/system/customer');}">客服设置</a>
+            </li>
+        </ul>
+    {/if}
+    {ifp 'service.chatlog'}
+        <div class="menu-header">历史会话</div>
+        <ul class="menu-item">
+            <li {if $_W['_ac'] == 'chatlog'}class="active"{/if}>
+                <a href="{php echo iurl('service/chatlog');}">历史会话列表</a>
+            </li>
+        </ul>
+    {/if}
+</div>

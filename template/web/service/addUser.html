@@ -1,0 +1,38 @@
+{itemplate 'public/header'}
+<div class="page clearfix">
+    <h2>请先编辑个人信息后接待访客</h2>
+    <form action="" class="form-horizontal form form-validate" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">昵称</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" class="form-control" name="name" value="{$user['user_name']}" required="true">
+                <span class="help-block">昵称会在访客端显示</span>
+            </div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">所属分组</label>
+			<div class="col-sm-8 col-lg-9 col-xs-12">
+				<select name="groupid" class="form-control">
+					<option value="0">==请选择所属分组==</option>
+					{loop $groups $group}
+						<option value="{$group['id']}" {if $group['id'] == $user['group_id']}selected{/if}>{$group['name']}</option>
+					{/loop}
+                </select>
+                <span class="help-block">不清楚所属分组时，请联系管理员</span>
+			</div>
+        </div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">头像</label>
+			<div class="col-sm-9 col-xs-12">
+				{php echo tpl_form_field_image('user_avatar', $user['user_avatar']);}
+			</div>
+		</div>
+        <div class="form-group">
+            <div class="col-sm-9 col-xs-9 col-md-9">
+                <input type="hidden" name="token" value="{$_W['token']}">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
+{itemplate 'public/footer'}

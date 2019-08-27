@@ -10,10 +10,17 @@ if ($op == "list") {
     if (!empty($data)) {
         foreach ($data as $key => &$row) {
             if ($scene == "notify") {
-                    if (empty($row["openid"])) {
+                // if (MODULE_FAMILY == 'wxapp') {
+                    if (empty($row["openid"]) && empty($row["openid_wxapp"])) {
                         unset($data[$key]);
                         continue;
                     }
+                // } else {
+                //     if (empty($row["openid"])) {
+                //         unset($data[$key]);
+                //         continue;
+                //     }
+                // }
             } else {
                 if ($scene == "getcash") {
                     if ($_W["we7_hello_banbanjia"]["config"]["getcash"]["channel"]["wechat"] == "wxapp") {

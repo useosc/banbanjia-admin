@@ -66,7 +66,7 @@
 
 {if $op == 'post'}
 <div class="page clearfix system-permit">
-    <form class="form-horizontal form form-validate" id="form1" action="" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal form form-validate" action="" method="post" enctype="multipart/form-data">
         <div class="form-group">
 			<label class="col-xs-12 col-sm-3 col-md-2 control-label">角色</label>
 			<div class="col-sm-9 col-xs-12">
@@ -94,7 +94,7 @@
                     <div class="category-permit">
                         <div class="heading">
                             <div class="checkbox-inline checkbox">
-                                <input type="checkbox" name="permits[]" value="{$group}" class="permit-all-item" data-group="{$group}" id="{$group}" {if in_array($group, $role['perms'])}checked{/if}>
+                                <input type="checkbox" name="permits[]" value="{$group}" class="permit-all-item" data-group="{$group}" id="{$group}" {if in_array($group, $role['permits'])}checked{/if}>
                                 <label for="{$group}">{$all['title']}</label>
                             </div>
                         </div>

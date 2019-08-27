@@ -20,11 +20,9 @@
 					<div class="btn-group">
 						<a href="{php echo ifilter_url('status:0');}" class="btn {if $status == 0}btn-primary{else}btn-default{/if}">不限</a>
 						<a href="{php echo ifilter_url('status:1');}" class="btn {if $status == 1}btn-primary{else}btn-default{/if}">待接单</a>
-						<a href="{php echo ifilter_url('status:2');}" class="btn {if $status == 2}btn-primary{else}btn-default{/if}">已确认</a>
-						<a href="{php echo ifilter_url('status:3');}" class="btn {if $status == 3}btn-primary{else}btn-default{/if}">待配送</a>
-						<a href="{php echo ifilter_url('status:4');}" class="btn {if $status == 4}btn-primary{else}btn-default{/if}">配送中</a>
-						<a href="{php echo ifilter_url('status:5');}" class="btn {if $status == 5}btn-primary{else}btn-default{/if}">已完成</a>
-						<a href="{php echo ifilter_url('status:6');}" class="btn {if $status == 6}btn-primary{else}btn-default{/if}">已取消</a>
+						<a href="{php echo ifilter_url('status:2');}" class="btn {if $status == 2}btn-primary{else}btn-default{/if}">搬运中</a>
+						<a href="{php echo ifilter_url('status:3');}" class="btn {if $status == 3}btn-primary{else}btn-default{/if}">已完成</a>
+						<a href="{php echo ifilter_url('status:4');}" class="btn {if $status == 4}btn-primary{else}btn-default{/if}">已取消</a>
 					</div>
 				</div>
 			</div>
@@ -41,9 +39,10 @@
 			<div class="col-sm-9 col-xs-12">
 				<div class="btn-group">
 					<div class="btn-group">
-						<a href="{php echo ifilter_url('is_reserve:-1');}" class="btn {if $is_reserve == -1}btn-primary{else}btn-default{/if}">不限</a>
-						<a href="{php echo ifilter_url('is_reserve:1');}" class="btn {if $is_reserve == 1}btn-primary{else}btn-default{/if}">预订单</a>
-						<a href="{php echo ifilter_url('is_reserve:0');}" class="btn {if $is_reserve == 0}btn-primary{else}btn-default{/if}">普通单</a>
+						<a href="{php echo ifilter_url('order_type:');}" class="btn {if $order_type == ''}btn-primary{else}btn-default{/if}">不限</a>
+						<a href="{php echo ifilter_url('order_type:free');}" class="btn {if $order_type == 'free'}btn-primary{else}btn-default{/if}">免费搬家</a>
+						<a href="{php echo ifilter_url('order_type:share');}" class="btn {if $order_type == 'share'}btn-primary{else}btn-default{/if}">共享搬家</a>
+						<a href="{php echo ifilter_url('order_type:company');}" class="btn {if $order_type == 'company'}btn-primary{else}btn-default{/if}">搬家公司</a>
 					</div>
 				</div>
 			</div>

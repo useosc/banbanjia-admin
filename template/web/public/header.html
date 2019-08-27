@@ -13,6 +13,18 @@
 </style>
 {/if}
 
+<style>
+#resize{
+    position: fixed;
+	top: 0px;
+	bottom: 0;
+	width: 3px;
+	left: 120px;
+	cursor: w-resize;
+	z-index: 100000;
+}
+</style>
+
 <body>
 	{if defined('IN_MANAGE')}
 	<div id="app-sidebar">
@@ -45,16 +57,16 @@
 					{ifp 'domestice'}
 					<li class="{if $_W['_ctrl'] == 'domestice'}active{/if}">
 						<a href="{php echo iurl('domestice/order/list');}">
-							<i class="icon icon-deliver"></i>
-							国内搬家
+							<i class="icon icon-sports"></i>
+							搬运
 						</a>
 					</li>
 					{/if}
 					{ifp 'global'}
 					<li class="{if $_W['_ctrl'] == 'global'}active{/if}">
 						<a href="{php echo iurl('global/order/list');}">
-							<i class="icon icon-global"></i>
-							国际搬家
+							<i class="icon icon-deliver"></i>
+							搬家
 						</a>
 					</li>
 					{/if}
@@ -106,19 +118,35 @@
 						</a>
 					</li>
 					{/if}
-					{ifp 'service'}
-					<li class="{if $_W['_ctrl'] == 'service'}active{/if}">
-						<a href="{php echo iurl('service/comment');}">
-							<i class="icon icon-refund"></i>
-							售后
+					{ifp 'comment'}
+					<li class="{if $_W['_ctrl'] == 'comment'}active{/if}">
+						<a href="{php echo iurl('comment/comment');}">
+							<i class="icon icon-comment"></i>
+							评价
 						</a>
 					</li>
 					{/if}
-					{ifp 'clerk'}
+					<!-- {ifp 'clerk'}
 					<li class="{if $_W['_ctrl'] == 'clerk'}active{/if}">
 						<a href="{php echo iurl('clerk/account/list');}">
 							<i class="icon icon-person2"></i>
 							店员
+						</a>
+					</li>
+					{/if} -->
+					{ifp 'notice'}
+					<li class="{if $_W['_ctrl'] == 'notice'}active{/if}">
+						<a href="{php echo iurl('notice/index');}">
+							<i class="icon icon-notice"></i>
+							消息
+						</a>
+					</li>
+					{/if}
+					{ifp 'service'}
+					<li class="{if $_W['_ctrl'] == 'service'}active{/if}">
+						<a href="{php echo iurl('service/index');}">
+							<i class="icon icon-service"></i>
+							客服
 						</a>
 					</li>
 					{/if}
@@ -164,6 +192,7 @@
 				</ul>
 			</div>
 		</div>
+		<div id="resize"></div>
 		<div id="app-second-sidebar">
 			{php build_menu();}
 		</div>
@@ -333,3 +362,50 @@
 		</div>
 		<div id="app-inner">
 	{/if}
+	<script>
+	$(function(){
+		var resize = document.getElementById("resize");
+		var app_first_sidebar = document.getElementById("app-first-sidebar");
+		var app_second_sidebar = document.getElementById("app-second-sidebar");
+		var app_container = document.getElementById('app-container');
+
+		resize.style.left = localStorage.getItem('resizeLeft');
+		app_first_sidebar.style.width = localStorage.getItem('firstSidebarWidth');
+		app_second_sidebar.style.left = localStorage.getItem('secondSidebarLeft');
+		app_container.style.marginLeft = localStorage.getItem('containerMarginLeft');
+
+		resize.onmousedown = function(e){
+			var startX = e.clientX;
+			resize.left = resize.offsetLeft;
+			app_first_sidebar.width = app_first_sidebar.offsetWidth;
+			app_second_sidebar.left = app_second_sidebar.offsetLeft;
+			if (window.getComputedStyle) {
+				app_container.marginLeft = getComputedStyle(app_container, null).marginLeft;
+			} else {
+				app_container.marginLeft = app_container.currentStyle.marginLeft;//兼容IE的写法
+			}
+			
+			document.onmousemove = function(e){
+				var endX = e.clientX;
+				var moveLenResize = resize.left + (endX - startX);
+				var moveLenApp_second_sidebar = app_second_sidebar.left + (endX - startX);
+				resize.style.left = moveLenResize + 'px';
+				app_first_sidebar.style.width = app_first_sidebar.width + (endX - startX) + 'px';
+				app_second_sidebar.style.left = moveLenApp_second_sidebar + 'px';
+				app_container.style.marginLeft = parseInt(app_container.marginLeft) + (endX - startX) + 'px';
+			}
+			document.onmouseup = function(evt){
+				localStorage.setItem('resizeLeft',resize.style.left);
+				localStorage.setItem('firstSidebarWidth',app_first_sidebar.style.width);
+				localStorage.setItem('secondSidebarLeft',app_second_sidebar.style.left);
+				localStorage.setItem('containerMarginLeft',app_container.style.marginLeft);
+
+				document.onmousemove = null;
+				document.onmouseup = null; 
+				resize.releaseCapture && resize.releaseCapture();
+			}
+			resize.setCapture && resize.setCapture();
+   			return false;
+		}
+	})
+	</script>

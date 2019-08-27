@@ -25,7 +25,6 @@ function icheckdeliveryer()
     if (!empty($deliveryer)) {
         $_W["deliveryer"] = $deliveryer;
     }
-
     if (empty($_W['deliveryer'])) {
         $key = "we7_hello_banbanjia_deliveryer_session_" . $_W['uniacid'];
         if (isset($_GPC[$key])) {
@@ -65,7 +64,7 @@ function icheckdeliveryer()
         $_W["deliveryer"]["sids_sn"] = implode(",", $_W["deliveryer"]["sids"]);
         return true;
     }
-    if (defined("IN_WXAPP") || defined("IN_VUE")) {
+    if (defined("IN_WXAPP")) {
         imessage(error(41009, "请先登录"), "", "ajax");
     }
 }

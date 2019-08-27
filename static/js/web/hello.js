@@ -221,7 +221,7 @@ define(["bootstrap"], function ($) {
                             })
                         })
                     })
-                } else $html = '没有符合条件的粉丝<br>如果您正在设置提现账户,并且没有找到粉丝,如果您使用了小程序,请先进入外卖小程序首页,然后再搜索添加<br>如果未搜索到粉丝,你可以<a href="javascript:;" onclick="$(\'#follow-qrcode\').toggle()">"扫码绑定粉丝"</a>来进行粉丝绑定，绑定成功后，然后再搜索添加', c.find(".content #info").html($html)
+                } else $html = '没有符合条件的粉丝<br>如果您正在设置提现账户,并且没有找到粉丝,如果您使用了小程序,请先进入小程序首页,然后再搜索添加<br>如果未搜索到粉丝,你可以<a href="javascript:;" onclick="$(\'#follow-qrcode\').toggle()">"扫码绑定粉丝"</a>来进行粉丝绑定，绑定成功后，然后再搜索添加', c.find(".content #info").html($html)
             })
         })
     }, hello.selectGohomeGoods = function (callback, option) {

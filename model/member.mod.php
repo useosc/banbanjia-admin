@@ -8,28 +8,38 @@ function icheckauth($force = true) //鉴权
     load()->model("mc");
 
     $_W["member"] = array();
-    if (defined("IN_WXAPP")) {
+    if (is_weixin() && !defined('IN_WXAPP')) {
         if (!empty($_W['openid'])) {
-            //统一用户
-            if (!empty($_W['unionid'])) {
-                pdo_update('hello_banbanjia_members', array('openid_wxapp' => $_W['openid']), array('uniacid' => $_W['uniacid'], 'unionid' => $_W['unionid']));
-                pdo_update('hello_banbanjia_members', array('unionId' => $_W['unionid']), array('uniacid' => $_W['uniacid'], 'openid_wxapp' => $_W['openid']));
-                $member = get_member($_W['unionid'], 'unionid');
+            if(empty($force)){
+                $member = get_member($_W['openid']);
+            }else{
+                $fansInfo = mc_oauth_userinfo();
             }
-            if (empty($member)) {
-                $member = get_member($_W["openid"], "openid_wxapp");
-            }
-            if (!empty($member)) {
-                $_W['member'] = $member;
-                $update = array();
-                if (empty($member['openid_wxapp'])) {
-                    $update['openid_wxapp'] = $_W['openid'];
+         }
+    } else {
+        if (defined("IN_WXAPP")) {
+            if (!empty($_W['openid'])) {
+                //统一用户
+                if (!empty($_W['unionid'])) {
+                    pdo_update('hello_banbanjia_members', array('openid_wxapp' => $_W['openid']), array('uniacid' => $_W['uniacid'], 'unionid' => $_W['unionid']));
+                    pdo_update('hello_banbanjia_members', array('unionId' => $_W['unionid']), array('uniacid' => $_W['uniacid'], 'openid_wxapp' => $_W['openid']));
+                    $member = get_member($_W['unionid'], 'unionid');
                 }
-                if (empty($member['unionId']) && !empty($_W['unionid'])) {
-                    $update['unionId'] = $_W['unionid'];
+                if (empty($member)) {
+                    $member = get_member($_W["openid"], "openid_wxapp");
                 }
-                if (!empty($update)) {
-                    pdo_update('hello_banbanjia_members', $update, array('id' => $_W['member']['id']));
+                if (!empty($member)) {
+                    $_W['member'] = $member;
+                    $update = array();
+                    if (empty($member['openid_wxapp'])) {
+                        $update['openid_wxapp'] = $_W['openid'];
+                    }
+                    if (empty($member['unionId']) && !empty($_W['unionid'])) {
+                        $update['unionId'] = $_W['unionid'];
+                    }
+                    if (!empty($update)) {
+                        pdo_update('hello_banbanjia_members', $update, array('id' => $_W['member']['id']));
+                    }
                 }
             }
         }
@@ -101,7 +111,8 @@ function member_groups()
     return $config_member['group'];
 }
 //绑定手机号
-function bind_phone($phone){
+function bind_phone($phone)
+{
     global $_W;
     $member_uid = $_W['fans']['uid'];
     pdo_update("hello_banbanjia_members", array("mobile" => $phone, "mobile_audit" => 1), array("uid" => $member_uid, "uniacid" => $_W["uniacid"]));
@@ -123,7 +134,7 @@ function member_union($unionId, $field = 'unionId')
     $update = array();
     $uids = $ids = array();
     $setmeals = array();
-    foreach($members as $member){
+    foreach ($members as $member) {
         $ids[] = $member['id'];
         $uids[] = $member['uid'];
         if (0 < $member["setmeal_endtime"]) {

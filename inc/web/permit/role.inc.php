@@ -37,5 +37,21 @@ if($op == 'post'){
         $role["permits"] = explode(",", $role["permits"]);
     }
 }
-
+if ($op == "status") {
+    $id = intval($_GPC["id"]);
+    $status = intval($_GPC["status"]);
+    pdo_update("hello_banbanjia_permit_role", array("status" => $status), array("uniacid" => $_W["uniacid"], "id" => $id));
+    imessage(error(0, ""), "", "ajax");
+}
+if ($op == "del") {
+    $ids = $_GPC["id"];
+    if (!is_array($ids)) {
+        $ids = array($ids);
+    }
+    foreach ($ids as $id) {
+        pdo_delete("hello_banbanjia_permit_role", array("uniacid" => $_W["uniacid"], "id" => $id));
+        pdo_update("hello_banbanjia_permit_user", array("roleid" => 0), array("uniacid" => $_W["uniacid"], "roleid" => $id));
+    }
+    imessage(error(0, "删除角色成功"), "", "ajax");
+}
 include itemplate('permit/role');

@@ -54,7 +54,7 @@
 		</ul>
 	{/if}
 	{ifp 'config.notice'}
-		<div class="menu-header">消息推送</div>
+		<div class="menu-header">模板推送</div>
 		<ul class="menu-item">
 			<li {if $_W['_router'] == 'config/notice/wxtemplate'}class="active"{/if}>
 				<a href="{php echo iurl('config/notice/wxtemplate');}">模板消息</a>
@@ -62,13 +62,24 @@
 		</ul>
 	{/if}
 	{ifp 'config.sms'}
-		<div class="menu-header">短信平台</div>
+		<div class="menu-header">短信</div>
 		<ul class="menu-item">
 			<li {if $_W['_router'] == 'config/sms/set'}class="active"{/if}>
 				<a href="{php echo iurl('config/sms/set');}">短信接入</a>
 			</li>
 			<li {if $_W['_router'] == 'config/sms/template'}class="active"{/if}>
 				<a href="{php echo iurl('config/sms/template');}">短信模板</a>
+			</li>
+		</ul>
+	{/if}
+	{ifp 'config.email'}
+		<div class="menu-header">邮箱</div>
+		<ul class="menu-item">
+			<li {if $_W['_router'] == 'config/email/set'}class="active"{/if}>
+				<a href="{php echo iurl('config/email/set');}">邮箱接入</a>
+			</li>
+			<li {if $_W['_router'] == 'config/email/template'}class="active"{/if}>
+				<a href="{php echo iurl('config/email/template');}">邮箱模板</a>
 			</li>
 		</ul>
 	{/if}
@@ -178,7 +189,7 @@
 				<a href="{php echo iurl('config/cover/settle');}">商家入驻入口</a>
 			</li>
 			<li {if $_W['_router'] == 'config/cover/delivery'}class="active"{/if}>
-				<a href="{php echo iurl('config/cover/delivery');}">配送员入口</a>
+				<a href="{php echo iurl('config/cover/delivery');}">搬运工入口</a>
 			</li>
 		</ul>
 	{/if}

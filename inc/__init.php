@@ -57,24 +57,39 @@ if (defined("IN_SYS")) { //web/index 后台入口文件进入
         imessage("控制器 " . $_W["_ctrl"] . " 方法 " . $_W["_ac"] . " 未找到!", "", "info");
     }
 } else { //api接口路由
-    $_W["ochannel"] = "wxapp";  //小程序端
-    $_W["channel"] = $_W["ochannel"];
-    if ($_GPC["from"] == "wxapp") {
-        define("IN_WXAPP", 1);
-    } else {
-        if ($_GPC['form'] == 'wap') { //web手机端
-            $_W['ochannel'] = 'wap';
-            define('IN_WAP', 1);
+    if (!in_array($_GPC['from'], array('wxapp'))) { //h5
+        $_W['ochannel'] = "wechat";
+        $_W['channel'] = $_W['ochannel'];
+        require WE7_BANBANJIA_PATH . 'inc/mobile/__init.php';
+        $file_init = WE7_BANBANJIA_PATH . 'inc/mobile/' . $_W['_ctrl'] . '/__init.php';
+        $file_path = WE7_BANBANJIA_PATH . "inc/mobile/" . $_W["_ctrl"] . "/" . $_W["_ac"] . "/" . $_W["_op"] . ".inc.php";
+
+        if (is_file($file_init)) {
+            require $file_init;
         }
-    }
-    require WE7_BANBANJIA_PATH . "inc/wxapp/__init.php";
-    $file_init = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W["_ctrl"] . "/__init.php";
-    $file_path = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W["_ctrl"] . "/" . $_W["_ac"] . "/" . $_W["_op"] . ".inc.php";
-    if (is_file($file_init)) {
-        require $file_init;
-    }
-    if (!is_file($file_path)) {
-        imessage(error(-1, "控制器wxapp " . $_W["_ctrl"] . " 方法 " . $_W["_ac"] . "/" . $_W["_op"] . " 未找到!"), "", "ajax");
+        if (!is_file($file_path)) {
+            imessage("控制器 " . $_W["_ctrl"] . " 方法 " . $_W["_ac"] . "/" . $_W["_op"] . " 未找到!", "close", "error");
+        }
+    } else {
+        $_W["ochannel"] = "wxapp";  //小程序端
+        $_W["channel"] = $_W["ochannel"];
+        if ($_GPC["from"] == "wxapp") {
+            define("IN_WXAPP", 1);
+        } else {
+            if ($_GPC['form'] == 'wap') { //web手机端
+                $_W['ochannel'] = 'wap';
+                define('IN_WAP', 1);
+            }
+        }
+        require WE7_BANBANJIA_PATH . "inc/wxapp/__init.php";
+        $file_init = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W["_ctrl"] . "/__init.php";
+        $file_path = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W["_ctrl"] . "/" . $_W["_ac"] . "/" . $_W["_op"] . ".inc.php";
+        if (is_file($file_init)) {
+            require $file_init;
+        }
+        if (!is_file($file_path)) {
+            imessage(error(-1, "控制器wxapp " . $_W["_ctrl"] . " 方法 " . $_W["_ac"] . "/" . $_W["_op"] . " 未找到!"), "", "ajax");
+        }
     }
 }
 
