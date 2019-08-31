@@ -101,6 +101,15 @@
             `account` varchar(2000) NOT NULL COMMENT '提现账户信息',
             PRIMARY KEY(`id`)
          ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_member_groups` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `uniacid` int(11) NOT NULL DEFAULT '0',
+            `title` varchar(20) NOT NULL DEFAULT '',
+            `group_condition` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
          
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_plugin`(
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -566,6 +575,7 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_service_all_data`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_service_log`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_words`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_member_groups`;
         ]]>
     </upgrade>
 </manifest>

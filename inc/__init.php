@@ -57,18 +57,34 @@ if (defined("IN_SYS")) { //web/index 后台入口文件进入
         imessage("控制器 " . $_W["_ctrl"] . " 方法 " . $_W["_ac"] . " 未找到!", "", "info");
     }
 } else { //api接口路由
-    if (!in_array($_GPC['from'], array('wxapp'))) { //h5
-        $_W['ochannel'] = "wechat";
-        $_W['channel'] = $_W['ochannel'];
-        require WE7_BANBANJIA_PATH . 'inc/mobile/__init.php';
-        $file_init = WE7_BANBANJIA_PATH . 'inc/mobile/' . $_W['_ctrl'] . '/__init.php';
-        $file_path = WE7_BANBANJIA_PATH . "inc/mobile/" . $_W["_ctrl"] . "/" . $_W["_ac"] . "/" . $_W["_op"] . ".inc.php";
+    // if (!in_array($_GPC['from'], array('wxapp','web))) { //公众号
+    //     $_W['ochannel'] = "wechat";
+    //     $_W['channel'] = $_W['ochannel'];
+    //     require WE7_BANBANJIA_PATH . 'inc/mobile/__init.php';
+    //     $file_init = WE7_BANBANJIA_PATH . 'inc/mobile/' . $_W['_ctrl'] . '/__init.php';
+    //     $file_path = WE7_BANBANJIA_PATH . "inc/mobile/" . $_W["_ctrl"] . "/" . $_W["_ac"] . "/" . $_W["_op"] . ".inc.php";
 
+    //     if (is_file($file_init)) {
+    //         require $file_init;
+    //     }
+    //     if (!is_file($file_path)) {
+    //         imessage("控制器 " . $_W["_ctrl"] . " 方法 " . $_W["_ac"] . "/" . $_W["_op"] . " 未找到!", "close", "error");
+    //     }
+    // } 
+    if (!in_array($_GPC['from'], array('wxapp'))) { //h5
+        $_W["ochannel"] = "web";  //h5端
+        $_W["channel"] = $_W["ochannel"];
+        if ($_GPC["from"] == "web") {
+            define("IN_WEB", 1);
+        } 
+        require WE7_BANBANJIA_PATH . "inc/wxapp/__init_web.php";
+        $file_init = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W["_ctrl"] . "/__init.php";
+        $file_path = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W["_ctrl"] . "/" . $_W["_ac"] . "/" . $_W["_op"] . ".inc.php";
         if (is_file($file_init)) {
             require $file_init;
         }
         if (!is_file($file_path)) {
-            imessage("控制器 " . $_W["_ctrl"] . " 方法 " . $_W["_ac"] . "/" . $_W["_op"] . " 未找到!", "close", "error");
+            imessage(error(-1, "控制器web " . $_W["_ctrl"] . " 方法 " . $_W["_ac"] . "/" . $_W["_op"] . " 未找到!"), "", "ajax");
         }
     } else {
         $_W["ochannel"] = "wxapp";  //小程序端
