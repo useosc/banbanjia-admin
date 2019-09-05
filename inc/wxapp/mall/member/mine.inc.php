@@ -4,9 +4,9 @@ global $_W;
 global $_GPC;
 icheckauth();
 
-$ta = trim($_GPC["ta"]) ? trim($_GPC["ta"]) : "index";
+// $ta = trim($_GPC["ta"]) ? trim($_GPC["ta"]) : "index";
+// if($ta == 'bind'){ //用户绑定手机号
 
-if($ta == 'bind'){ //用户绑定手机号
-
-}
-imessage(error(0,$result),"","ajax");
+// }
+$result = array('user' => $_W['member']);
+imessage(error(0, $result), "", "ajax");

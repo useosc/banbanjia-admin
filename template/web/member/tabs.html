@@ -25,11 +25,6 @@
 	</ul>
 	<div class="menu-header">顾客信息</div>
 	<ul class="menu-item">
-		{ifp 'member.address'}
-			<li {if $_W['_ac'] == 'address'}class="active"{/if}>
-				<a href="{php echo iurl('member/address');}">顾客地址</a>
-			</li>
-		{/if}
 		{ifp 'member.coupon'}
 			<li {if $_W['_ac'] == 'coupon'}class="active"{/if}>
 				<a href="{php echo iurl('member/coupon');}">顾客代金券</a>

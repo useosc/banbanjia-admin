@@ -162,15 +162,23 @@
                             {php echo date('Y-m-d H:i', $dca['addtime']);}
                         </td>
                         <td>
-                            {if !empty($dca['openid'])}
-                            <span class="label label-success">
-                                已绑定公众号
+                            {if !empty($dca['platform'] == 0)}
+                            <span class="label label-primary {if !empty($dca['openid'])}label-br{/if}">
+                                小程序
                             </span>
                             <br>
                             {/if}
-                            {if !empty($dca['openid_wxapp'])}
+                            {if !empty($dca['platform'] == 1)}
+                            <span class="label label-success">
+                                h5
+                            </span>
+                            {/if}
+                            {if !empty($dca['platform'] == 2)}
+                            <span class="label label-success">
+                                h5
+                            </span>
                             <span class="label label-primary {if !empty($dca['openid'])}label-br{/if}">
-                                已绑定小程序
+                                小程序
                             </span>
                             {/if}
                         </td>

@@ -1,11 +1,4 @@
 <?php
-
-header("Access-Control-Allow-Origin:*");
-
-header('Access-Control-Allow-Methods:POST');
-
-header('Access-Control-Allow-Headers:x-requested-with, content-type');
-
 defined("IN_IA") or exit("Access Denied");
 global $_W;
 global $_GPC;
@@ -24,7 +17,7 @@ if (empty($_config_mall['delivery_title'])) {
 }
 $config_close = $_W['we7_hello_banbanjia']['config']['close'];
 $config_wxapp = $_config_wxapp = $_W['we7_wxapp']['config'];
-if($_W['ochannel'] == 'wxapp'){
+if($_W['ochannel'] == 'wxapp' || $_W['ochannel'] == 'web' ){
     $_W['we7_wxapp']['config'] = get_plugin_config('wxapp');
 }
 // if ($_W['_ctrl'] == 'mall') {

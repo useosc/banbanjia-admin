@@ -198,9 +198,9 @@ define(["bootstrap"], function ($) {
                     text: a
                 })
             })
-        }), c.modal("show"), c.find("#keyword").on("keydown", function (a) {
+        }), c.modal("show"), c.find("#keyword").on("keydown", function (a) {//按键搜索
             if (13 == a.keyCode) return c.find("#search").trigger("click"), void a.preventDefault()
-        }), c.find("#search").on("click", function () {
+        }), c.find("#search").on("click", function () { //点击搜索
             var d = $.trim(c.find("#keyword").val());
             if (!d) return !1;
             var e = {

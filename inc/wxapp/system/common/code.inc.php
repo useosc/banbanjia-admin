@@ -1,6 +1,6 @@
 <?php
-ini_set("display_errors", "1"); //显示出错信息
-error_reporting(E_ALL);
+// ini_set("display_errors", "1"); //显示出错信息
+// error_reporting(E_ALL);
 defined("IN_IA") or exit("Access Denied");
 mload()->lmodel('sms');
 global $_W;
@@ -12,7 +12,7 @@ $sentTimes = intval($sentTimes);
 if (200 <= $sentTimes) {
     imessage(error(-1, "今日获取验证码次数已达最高限制"), "", "ajax");
 }
-$mobile = trim($_GPC["mobile"]);
+$mobile = $_GPC["mobile"];
 if ($mobile == "") {
     imessage(error(-1, "请输入手机号"), "", "ajax");
 }

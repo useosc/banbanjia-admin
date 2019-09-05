@@ -1,4 +1,7 @@
 <?php
+
+use function Qiniu\json_decode;
+
 defined("IN_IA") or exit("Access Denied");
 
 function icheckauth($force = true) //鉴权
@@ -6,45 +9,62 @@ function icheckauth($force = true) //鉴权
     global $_W;
     global $_GPC;
     load()->model("mc");
-
     $_W["member"] = array();
-    if (is_weixin() && !defined('IN_WXAPP')) {
+    // if (is_weixin() && !defined('IN_WXAPP')) { //公众号
+    //     if (!empty($_W['openid'])) {
+    //         if (empty($force)) {
+    //             $member = get_member($_W['openid']);
+    //         } else {
+    //             $fansInfo = mc_oauth_userinfo();
+    //         }
+    //     }
+    // } else {
+    if (defined("IN_WXAPP")) { //小程序
         if (!empty($_W['openid'])) {
-            if (empty($force)) {
-                $member = get_member($_W['openid']);
-            } else {
-                $fansInfo = mc_oauth_userinfo();
+            //统一用户
+            if (!empty($_W['unionid'])) {
+                pdo_update('hello_banbanjia_members', array('openid_wxapp' => $_W['openid']), array('uniacid' => $_W['uniacid'], 'unionid' => $_W['unionid']));
+                pdo_update('hello_banbanjia_members', array('unionId' => $_W['unionid']), array('uniacid' => $_W['uniacid'], 'openid_wxapp' => $_W['openid']));
+                $member = get_member($_W['unionid'], 'unionid');
+            }
+            if (empty($member)) {
+                $member = get_member($_W["openid"], "openid_wxapp");
+            }
+            if (!empty($member)) {
+                $_W['member'] = $member;
+                $update = array();
+                if (empty($member['openid_wxapp'])) {
+                    $update['openid_wxapp'] = $_W['openid'];
+                }
+                if (empty($member['unionId']) && !empty($_W['unionid'])) {
+                    $update['unionId'] = $_W['unionid'];
+                }
+                if (!empty($update)) {
+                    pdo_update('hello_banbanjia_members', $update, array('id' => $_W['member']['id']));
+                }
             }
         }
     } else {
-        if (defined("IN_WXAPP")) {
-            if (!empty($_W['openid'])) {
-                //统一用户
-                if (!empty($_W['unionid'])) {
-                    pdo_update('hello_banbanjia_members', array('openid_wxapp' => $_W['openid']), array('uniacid' => $_W['uniacid'], 'unionid' => $_W['unionid']));
-                    pdo_update('hello_banbanjia_members', array('unionId' => $_W['unionid']), array('uniacid' => $_W['uniacid'], 'openid_wxapp' => $_W['openid']));
-                    $member = get_member($_W['unionid'], 'unionid');
-                }
-                if (empty($member)) {
-                    $member = get_member($_W["openid"], "openid_wxapp");
-                }
-                if (!empty($member)) {
-                    $_W['member'] = $member;
-                    $update = array();
-                    if (empty($member['openid_wxapp'])) {
-                        $update['openid_wxapp'] = $_W['openid'];
-                    }
-                    if (empty($member['unionId']) && !empty($_W['unionid'])) {
-                        $update['unionId'] = $_W['unionid'];
-                    }
-                    if (!empty($update)) {
-                        pdo_update('hello_banbanjia_members', $update, array('id' => $_W['member']['id']));
-                    }
-                }
-            }
+        if (defined("IN_WEB")) { //h5
+            // $key = "we7_hello_banbanjia_member_session_" . $_W['uniacid'];
+            // if (isset($_GPC[$key])) {
+            //     $session = json_decode(base64_decode($_GPC[$key]), true);
+            //     if (is_array($session)) {
+            //         $member = get_member($session["uid"]);
+            //         if (is_array($member) && $session["hash"] == $member["password"]) {
+            //             $_W["member"] = $member;
+            //         } else {
+            //             isetcookie($key, false, -100);
+            //         }
+            //     } else {
+            //         isetcookie($key, false, -100);
+            //     }
+            // }
+            $member = get_member($_SESSION["member"]['uid']);
+            $_W['member'] = $member;
         }
     }
-
+    // }
     // $_W['member'] = array(
     //     'uid' => 100,
     //     'status' => 1,
@@ -68,6 +88,11 @@ function icheckauth($force = true) //鉴权
         $forward = base64_encode($_SERVER['QUERY_STRING']);
         if (defined('IN_WXAPP')) {
             imessage(error(41009, '请先登录'), '', 'ajax');
+        } else {
+            if (defined('IN_WEB')) {
+                $result = array("errno" => 41009, "message" => "请先登录", "sessionid" => $_W["session_id"], true);
+                imessage($result, "", "ajax");
+            }
         }
         exit;
     }
