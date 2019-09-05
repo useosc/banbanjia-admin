@@ -101,6 +101,7 @@
             `account` varchar(2000) NOT NULL COMMENT '提现账户信息',
             PRIMARY KEY(`id`)
          ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_member_groups` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `uniacid` int(11) NOT NULL DEFAULT '0',
@@ -135,6 +136,7 @@
             PRIMARY KEY (`id`),
             KEY `uniacid` (`uniacid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=50000 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_operate_log` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) NOT NULL DEFAULT '0',
@@ -149,6 +151,7 @@
             `addtime` int(10) unsigned NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=500 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_slide`(
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -162,6 +165,7 @@
             PRIMARY KEY (`id`),
             KEY `uniacid` (`uniacid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_diypage`(
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -178,6 +182,7 @@
             KEY `addtime` (`addtime`),
             KEY `version` (`version`)
         ) ENGINE=MyISAM AUTO_INCREMENT=60 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_permit_role`(
             `id` int(10) NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) NOT NULL DEFAULT '0',
@@ -187,6 +192,7 @@
             PRIMARY KEY (`id`),
             KEY `uniacid` (`uniacid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_permit_user` (
             `id` int(10) NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) NOT NULL DEFAULT '0',
@@ -201,6 +207,7 @@
             KEY `uid` (`uid`),
             key `roleid` (`roleid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -228,6 +235,7 @@
             KEY `uniacid` (`uniacid`),
             KEY `title` (`title`)
         ) ENGINE=MyISAM AUTO_INCREMENT=1500 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_clerk` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -247,6 +255,7 @@
             KEY `uniacid` (`uniacid`),
             KEY `status` (`status`)
         ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_clerk` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -260,6 +269,7 @@
             KEY `sid` (`sid`),
             KEY `clerk_id` (`clerk_id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=600 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_system_log` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -273,6 +283,7 @@
             KEY `type` (`type`),
             KEY `addtime` (`addtime`)
         ) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_room_category` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -282,6 +293,7 @@
             PRIMARY KEY (`id`),
             KEY `uniacid` (`uniacid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_goods` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -297,6 +309,7 @@
             KEY `cateid` (`cateid`),
             KEY `uniacid` (`uniacid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_deliveryer` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -342,6 +355,7 @@
             KEY `registration_id` (`registration_id`),
             KEY `uniacid_token` (`uniacid`,`token`)
         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_deliveryer_location_log` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -356,6 +370,7 @@
             KEY `deliveryer_id` (`deliveryer_id`),
             KEY `addtime` (`addtime`)
         ) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_text` (
             `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -365,6 +380,7 @@
             PRIMARY KEY (`id`),
             KEY `uniacid` (`uniacid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_oauth_fans` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `appid` varchar(50) NOT NULL,
@@ -377,10 +393,12 @@
             KEY `oauth_openid` (`oauth_openid`),
             KEY `appid_openid` (`appid`,`openid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=200 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_chat` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             
         )
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_domestic_order` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -422,6 +440,7 @@
             KEY `is_pay` (`is_pay`),
             KEY `pay_type` (`pay_type`)
         ) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_service_chat_log` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `from_id` varchar(55) NOT NULL COMMENT '网页用户随机编号(仅为记录参考记录)',
@@ -433,6 +452,7 @@
             `time_line` int(10) NOT NULL COMMENT '记录时间',
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_service_groups` (
             `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '分组id',
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -440,6 +460,7 @@
             `status` tinyint(1) NOT NULL COMMENT '分组状态',
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_service_users` (
             `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '客服id',
             `uid` int(11) NOT NULL COMMENT '系统用户id',
@@ -450,12 +471,14 @@
             `group_id` int(11) DEFAULT '0' COMMENT '所属分组id',
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_service_config` (
             `id` int(11) NOT NULL,
             `max_service` int(11) NOT NULL COMMENT '每个客服最大服务的客户数',
             `change_status` tinyint(1) NOT NULL COMMENT '是否启用转接',
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_service_now_data` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `is_talking` int(5) NOT NULL DEFAULT '0' COMMENT '正在咨询人数',
@@ -466,6 +489,7 @@
             `now_date` varchar(10) NOT NULL COMMENT '当前日期',
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_service_all_data` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `is_talking` int(5) NOT NULL DEFAULT '0',
@@ -479,6 +503,7 @@
             PRIMARY KEY (`id`),
             KEY `add_date,add_hour` (`add_date`,`add_hour`) USING BTREE
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_service_log` (
             `user_id` varchar(55) NOT NULL COMMENT '会员的id',
             `client_id` varchar(20) NOT NULL COMMENT '会员的客户端标识',
@@ -491,6 +516,7 @@
             `end_time` int(10) DEFAULT '0' COMMENT '结束服务时间',
             `group_id` int(11) NOT NULL COMMENT '服务的客服的分组id'
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_service_words` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -499,6 +525,7 @@
             `status` tinyint(1) NOT NULL COMMENT '是否启用',
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
         CREATE TABLE `ims_hello_banbanjia_service_reply` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -506,6 +533,7 @@
             `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否自动回复',
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
         INSERT INTO ims_hello_banbanjia_plugin VALUES
         ('40','wxapp','biz','搬搬家','../addons/hello_banbanjia/static/img/plugin/wxapp.jpg','','搬搬家，国内一流搬家平台','1','0','1');
         INSERT INTO ims_hello_banbanjia_plugin VALUES 
