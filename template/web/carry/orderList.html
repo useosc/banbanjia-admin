@@ -1,0 +1,173 @@
+{itemplate 'public/header'}
+<style>
+	.product-info .remark{font-size: 15px;margin-bottom: 10px;}
+</style>
+<form action="./index.php?" class="form-horizontal form-filter" id="form-carry">
+    {php echo tpl_form_filter_hidden('order/carry/list');}
+    <input type="hidden" name="filter_type" value="{$filter_type}"/>
+    {if $filter_type == 'process' || $filter_type == 'all'}
+        <input type="hidden" name="status" value="{$status}"/>
+        <input type="hidden" name="is_pay" value="{$is_pay}"/>
+        <input type="hidden" name="pay_type" value="{$pay_type}"/>
+        <input type="hidden" name="order_channel" value="{$order_channel}"/>
+        <input type="hidden" name="order_plateform" value="{$order_plateform}"/>
+        <input type="hidden" name="order_channel" value="{$order_channel}"/>
+        <input type="hidden" name="fields" value=""/>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">订单状态</label>
+			<div class="col-sm-7 col-xs-12">
+				<div class="btn-group">
+					<div class="btn-group">
+						<a href="{php echo ifilter_url('status:0');}" class="btn {if $status == 0}btn-primary{else}btn-default{/if}">不限</a>
+						<a href="{php echo ifilter_url('status:1');}" class="btn {if $status == 1}btn-primary{else}btn-default{/if}">待接单</a>
+						<a href="{php echo ifilter_url('status:2');}" class="btn {if $status == 2}btn-primary{else}btn-default{/if}">搬运中</a>
+						<a href="{php echo ifilter_url('status:3');}" class="btn {if $status == 3}btn-primary{else}btn-default{/if}">已完成</a>
+						<a href="{php echo ifilter_url('status:4');}" class="btn {if $status == 4}btn-primary{else}btn-default{/if}">已取消</a>
+					</div>
+				</div>
+			</div>
+			<div class="pull-right">
+				<div class="checkbox checkbox-inline btn-refresh" data-type="status_order_refresh"><input type="checkbox" value="1" {if $_GPC['_status_order_refresh'] == 1}checked{/if}><label><span id="time-count"><span>30</span>秒</span>自动刷新</label></div>
+				<div class="checkbox checkbox-inline btn-notice" data-type="status_order_notice">
+					<input type="checkbox" value="1" {if $_GPC['_status_order_notice'] == 1}checked{/if}>
+					<label>语音提示</label>
+				</div>
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">订单类型</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="btn-group">
+					<div class="btn-group">
+						<a href="{php echo ifilter_url('order_type:');}" class="btn {if $order_type == ''}btn-primary{else}btn-default{/if}">不限</a>
+						<a href="{php echo ifilter_url('order_type:free');}" class="btn {if $order_type == 'free'}btn-primary{else}btn-default{/if}">免费搬家</a>
+						<a href="{php echo ifilter_url('order_type:share');}" class="btn {if $order_type == 'share'}btn-primary{else}btn-default{/if}">共享搬家</a>
+						<a href="{php echo ifilter_url('order_type:company');}" class="btn {if $order_type == 'company'}btn-primary{else}btn-default{/if}">搬家公司</a>
+					</div>
+				</div>
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">支付状态</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="btn-group">
+					<div class="btn-group">
+						<a href="{php echo ifilter_url('is_pay:-1');}" class="btn {if $is_pay == -1}btn-primary{else}btn-default{/if}">不限</a>
+						<a href="{php echo ifilter_url('is_pay:0');}" class="btn {if $is_pay == 0}btn-primary{else}btn-default{/if}">未支付</a>
+						<a href="{php echo ifilter_url('is_pay:1');}" class="btn {if $is_pay == 1}btn-primary{else}btn-default{/if}">已支付</a>
+					</div>
+				</div>
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">支付方式</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="btn-group">
+					<div class="btn-group">
+						<a href="{php echo ifilter_url('pay_type:');}" class="btn {if $pay_type == ''}btn-primary{else}btn-default{/if}">不限</a>
+						<a href="{php echo ifilter_url('pay_type:wechat');}" class="btn {if $pay_type == 'wechat'}btn-primary{else}btn-default{/if}">微信支付</a>
+						<a href="{php echo ifilter_url('pay_type:alipay');}" class="btn {if $pay_type == 'alipay'}btn-primary{else}btn-default{/if}">支付宝</a>
+						<a href="{php echo ifilter_url('pay_type:credit');}" class="btn {if $pay_type == 'credit'}btn-primary{else}btn-default{/if}">余额支付</a>
+					</div>
+				</div>
+			</div>
+        </div>
+        
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">下单渠道</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="btn-group" style="margin-right: 10px;">
+					<div class="btn-group">
+                        <a href="{php echo ifilter_url('order_channel:');}" class="btn {if $order_channel == ''}btn-primary{else}btn-default{/if}">不限</a>
+                        <a href="{php echo ifilter_url('order_channel: web');}" class="btn {if $order_channel == 'web'}btn-primary{else}btn-default{/if}">pc端</a>
+						<a href="{php echo ifilter_url('order_channel: wap');}" class="btn {if $order_channel == 'wap'}btn-primary{else}btn-default{/if}">移动端</a>
+						<a href="{php echo ifilter_url('order_channel: wxapp');}" class="btn {if $order_channel == 'wxapp'}btn-primary{else}btn-default{/if}">小程序</a>
+					</div>
+				</div>
+			</div>
+		</div>
+    {/if}
+    <div class="form-group form-inline">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">其他</label>
+		<div class="col-sm-9 col-xs-12">
+			<select name="sid" class="form-control select2 width-130">
+				<option value="0" {if $sid == 0}select{/if}>所属公司</option>
+				{loop $stores $store}
+				<option value="{$store['id']}" {if $sid == $store['id']}selected{/if}>{$store['title']}</option>
+				{/loop}
+			</select>
+			<select name="deliveryer_id" class="form-control select2 width-130">
+				<option value="0" {if $deliveryer_id == 0}select{/if}>搬运工</option>
+				{loop $deliveryers $deliveryer}
+					<option value="{$deliveryer['id']}" {if $deliveryer_id == $deliveryer['id']}selected{/if}>{$deliveryer['title']}</option>
+				{/loop}
+			</select>
+			<div style="display: inline-block">
+				{php echo tpl_form_field_daterange('addtime', array('start' => date('Y-m-d H:i', $starttime), 'end' => date('Y-m-d H:i', $endtime)));}
+			</div>
+			<input type="text" name="keyword" value="{$keyword}" class="form-control" placeholder="输入用户名/手机号/订单编号">
+			<input type="text" name="uid" value="{if !empty($uid)}{$uid}{/if}" class="form-control" placeholder="用户UID">
+		</div>
+    </div>
+    <div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+		<div class="col-sm-9 col-xs-12">
+			<button class="btn btn-primary">筛选</button>
+			{if $filter_type == 'process' || $filter_type == 'all'}
+				<a class="btn btn-default btn-export" href="javascript:;">导出订单</a>
+			{/if}
+		</div>
+    </div>
+</form>
+
+<div class="modal fade" id="order-export" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog ">
+            <form action="">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">导出订单</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>附加会员字段</label>
+                            <br/>
+                            {loop $fields $key $field}
+                                <div class="checkbox checkbox-inline">
+                                    <input type="checkbox" id="field-{$key}" name="fields[]" value="{$key}">
+                                    <label for="field-{$key}">{$field}</label>
+                                </div>
+                            {/loop}
+                        </div>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <input type="hidden" name="token" value="{$_W['token']}">
+                        <a class="btn btn-default" data-dismiss="modal" aria-label="Close">取消</a>
+                        <a class="btn btn-primary btn-export-submit" href="javascript:;">确定导出</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+<script>
+    irequire(['laytpl','hello'],function(laytpl,hello){
+        $('.btn-export').click(function(){
+            $('#order-export').modal('show');
+            $('.btn-export-submit').click(function(){
+			var fields = [];
+			$(':checkbox[name="fields[]"]:checked').each(function(){
+				if($(this).val()) {
+					fields.push($(this).val());
+				}
+			});
+			fields = fields.join('|');
+			$('#form-carry input[name="fields"]').val(fields);
+			$('#form-carry input[name="op"]').val('export');
+			$('#form-carry').submit();
+			$('#form-carry input[name="op"]').val('list');
+			$('#order-export').modal('hide');
+		});
+        })
+    })
+</script>
+{itemplate 'public/footer'}

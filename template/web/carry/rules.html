@@ -1,0 +1,426 @@
+{itemplate 'public/header'}
+<div class="page clearfix">
+    <form action="" class="form-horizontal form form-validate" method="POST" enctype="multipart/form-data" style="max-width: 90%">
+        <input type="hidden" name="form_type" value="order_setting">
+        <h3>搬运订单设置</h2>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">支付时间限制</label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="input-group">
+					<input type="number" class="form-control" name="pay_time_limit" value="{$config_carry['pay_time_limit']}">
+					<span class="input-group-addon">分钟</span>
+				</div>
+				<div class="help-block">例如:设置为15分钟,那么用户在提交订单后15分钟内未支付,系统会自动取消该订单.如果没有支付时间限制,请设置为0</div>
+            </div>
+        </div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">接单时间限制</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="input-group">
+					<input type="number" class="form-control" name="handle_time_limit" value="{$config_carry['handle_time_limit']}">
+					<span class="input-group-addon">分钟</span>
+				</div>
+				<div class="help-block">例如:设置为10分钟,那么用户在付款10分钟后仍然没有搬运工接单,系统会自动取消该订单.如果没有接单时间限制,请设置为0</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">订单自动完成（仅限搬运工已接单的订单）</label>
+			<div class="col-sm-9 col-xs-9 col-md-9">
+				<div class="input-group">
+					<input type="text" class="form-control" name="auto_success_hours" digits="true" value="{$config_carry['auto_success_hours']}">
+					<span class="input-group-addon">小时</span>
+				</div>
+				<span class="help-block">只有被搬运工接单后的订单在超过设置的时间才会被自动设置为完成. </span>
+				<span class="help-block">自动完成时间只能是整数, 如果你不需要自动完成, 可以设置为0. </span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">订单提前完成</label>
+			<div class="col-sm-9 col-xs-9 col-md-9">
+				<div class="input-group">
+					<input type="text" class="form-control" name="carry_before_limit" value="{$config_carry['carry_before_limit']}">
+					<span class="input-group-addon">分钟</span>
+				</div>
+				<span class="help-block">从搬运工接单开始计算到订单完成的时间小于此时间, 则会被标记, 便于管理员查看</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">订单超时</label>
+			<div class="col-sm-9 col-xs-9 col-md-9">
+				<div class="input-group">
+					<input type="text" class="form-control" name="carry_timeout_limit" value="{$config_carry['carry_timeout_limit']}">
+					<span class="input-group-addon">分钟</span>
+				</div>
+				<span class="help-block">从搬运工接单开始计算到订单完成的时间超过此时间, 则会被标记, 便于管理员查看</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">搬运单派单模式</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="radio radio-inline">
+					<input type="radio" value="1" name="dispatch_mode" id="dispatch-mode-1" {if $config_carry['dispatch_mode'] == '1'}checked{/if}>
+					<label for="dispatch-mode-1">抢单模式</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" value="2" name="dispatch_mode" id="dispatch-mode-2" {if $config_carry['dispatch_mode'] == '2'}checked{/if}>
+					<label for="dispatch-mode-2">管理员派单</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" value="3" name="dispatch_mode" id="dispatch-mode-3" {if $config_carry['dispatch_mode'] == '3'}checked{/if}>
+					<label for="dispatch-mode-3">系统分配</label>
+				</div>
+				<div class="help-block">
+					<strong class="text-danger">
+						系统分配算法：系统优先把订单分配给离起始地址最近的搬运工。
+					</strong>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">搬运工同时最多可抢</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="input-group">
+					<input type="number" class="form-control" name="deliveryer_collect_max" value="{$config_carry['deliveryer_collect_max']}">
+					<span class="input-group-addon">单</span>
+				</div>
+				<div class="help-block">
+					设置搬运工同一时间最多可抢几单,超出后将不能在抢。0为不限制
+					<br>
+					<strong class="text-danger">注意：管理员派单不受此数量限制，抢单/系统分配受限制</strong>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">超出最多可抢单后,是否还通知配送员</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="radio radio-inline">
+					<input type="radio" value="1" name="over_collect_max_notify" id="over-collect-max-notify-1" {if $config_carry['over_collect_max_notify'] == 1}checked{/if}>
+					<label for="over-collect-max-notify-1">通知</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" value="0" name="over_collect_max_notify" id="over-collect-max-notify-0" {if !$config_carry['over_collect_max_notify']}checked{/if}>
+					<label for="over-collect-max-notify-0">不通知</label>
+				</div>
+				<span class="help-block">设置当配送员已抢单数超过最多可抢单数后,是否继续通知配送员有新的待配送订单</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">是否允许搬运工转单</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="radio radio-inline">
+					<input type="radio" value="1" name="deliveryer_transfer_status" id="deliveryer-transfer-status-1" {if $config_carry['deliveryer_transfer_status'] == '1'}checked{/if}>
+					<label for="deliveryer-transfer-status-1">允许</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" value="0" name="deliveryer_transfer_status" id="deliveryer-transfer-status-0" {if $config_carry['deliveryer_transfer_status'] == '0'}checked{/if}>
+					<label for="deliveryer-transfer-status-0">禁止</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">搬运工每天最多可转</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="input-group">
+					<input type="text" class="form-control" name="deliveryer_transfer_max" value="{$config_carry['deliveryer_transfer_max']}" digits="true">
+					<span class="input-group-addon">单</span>
+				</div>
+				<div class="help-block">配送员在遇到特殊情况下可申请转单，设置每天最多可转几次单。0为不限制</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">转单理由</label>
+			<div class="col-sm-9 col-xs-12">
+				<textarea name="deliveryer_transfer_reason" cols="30" rows="7" class="form-control">{$config_carry['deliveryer_transfer_reason']}</textarea>
+				<div class="help-block">可设置多个转单理由.每行一个</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">搬运工取消订单理由</label>
+			<div class="col-sm-9 col-xs-12">
+				<textarea name="deliveryer_cancel_reason" cols="30" rows="7" class="form-control">{$config_carry['deliveryer_cancel_reason']}</textarea>
+				<div class="help-block">可设置多个取消订单理由.每行一个</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">平台给搬运工每单支付金额</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="input-group">
+					<!-- <label class="input-group-addon">
+						<input type="radio" name="deliveryer_fee_type" value="2" {if $config_carry['deliveryer_fee_type'] == 2}checked{/if}>
+					</label> -->
+					<span class="input-group-addon">每单按照订单搬运费提成</span>
+					<input type="text" class="form-control" name="deliveryer_fee" value="{$config_carry['deliveryer_fee']}">
+					<span class="input-group-addon">%</span>
+				</div>
+				<br>
+				<!-- <div class="input-group">
+					<label class="input-group-addon">
+						<input type="radio" name="deliveryer_fee_type" value="3" {if $config_carry['deliveryer_fee_type'] == 3}checked{/if}>
+					</label>
+					<span class="input-group-addon">每单基础搬运费</span>
+					<input type="text" class="form-control" name="deliveryer_fee_3[start_fee]" {if $config_carry['deliveryer_fee_type'] == 3}value="{$config_carry['deliveryer_fee']['start_fee']}"{/if}>
+					<span class="input-group-addon">元,超过</span>
+					<input type="text" class="form-control" name="deliveryer_fee_3[start_km]" {if $config_carry['deliveryer_fee_type'] == 3}value="{$config_carry['deliveryer_fee']['start_km']}"{/if}>
+					<span class="input-group-addon">公里,超过部分每公里增加</span>
+					<input type="text" class="form-control" name="deliveryer_fee_3[pre_km]" {if $config_carry['deliveryer_fee_type'] == 3}value="{$config_carry['deliveryer_fee']['pre_km']}"{/if}>
+					<span class="input-group-addon">元,最高</span>
+					<input type="text" class="form-control" name="deliveryer_fee_3[max_fee]" {if $config_carry['deliveryer_fee_type'] == 3}value="{$config_carry['deliveryer_fee']['max_fee']}"{/if}>
+					<span class="input-group-addon">元</span>
+				</div> -->
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">搬家服务用户协议</label>
+			<div class="col-sm-9 col-xs-12">
+				{php echo tpl_ueditor('agreement',$agreement_carry);}
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-9 col-xs-9 col-md-9">
+				<input type="hidden" name="token" value="{$_W['token']}">
+				<input type="submit" value="提交" class="btn btn-primary">
+			</div>
+		</div>
+	</form>
+
+	<form action="" class="form-horizontal form form-validate" id="form2" method="POST" enctype="multipart/form-data" style="max-width: 90%">
+		<input type="hidden" name="form_type" value="price_setting">
+		<h3>计价设置</h3>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">国内物流：</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="input-group" style="margin-bottom:10px;">
+					<span class="input-group-addon">每单基础搬运费</span>
+					<input type="text" class="form-control" name="carry_fee[start_fee]" value="{$config_carry['carry_fee']['start_fee']}">
+					<span class="input-group-addon">元</span>
+				</div>
+				<div id="km_setting">
+					<div class="input-group" style="margin-bottom:10px;">
+						<span class="input-group-addon">超过</span>
+						<input type="text" class="form-control" name="carry_fee[start_km][]" value="{$config_carry['carry_fee']['start_km']}">
+						<span class="input-group-addon">公里，超过部分每公里增加</span>
+						<input type="text" class="form-control" name="carry_fee[pre_km][]" value="{$config_carry['carry_fee']['pre_km']}">
+						<!-- <span class="input-group-addon">元，最高</span>
+						<input type="text" class="form-control" name="carry_fee[max_fee]" value="{$config_carry['carry_fee']['max_fee']}">
+						<span class="input-group-addon">元</span> -->
+					</div>
+				</div>
+				<br>
+				<a href="javascript:;" class="add-km"><i class="fa fa-plus-circle"></i>添加计费规则</a>
+				<span class="help-block">
+					<span class="text-danger">计费规则：例如设置 起步3km内5元，每增加 1km 加 1 元，超过6km，每增加 1km 加 2 元。如果搬运距离5km，搬运费：5 + （5-3）X 1 = 7元；搬运距离8km，搬运费：5 + （8-3）X 2 = 15元。</span>
+				</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">包干服务费：</label>
+			<div class="col-sm-9 col-xs-12">
+					<div class="input-group" style="margin-bottom:10px;">
+						<div class="input-group-addon">起步价包含</div>
+						<input type="number" name="carry_fee_basic" class="form-control" value="{$config_carry['carry_fee_basic']}">
+						<div class="input-group-addon">立方</div>
+					</div>
+					<div id="volume_setting">
+						<div class="input-group" style="margin-bottom:10px;">
+							<span class="input-group-addon">超过</span>
+							<input type="text" name="over_cube[]" class="form-control" value="{$config_carry['over_cube']}">
+							<span class="input-group-addon">立方，每立方增加</span>
+							<input type="text" name="pre_cube_fees[]" class="form-control" value="{$config_carry['pre_cube_fees']}">
+							<span class="input-group-addon">元</span>
+						</div>
+					</div>
+					<br>
+					<a href="javascript:;" class="add-volume"><i class="fa fa-plus-circle"></i>添加计费规则</a>
+					<span class="help-block">
+						<span class="text-danger">计费规则：同上</span>
+					</span>
+				<!-- <div class="radio radio-inline">
+					<input type="radio" value="1" name="volume_status" id="volume-status-1" {if $config_carry['volume_status'] == '1'}checked{/if}>
+					<label for="volume-status-1">启用</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" value="0" name="volume_status" id="volume-status-0" {if $config_carry['volume_status'] == '0'}checked{/if}>
+					<label for="volume-status-0">不启用</label>
+				</div> -->
+				<!-- <div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">起步价包含：</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+							<input type="number" class="form-control" name="carry_fee_basic" value="{$config_carry['carry_fee_basic']}">
+							<span class="input-group-addon">立方</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">计费规则：</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+							<span class="input-group-addon">超过</span>
+							<input type="text" name="over_cube" class="form-control" value="{$config_carry['over_cube']}">
+							<span class="input-group-addon">立方，每立方增加</span>
+							<input type="text" name="pre_cube_fees" class="form-control" value="{$config_carry['pre_cube_fees']}">
+							<span class="input-group-addon">元</span>
+						</div>
+					</div>
+				</div> -->
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">服务类型：</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="input-group" style="margin-bottom:10px;">
+					<div class="input-group-addon">室内移动，每立方</div>
+					<input type="text" name="" class="form-control">
+					<div class="input-group-addon">元</div>
+				</div>
+				<div class="input-group" style="margin-bottom:10px;">
+					<div class="input-group-addon">搬上楼，电梯每层</div>
+					<input type="text" name="" class="form-control">
+					<div class="input-group-addon">元，</div>
+					<div class="input-group-addon">步梯每层</div>
+					<input type="text" name="" class="form-control">
+					<div class="input-group-addon">元</div>
+				</div>
+				<div class="input-group" style="margin-bottom:10px;">
+					<div class="input-group-addon">搬下楼，电梯每层</div>
+					<input type="text" name="" class="form-control">
+					<div class="input-group-addon">元，</div>
+					<div class="input-group-addon">步梯每层</div>
+					<input type="text" name="" class="form-control">
+					<div class="input-group-addon">元</div>
+				</div>
+				<span class="help-block">
+					<span class="text-danger">不收取费用，可设置为0</span>
+				</span>
+			</div>
+		</div>
+		<div class="form-group" id="attrs-container">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">附加费：</label>
+			<div class="col-sm-9 col-xs-12">
+				<div id="tpl">
+					{if !empty($config_carry['options'])}
+						{loop $config_carry['options'] $row}
+							<div class="input-group">
+								<span class="input-group-addon">附加费名称：</span>
+								<input type="text" name="options[name][]" class="form-control" value="{$row['name']}">
+								<span class="input-group-addon">价格：</span>
+								<input type="text" name="options[price][]" class="form-control" value="{$row['price']}">
+								<span class="input-group-addon">元</span>
+								<span class="input-group-addon"><a href="javascript:;" onclick="$(this).parent().parent().remove();"><i class="fa fa-times"></i></a></span>
+							</div>
+						{/loop}
+					{/if}
+				</div>
+				<br>
+				<a href="javascript:;" class="add-attr"><i class="fa fa-plus-circle"></i>添加附加费</a>
+				<!-- <span class="help-block">附加费可规定是否必选</span> -->
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-9 col-xs-9 col-md-9">
+				<input type="hidden" name="token" value="{$_W['token']}">
+				<input type="submit" value="提交" class="btn btn-primary">
+			</div>
+		</div>
+	</form>
+
+	<form action="" class="form-horizontal form form-validate" id="form3" method="POST" enctype="multipart/form-data" style="max-width: 90%">
+		<h3>积分赠送</h3>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">积分赠送状态</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="radio radio-inline">
+					<input type="radio" value="1" name="credit1[status]" id="credit1-status-1"{if $config_carry['credit']['credit1']['status'] == 1}checked{/if}>
+					<label for="credit1-status-1">开启</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" value="0" name="credit1[status]" id="credit1-status-0"{if $config_carry['credit']['credit1']['status'] == 0}checked{/if}>
+					<label for="credit1-status-0">关闭</label>
+				</div>
+				<div class="help-block text-danger">开启后,平台会在"订单完成后"给下单人赠送积分</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">积分赠送模式</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="input-group">
+					<label class="input-group-addon">
+						<input type="radio" name="credit1[grant_type]" value="1" {if $config_carry['credit']['credit1']['grant_type'] == 1 || !$config['credit']['credit1']['grant_type']}checked{/if}>
+					</label>
+					<span class="input-group-addon">每单固定</span>
+					<input type="text" class="form-control" name="credit1[grant_num_1]" {if $config_carry['credit']['credit1']['grant_type'] == 1}value="{$config_carry['credit']['credit1']['grant_num']}"{/if}>
+					<span class="input-group-addon">积分</span>
+				</div>
+				<br>
+				<div class="input-group">
+					<label class="input-group-addon">
+						<input type="radio" name="credit1[grant_type]" value="2" {if $config_carry['credit']['credit1']['grant_type'] == 2}checked{/if}>
+					</label>
+					<span class="input-group-addon">按1元赠送</span>
+					<input type="text" class="form-control" name="credit1[grant_num_2]" {if $config_carry['credit']['credit1']['grant_type'] == 2}value="{$config_carry['credit']['credit1']['grant_num']}"{/if}>
+					<span class="input-group-addon">积分的比例赠送</span>
+				</div>
+				<div class="help-block">例如:设置赠送比例为1元赠送10积分.订单总额为:20元, 那本订单工赠送:20*10=200积分</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-9 col-xs-9 col-md-9">
+				<input type="hidden" name="token" value="{$_W['token']}">
+				<input type="submit" value="提交" class="btn btn-primary">
+			</div>
+		</div>
+	</form>
+</div>
+
+<script>
+$(document).on('click','.add-attr',function () {
+	var html = '<div class="input-group">'+
+		'			<span class="input-group-addon">附加费名称：</span>'+
+		'			<input type="text" name="options[name][]" class="form-control">'+
+		'			<span class="input-group-addon">价格：</span>'+
+		'			<input type="text" name="options[price][]" class="form-control">'+
+		'			<span class="input-group-addon">元</span>'+
+		'			<span class="input-group-addon"><a href="javascript:;" onclick="$(this).parent().parent().remove();"><i class="fa fa-times"></i></a></span>'+
+		'		<div>';
+	$('#tpl').append(html);
+});
+// <div class="input-group" style="margin-bottom:10px;">
+// 	<span class="input-group-addon">超过</span>
+// 	<input type="text" class="form-control" name="carry_fee[start_km]" value="{$config_carry['carry_fee']['start_km']}">
+// 	<span class="input-group-addon">公里，超过部分每公里增加</span>
+// 	<input type="text" class="form-control" name="carry_fee[pre_km]" value="{$config_carry['carry_fee']['pre_km']}">
+// 	<span class="input-group-addon">元，最高</span>
+// 	<input type="text" class="form-control" name="carry_fee[max_fee]" value="{$config_carry['carry_fee']['max_fee']}">
+// 	<span class="input-group-addon">元</span>
+// </div>
+$(document).on('click','.add-km',function () {
+	var html = '<div class="input-group" style="margin-bottom:10px;">'+
+		'			<span class="input-group-addon">超过</span>'+
+		'			<input type="text" class="form-control" name="carry_fee[start_km][]">'+
+		'			<span class="input-group-addon">公里，超过部分每公里增加</span>'+
+		'			<input type="text" class="form-control" name="carry_fee[pre_km][]">'
+		'			<span class="input-group-addon">元</span>'+
+		'			<span class="input-group-addon"><a href="javascript:;" onclick="$(this).parent().parent().remove();"><i class="fa fa-times"></i></a></span>'+
+		'		<div>';
+	$('#km_setting').append(html);
+});
+// <div class="input-group" style="margin-bottom:10px;">
+// 	<span class="input-group-addon">超过</span>
+// 	<input type="text" name="over_cube" class="form-control" value="{$config_carry['over_cube']}">
+// 	<span class="input-group-addon">立方，每立方增加</span>
+// 	<input type="text" name="pre_cube_fees" class="form-control" value="{$config_carry['pre_cube_fees']}">
+// 	<span class="input-group-addon">元</span>
+// </div>
+$(document).on('click','.add-volume',function () {
+	var html = '<div class="input-group" style="margin-bottom:10px;">'+
+		'			<span class="input-group-addon">超过</span>'+
+		'			<input type="text" name="over_cube[]" class="form-control">'+
+		'			<span class="input-group-addon">立方，每立方增加</span>'+
+		'			<input type="text" name="pre_cube_fees[]" class="form-control">'+
+		'			<span class="input-group-addon">元</span>'+
+		'			<span class="input-group-addon"><a href="javascript:;" onclick="$(this).parent().parent().remove();"><i class="fa fa-times"></i></a></span>'+
+		'		<div>';
+	$('#volume_setting').append(html);
+});
+</script>
+{itemplate 'public/footer'}

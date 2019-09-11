@@ -45,7 +45,7 @@
     </bindings>
     <install>
         <![CDATA[
-    CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_members`(
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_members`(
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
             `uid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -100,7 +100,35 @@
             `svip_credit1` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
             `account` varchar(2000) NOT NULL COMMENT '提现账户信息',
             PRIMARY KEY(`id`)
-         ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+        ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_order_estimate` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `type` tinyint(5) DEFAULT '0' COMMENT '0:国内，1:国际搬家,2:国际快递',
+            `volume` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+            `price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+            `data` text NOT NULL,
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `uid` (`uid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=5000 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_member_history` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `uniacid` int(11) DEFAULT '0',
+            `type` varchar(20) DEFAULT '' COMMENT '浏览类型：store'
+            `goodsid` int(10) DEFAULT '0',
+            `uid` int(11) DEFAULT '0',
+            `deleted` tinyint(1) DEFAULT '0',
+            `createtime` int(11) DEFAULT '0',
+            `times` int(11) DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `createtime` (`createtime`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=2000 DEFAULT CHARSET=utf8;
 
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_member_groups` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -441,6 +469,49 @@
             KEY `pay_type` (`pay_type`)
         ) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_carry_order` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `order_sn` varchar(20) NOT NULL,
+            `order_channel` varchar(20) NOT NULL DEFAULT 'wxapp',
+            `order_type` varchar(20) NOT NULL DEFAULT 'free' COMMENT 'free,share',
+            `start_address` varchar(100) NOT NULL,
+            `start_location_x` varchar(20) NOT NULL,
+            `start_location_y` varchar(20) NOT NULL,
+            `end_address` varchar(100) ,
+            `end_location_x` varchar(2),
+            `end_location_y` varchar(20),
+            `service_type` varchar(20) NOT NULL DEFAULT 'indoor' COMMENT 'indoor,up,down',
+            `floor` varchar(5) NOT NULL DEFAULT '1',
+            `stairs_type` varchar(20) NOT NULL DEFAULT 'elevator' COMMENT 'elevator,stairs',
+            `distance` varchar(20),
+            `goods_volume` varchar(10) NOT NULL,
+            `carry_time` varchar(30) NOT NULL,
+            `pay_type` varchar(15),
+            `is_pay` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `paytime` int(10) unsigned NOT NULL DEFAULT '0',
+            `carry_status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '1:未接单',
+            `deliveryer_id` int(10) unsigned NOT NULL DEFAULT '0',
+            `carry_success_location_x` varchar(15),
+            `carry_success_location_y` varchar(15),
+            `carry_success_time` int(10),
+            `status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '订单状态1:待接单,2:待抵达,3:搬运中,4:已完成',
+            `carry_fee` varchar(10) NOT NULL,
+            `total_fee` varchar(10) NOT NULL,
+            `discount_fee` varchar(20) NOT NULL DEFAULT '0.00',
+            `final_fee` varchar(20) NOT NULL DEFAULT '0.00',
+            `remark` varchar(200) NOT NULL,
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `uid` (`uid`),
+            KEY `addtime` (`addtime`),
+            KEY `paytime` (`paytime`),
+            KEY `is_pay` (`is_pay`),
+            KEY `pay_type` (`pay_type`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_service_chat_log` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `from_id` varchar(55) NOT NULL COMMENT '网页用户随机编号(仅为记录参考记录)',
@@ -567,6 +638,7 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_text`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_oauth_fans`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_domestic_order`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_carry_order`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_service_chat_log`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_service_groups`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_service_users`;
@@ -576,6 +648,8 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_service_log`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_words`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_member_groups`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_member_history`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_order_estimate`;
         ]]>
     </upgrade>
 </manifest>

@@ -8,7 +8,7 @@ function is_in_carry_radius($lnglat)
     global $_W;
 }
 //计算搬运费
-function domestice_order_calculate_carry_fee($data, $is_calculate = 0)
+function carry_order_calculate_delivery_fee($data, $is_calculate = 0)
 { 
     global $_W;
     $start_address = $data['start_address'];

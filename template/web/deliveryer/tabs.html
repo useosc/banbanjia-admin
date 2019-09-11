@@ -31,8 +31,11 @@
 			</li>
 		</ul>
 	{/if}
-	<div class="menu-header">回收站</div>
+	<div class="menu-header">入驻</div>
 	<ul class="menu-item">
+		<li {if $_W['_ac'] == 'settle'}class="active"{/if}>
+			<a href="{php echo iurl('deliveryer/settle/list');}">入驻列表</a>
+		</li>
 		<li {if $_W['_ac'] == 'storage'}class="active"{/if}>
 			<a href="{php echo iurl('deliveryer/storage/list');}">搬运工回收站</a>
 		</li>

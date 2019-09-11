@@ -1,4 +1,7 @@
 <?php
+
+use function Qiniu\json_decode;
+
 defined("IN_IA") or exit("Access Denied");
 class Mloader
 {
@@ -66,9 +69,9 @@ function iurl($segment, $params = array(), $addhost = false) //生成链接
     list($ctrl, $ac, $op, $ta) = explode("/", $segment);
     $params = array_merge(array("ctrl" => $ctrl, "ac" => $ac, "op" => $op, "ta" => $ta, "do" => "web", "m" => "hello_banbanjia"), $params);
     $url = iwurl("site/entry", $params);
-    if(($_W['_ctrl'] == 'store' || $ctrl == 'store')){
+    if (($_W['_ctrl'] == 'store' || $ctrl == 'store')) {
         $params['i'] = $_W['uniacid'];
-        $url = iwurl('site/entry',$params,'./business.php?');
+        $url = iwurl('site/entry', $params, './business.php?');
     }
     if ($addhost) {
         $url = $_W["siteroot"] . "web/" . substr($url, 2);
@@ -166,8 +169,8 @@ function sys_fetch_slide($type = 'homeTop', $format = false)
 {
     global $_W;
     $slides = pdo_fetchall("select * from" . tablename("hello_banbanjia_slide") . "where uniacid = :uniacid  and type = :type and status = 1 order by displayorder desc", array(":uniacid" => $_W["uniacid"], ":type" => $type));
-    if($format){
-        foreach($slides as &$slide){
+    if ($format) {
+        foreach ($slides as &$slide) {
             $slide['thumb'] = tomedia($slide['thumb']);
         }
     }
@@ -196,4 +199,45 @@ function icheck_verifycode($mobile, $code)
         return true;
     }
     return false;
+}
+//计算距离
+//$distance_type = array("riding" => 2, "driving" => 1, "line" => 0, "walking" => 3);
+function calulate_distance($origins, $destination, $type = 0)
+{
+    $query = array(
+        'key' => AMAP_WEB_KEY,
+        'destination' => implode(',', $destination),
+    );
+    if ($type == 2) { } else {
+        $query['origin'] = implode(',', $origins);
+        $query['type'] = $type;
+        $query['output'] = 'json';
+        $url = 'https://restapi.amap.com/v3/distance?';
+    }
+    $query = http_build_query($query);
+    load()->func('communication');
+    $result = ihttp_get($url . $query);
+    if (is_error($result)) {
+        return $result;
+    }
+    $result = @json_decode($result['content'], true);
+    if ($type == 2) {
+        if (!empty($result['errcode'])) {
+            if ($result['errcode'] == '30007') {
+                $dis = calculate_distance($origins, $destination, 1);
+                return $dis;
+            }
+            return error($result['errcode'], $result['errmsg']);
+        }
+        return round($result['data']['paths'][0]['distance'] / 1000, 3);
+    } else {
+        if ($result['status'] != 1) {
+            return error(-1, $result['info']);
+        }
+        if (round($result['results'][0]['distance'] / 1000, 3) < 0 && $type == 3) {
+            $dis = calculate_distance($origins, $destination, 2);
+            return $dis;
+        }
+        return round($result['results'][0]['distance'] / 1000, 3);
+    }
 }

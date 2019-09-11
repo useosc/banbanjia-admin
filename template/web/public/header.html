@@ -54,9 +54,9 @@
 						</a>
 					</li>
 					{/if}
-					{ifp 'domestice'}
-					<li class="{if $_W['_ctrl'] == 'domestice'}active{/if}">
-						<a href="{php echo iurl('domestice/order/list');}">
+					{ifp 'carry'}
+					<li class="{if $_W['_ctrl'] == 'carry'}active{/if}">
+						<a href="{php echo iurl('carry/order/list');}">
 							<i class="icon icon-sports"></i>
 							搬运
 						</a>
@@ -78,14 +78,14 @@
 						</a>
 					</li>
 					{/if}
-					{ifp 'paycenter'}
+					<!-- {ifp 'paycenter'}
 					<li class="{if $_W['_ctrl'] == 'paycenter'}active{/if}">
 						<a href="{php echo iurl('paycenter/paybill');}">
 							<i class="icon icon-order"></i>
 							财务
 						</a>
 					</li>
-					{/if}
+					{/if} -->
 					{ifp 'statcenter'}
 					<li class="{if $_W['_ctrl'] == 'statcenter'}active{/if}">
 						<a href="{php echo iurl('statcenter/takeout');}">
