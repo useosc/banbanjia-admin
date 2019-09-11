@@ -191,19 +191,27 @@
 			<div class="col-sm-9 col-xs-12">
 				<div class="input-group" style="margin-bottom:10px;">
 					<span class="input-group-addon">每单基础搬运费</span>
-					<input type="text" class="form-control" name="carry_fee[start_fee]" value="{$config_carry['carry_fee']['start_fee']}">
+					<input type="text" class="form-control" name="km_fee[start_fee]" value="{$config_carry['km_fee']['start_fee']}">
 					<span class="input-group-addon">元</span>
 				</div>
 				<div id="km_setting">
-					<div class="input-group" style="margin-bottom:10px;">
-						<span class="input-group-addon">超过</span>
-						<input type="text" class="form-control" name="carry_fee[start_km][]" value="{$config_carry['carry_fee']['start_km']}">
-						<span class="input-group-addon">公里，超过部分每公里增加</span>
-						<input type="text" class="form-control" name="carry_fee[pre_km][]" value="{$config_carry['carry_fee']['pre_km']}">
-						<!-- <span class="input-group-addon">元，最高</span>
-						<input type="text" class="form-control" name="carry_fee[max_fee]" value="{$config_carry['carry_fee']['max_fee']}">
-						<span class="input-group-addon">元</span> -->
-					</div>
+					{if !empty($config_carry['km_fee'])}
+					{loop $config_carry['km_fee'] $key $row}
+						{if strval($key) != 'start_fee'}
+						<div class="input-group" style="margin-bottom:10px;">
+							<span class="input-group-addon">超过</span>
+							<input type="text" class="form-control" name="km_fee[over_km][]" value="{$row['over_km']}">
+							<span class="input-group-addon">公里，超过部分每公里增加</span>
+							<input type="text" class="form-control" name="km_fee[pre_km_fee][]" value="{$row['pre_km_fee']}">
+							<span class="input-group-addon">元</span>
+							<span class="input-group-addon"><a href="javascript:;" onclick="$(this).parent().parent().remove();"><i class="fa fa-times"></i></a></span>
+							<!-- <span class="input-group-addon">元，最高</span>
+							<input type="text" class="form-control" name="carry_fee[max_fee]" value="{$config_carry['carry_fee']['max_fee']}">
+							<span class="input-group-addon">元</span> -->
+						</div>
+						{/if}
+					{/loop}
+					{/if}
 				</div>
 				<br>
 				<a href="javascript:;" class="add-km"><i class="fa fa-plus-circle"></i>添加计费规则</a>
@@ -217,17 +225,24 @@
 			<div class="col-sm-9 col-xs-12">
 					<div class="input-group" style="margin-bottom:10px;">
 						<div class="input-group-addon">起步价包含</div>
-						<input type="number" name="carry_fee_basic" class="form-control" value="{$config_carry['carry_fee_basic']}">
+						<input type="number" name="volume_fee[start_fee]" class="form-control" value="{$config_carry['volume_fee']['start_fee']}">
 						<div class="input-group-addon">立方</div>
 					</div>
 					<div id="volume_setting">
-						<div class="input-group" style="margin-bottom:10px;">
-							<span class="input-group-addon">超过</span>
-							<input type="text" name="over_cube[]" class="form-control" value="{$config_carry['over_cube']}">
-							<span class="input-group-addon">立方，每立方增加</span>
-							<input type="text" name="pre_cube_fees[]" class="form-control" value="{$config_carry['pre_cube_fees']}">
-							<span class="input-group-addon">元</span>
-						</div>
+						{if !empty($config_carry['volume_fee'])}
+						{loop $config_carry['volume_fee'] $key $row}
+							{if strval($key) != 'start_fee'}
+							<div class="input-group" style="margin-bottom:10px;">
+								<span class="input-group-addon">超过</span>
+								<input type="text" name="volume_fee[over_cube][]" class="form-control" value="{$row['over_cube']}">
+								<span class="input-group-addon">立方，每立方增加</span>
+								<input type="text" name="volume_fee[pre_cube_fee][]" class="form-control" value="{$row['pre_cube_fee']}">
+								<span class="input-group-addon">元</span>
+								<span class="input-group-addon"><a href="javascript:;" onclick="$(this).parent().parent().remove();"><i class="fa fa-times"></i></a></span>
+							</div>
+							{/if}
+						{/loop}
+						{/if}
 					</div>
 					<br>
 					<a href="javascript:;" class="add-volume"><i class="fa fa-plus-circle"></i>添加计费规则</a>
@@ -270,23 +285,23 @@
 			<div class="col-sm-9 col-xs-12">
 				<div class="input-group" style="margin-bottom:10px;">
 					<div class="input-group-addon">室内移动，每立方</div>
-					<input type="text" name="" class="form-control">
+					<input type="text" name="service[indoor_move]" value="{$config_carry['service_fee']['indoor_move']}" class="form-control">
 					<div class="input-group-addon">元</div>
 				</div>
 				<div class="input-group" style="margin-bottom:10px;">
 					<div class="input-group-addon">搬上楼，电梯每层</div>
-					<input type="text" name="" class="form-control">
+					<input type="text" name="service[up_stairs]" value="{$config_carry['service_fee']['up_stairs']}" class="form-control">
 					<div class="input-group-addon">元，</div>
 					<div class="input-group-addon">步梯每层</div>
-					<input type="text" name="" class="form-control">
+					<input type="text" name="service[up_elevator]" value="{$config_carry['service_fee']['up_elevator']}" class="form-control">
 					<div class="input-group-addon">元</div>
 				</div>
 				<div class="input-group" style="margin-bottom:10px;">
 					<div class="input-group-addon">搬下楼，电梯每层</div>
-					<input type="text" name="" class="form-control">
+					<input type="text" name="service[down_stairs]" value="{$config_carry['service_fee']['down_stairs']}" class="form-control">
 					<div class="input-group-addon">元，</div>
 					<div class="input-group-addon">步梯每层</div>
-					<input type="text" name="" class="form-control">
+					<input type="text" name="service[down_elevator]" value="{$config_carry['service_fee']['down_elevator']}" class="form-control">
 					<div class="input-group-addon">元</div>
 				</div>
 				<span class="help-block">
@@ -298,8 +313,8 @@
 			<label class="col-xs-12 col-sm-3 col-md-2 control-label">附加费：</label>
 			<div class="col-sm-9 col-xs-12">
 				<div id="tpl">
-					{if !empty($config_carry['options'])}
-						{loop $config_carry['options'] $row}
+					{if !empty($config_carry['options_fee'])}
+						{loop $config_carry['options_fee'] $row}
 							<div class="input-group">
 								<span class="input-group-addon">附加费名称：</span>
 								<input type="text" name="options[name][]" class="form-control" value="{$row['name']}">
@@ -384,39 +399,23 @@ $(document).on('click','.add-attr',function () {
 		'		<div>';
 	$('#tpl').append(html);
 });
-// <div class="input-group" style="margin-bottom:10px;">
-// 	<span class="input-group-addon">超过</span>
-// 	<input type="text" class="form-control" name="carry_fee[start_km]" value="{$config_carry['carry_fee']['start_km']}">
-// 	<span class="input-group-addon">公里，超过部分每公里增加</span>
-// 	<input type="text" class="form-control" name="carry_fee[pre_km]" value="{$config_carry['carry_fee']['pre_km']}">
-// 	<span class="input-group-addon">元，最高</span>
-// 	<input type="text" class="form-control" name="carry_fee[max_fee]" value="{$config_carry['carry_fee']['max_fee']}">
-// 	<span class="input-group-addon">元</span>
-// </div>
 $(document).on('click','.add-km',function () {
 	var html = '<div class="input-group" style="margin-bottom:10px;">'+
 		'			<span class="input-group-addon">超过</span>'+
-		'			<input type="text" class="form-control" name="carry_fee[start_km][]">'+
+		'			<input type="text" class="form-control" name="km_fee[over_km][]">'+
 		'			<span class="input-group-addon">公里，超过部分每公里增加</span>'+
-		'			<input type="text" class="form-control" name="carry_fee[pre_km][]">'
+		'			<input type="text" class="form-control" name="km_fee[pre_km_fee][]">'+
 		'			<span class="input-group-addon">元</span>'+
 		'			<span class="input-group-addon"><a href="javascript:;" onclick="$(this).parent().parent().remove();"><i class="fa fa-times"></i></a></span>'+
 		'		<div>';
 	$('#km_setting').append(html);
 });
-// <div class="input-group" style="margin-bottom:10px;">
-// 	<span class="input-group-addon">超过</span>
-// 	<input type="text" name="over_cube" class="form-control" value="{$config_carry['over_cube']}">
-// 	<span class="input-group-addon">立方，每立方增加</span>
-// 	<input type="text" name="pre_cube_fees" class="form-control" value="{$config_carry['pre_cube_fees']}">
-// 	<span class="input-group-addon">元</span>
-// </div>
 $(document).on('click','.add-volume',function () {
 	var html = '<div class="input-group" style="margin-bottom:10px;">'+
 		'			<span class="input-group-addon">超过</span>'+
-		'			<input type="text" name="over_cube[]" class="form-control">'+
+		'			<input type="text" name="volume_fee[over_cube][]" class="form-control">'+
 		'			<span class="input-group-addon">立方，每立方增加</span>'+
-		'			<input type="text" name="pre_cube_fees[]" class="form-control">'+
+		'			<input type="text" name="volume_fee[pre_cube_fee][]" class="form-control">'+
 		'			<span class="input-group-addon">元</span>'+
 		'			<span class="input-group-addon"><a href="javascript:;" onclick="$(this).parent().parent().remove();"><i class="fa fa-times"></i></a></span>'+
 		'		<div>';

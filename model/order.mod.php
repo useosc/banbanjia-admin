@@ -46,21 +46,34 @@ function carry_order_calculate_delivery_fee($data, $is_calculate = 0)
     $end_address = $data['end_address'];
     $goods_volume = floatval($data['goods_volume']);
 
-    $carry_fee = $config_carry['carry_fee'];
+    $km_fee = $config_carry['km_fee'];
     
-    $fees = array();
-    $fees["basic"] = array(
-        "title" => "基础搬运费",
-        "note" => "固定金额",
-        "fee" => $carry_fee['start_fee'],
-        "fee_cn" => "￥" . $carry_fee['start_fee']
-    );
+    // $fees = array();
+    // $fees["basic"] = array(
+    //     "title" => "基础搬运费",
+    //     "note" => "固定金额",
+    //     "fee" => $carry_fee['start_fee'],
+    //     "fee_cn" => "￥" . $carry_fee['start_fee']
+    // );
 
     if(!empty($data['start_address']['location_x']) && !empty($data['end_address']['location_y'])){
         $origins = array($data['start_address']['location_y'],$data['start_address']['location_x']);
         $destionation = array($data['end_address']['location_y'],$data['start_address']['location_x']);
         $distance = calculate_distance($origins,$destionation);
     }
-    $distance_fee = $carry_fee['start_fee'];
-    
+    // $distance_fee = $carry_fee['start_fee'];
+    $data = array(
+        "service_type" => "free",
+        "floor" => 5,
+        "stairs_type" => "stairs",
+        "distance" => 6,
+        "km_fee" => 10,
+        "volume_fee" => 8,
+        "service_fee" => 5,
+        "options_fee" => 20,
+        "total_fee" => 43,
+        "discount_fee" => 20,
+        "final_fee" => 23
+    );
+    return $data;
 }

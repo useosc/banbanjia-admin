@@ -13,7 +13,7 @@ if($ta == 'create'){
     }
     $start_address = $params['start_address'];
     $end_address = $params['end_address'];
-    $order = carry_order_calculate_delivery_fee($id,$params);
+    $order = carry_order_calculate_delivery_fee($params);
     $delivery_info = $order['deliveryInfo'];
     $data = array(
         "uniacid" => $_W['uniacid'],
@@ -31,10 +31,14 @@ if($ta == 'create'){
         'floor' => $order['floor'],
         'stairs_type' => $order['stairs_type'],
         'distance' => $order['distance'],
-        'carry_time' => $order['carry_time'],
+        // 'carry_time' => $order['carry_time'],
+        'km_fee' => $order['km_fee'],
+        'volume_fee' => $order['volume_fee'],
+        'service_fee' => $order['service_fee'],
+        'options_fee' => $order['options_fee'],
         'pay_type' => '',
         'is_pay' => 0,
-        'carry_fee' => $order['carry_fee'],
+        // 'carry_fee' => $order['carry_fee'],
         'total_fee' => $order['total_fee'],
         'discount_fee' => $order['discount_fee'],
         'final_fee' => $order['final_fee'],
@@ -43,4 +47,10 @@ if($ta == 'create'){
         'addtime' => TIMESTAMP,
     );
     
+    $data['data'] = iserializer($data['data']);
+    pdo_insert('hello_banbanjia_carry_order',$data);
+    $orderid = pdo_insertid();
+    // 隐私号
+    // carry_order_insert_status_log($orderid,"place_order");
+    imessage(error(0,$orderid),'','ajax');
 }
