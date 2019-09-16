@@ -23,10 +23,11 @@ if (empty($_config_mall['delivery_title'])) {
     $_config_mall['delivery_title'] = '平台专送';
 }
 $config_close = $_W['we7_hello_banbanjia']['config']['close'];
-$config_wxapp = $_config_wxapp = $_W['we7_wxapp']['config'];
 if($_W['ochannel'] == 'wxapp' || $_W['ochannel'] == 'web'){
     $_W['we7_wxapp']['config'] = get_plugin_config('wxapp');
 }
+$config_wxapp = $_config_wxapp = $_W['we7_wxapp']['config'];
+var_dump($_W['we7_wxapp']['config']);exit;
 // if ($_W['_ctrl'] == 'mall') {
 //     if ($config_close['status'] == 2 || !$config_wxapp['basic']['status']) { //平台是否关闭
 //         $config_close["tips"] = !empty($config_close["tips"]) ? $config_close["tips"] : "亲,平台休息中。。。";

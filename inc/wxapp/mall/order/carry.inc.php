@@ -6,7 +6,7 @@ icheckAuth();
 $ta = trim($_GPC["ta"]) ? trim($_GPC["ta"]) : "index";
 mload()->lmodel('order');
 if($ta == 'create'){
-    $id = intval($_GPC['id']);
+    // $id = intval($_GPC['id']);
     $params = json_decode(htmlspecialchars_decode($_GPC['extra']),true);
     if(empty($params)){
         imessage(error(-1,'参数错误'),'','ajax');
@@ -14,7 +14,7 @@ if($ta == 'create'){
     $start_address = $params['start_address'];
     $end_address = $params['end_address'];
     $order = carry_order_calculate_delivery_fee($params);
-    $delivery_info = $order['deliveryInfo'];
+    // $delivery_info = $order['deliveryInfo'];
     $data = array(
         "uniacid" => $_W['uniacid'],
         'uid' => $_W['member']['uid'],
@@ -31,6 +31,7 @@ if($ta == 'create'){
         'floor' => $order['floor'],
         'stairs_type' => $order['stairs_type'],
         'distance' => $order['distance'],
+        'goods_volume' => $order['goods_volume'],
         // 'carry_time' => $order['carry_time'],
         'km_fee' => $order['km_fee'],
         'volume_fee' => $order['volume_fee'],
@@ -47,7 +48,7 @@ if($ta == 'create'){
         'addtime' => TIMESTAMP,
     );
     
-    $data['data'] = iserializer($data['data']);
+    // $data['data'] = iserializer($data['data']);
     pdo_insert('hello_banbanjia_carry_order',$data);
     $orderid = pdo_insertid();
     // 隐私号

@@ -3,12 +3,14 @@ defined("IN_IA") or exit("Access Denied");
 global $_W;
 global $_GPC;
 mload()->lmodel('deliveryer');
-if ($_W["_ac"] != "auth") {
+if ($_W["_ac"] != "auth") { //如果不等你
     icheckdeliveryer();
     $_deliveryer = $deliveryer = $_W["deliveryer"];
     // $relation = deliveryer_push_token($_W["deliveryer"]);
     // $_W["wxapp"]["jpush_relation"] = $relation;
-    // collect_wxapp_formid();
+    if ($_GPC['from'] == 'web') {
+        collect_wxapp_formid();
+    }
 }
 $config_carry = $_W["we7_hello_banbanjia"]["config"]["carry"];
 $config_delivery = $_W["we7_hello_banbanjia"]["config"]["delivery"];

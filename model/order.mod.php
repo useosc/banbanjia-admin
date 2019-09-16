@@ -41,12 +41,12 @@ mload()->lmodel('order.extra');
 function carry_order_calculate_delivery_fee($data, $is_calculate = 0)
 { 
     global $_W;
-    $config_carry = get_system_config('carry');
-    $start_address = $data['start_address'];
-    $end_address = $data['end_address'];
-    $goods_volume = floatval($data['goods_volume']);
+    // $config_carry = get_system_config('carry');
+    // $start_address = $data['start_address'];
+    // $end_address = $data['end_address'];
+    // $goods_volume = floatval($data['goods_volume']);
 
-    $km_fee = $config_carry['km_fee'];
+    // $km_fee = $config_carry['km_fee'];
     
     // $fees = array();
     // $fees["basic"] = array(
@@ -56,17 +56,18 @@ function carry_order_calculate_delivery_fee($data, $is_calculate = 0)
     //     "fee_cn" => "￥" . $carry_fee['start_fee']
     // );
 
-    if(!empty($data['start_address']['location_x']) && !empty($data['end_address']['location_y'])){
-        $origins = array($data['start_address']['location_y'],$data['start_address']['location_x']);
-        $destionation = array($data['end_address']['location_y'],$data['start_address']['location_x']);
-        $distance = calculate_distance($origins,$destionation);
-    }
+    // if(!empty($data['start_address']['location_x']) && !empty($data['end_address']['location_y'])){
+    //     $origins = array($data['start_address']['location_y'],$data['start_address']['location_x']);
+    //     $destionation = array($data['end_address']['location_y'],$data['start_address']['location_x']);
+    //     $distance = calculate_distance($origins,$destionation);
+    // }
     // $distance_fee = $carry_fee['start_fee'];
     $data = array(
         "service_type" => "free",
         "floor" => 5,
         "stairs_type" => "stairs",
         "distance" => 6,
+        "goods_volume" => 10,
         "km_fee" => 10,
         "volume_fee" => 8,
         "service_fee" => 5,

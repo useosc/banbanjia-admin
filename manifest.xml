@@ -497,11 +497,11 @@
             `carry_success_location_y` varchar(15),
             `carry_success_time` int(10),
             `status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '订单状态1:待接单,2:待抵达,3:搬运中,4:已完成',
-            `km_fee` varchar(10),
-            `volume_fee` varchar(10),
-            `service_fee` varchar(10),
-            `options_fee` varchar(10),
-            `total_fee` varchar(10),
+            `km_fee` varchar(10) NOT NULL DEFAULT '0.00',
+            `volume_fee` varchar(10) NOT NULL DEFAULT '0.00',
+            `service_fee` varchar(10) NOT NULL DEFAULT '0.00',
+            `options_fee` varchar(10) NOT NULL DEFAULT '0.00',
+            `total_fee` varchar(10) NOT NULL DEFAULT '0.00',
             `discount_fee` varchar(20) NOT NULL DEFAULT '0.00',
             `final_fee` varchar(20) NOT NULL DEFAULT '0.00',
             `remark` varchar(200) NOT NULL,
@@ -608,6 +608,20 @@
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_wxapp_formid_log` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `appid` varchar(50) NOT NULL DEFAULT '0',
+            `openid` varchar(50) NOT NULL,
+            `formid` varchar(150) NOT NULL,
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `endtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `endtime_cn` varchar(30) NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `formid` (`uniacid`,`appid`,`openid`),
+            KEY `openid` (`openid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
+
         INSERT INTO ims_hello_banbanjia_plugin VALUES
         ('40','wxapp','biz','搬搬家','../addons/hello_banbanjia/static/img/plugin/wxapp.jpg','','搬搬家，国内一流搬家平台','1','0','1');
         INSERT INTO ims_hello_banbanjia_plugin VALUES 
@@ -653,6 +667,7 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_member_groups`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_member_history`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_order_estimate`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_wxapp_formid_log`;
         ]]>
     </upgrade>
 </manifest>
