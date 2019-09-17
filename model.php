@@ -1,6 +1,6 @@
 <?php
 
-use function Qiniu\json_decode;
+// use function Qiniu\json_decode;
 
 defined("IN_IA") or exit("Access Denied");
 class Mloader
@@ -60,7 +60,7 @@ function mload() //返回加载器
         $mloader = new Mloader();
     }
     return $mloader;
-    ihttp_email();
+    // ihttp_email();
 }
 
 function iurl($segment, $params = array(), $addhost = false) //生成链接
@@ -202,14 +202,17 @@ function icheck_verifycode($mobile, $code)
 }
 //计算距离
 //$distance_type = array("riding" => 2, "driving" => 1, "line" => 0, "walking" => 3);
-function calulate_distance($origins, $destination, $type = 0)
+function calculate_distance($origins, $destination, $type = 0)
 {
     $query = array(
-        'key' => AMAP_WEB_KEY,
+        'key' => AMAP_WEB_SERVICE_KEY,
         'destination' => implode(',', $destination),
     );
-    if ($type == 2) { } else {
-        $query['origin'] = implode(',', $origins);
+    if ($type == 2) { 
+        $query['origins'] = implode(',', $origins);
+		$url = 'http://restapi.amap.com/v4/direction/bicycling?';
+    } else {
+        $query['origins'] = implode(',', $origins);
         $query['type'] = $type;
         $query['output'] = 'json';
         $url = 'https://restapi.amap.com/v3/distance?';

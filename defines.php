@@ -14,4 +14,5 @@ define("IREGULAR_MOBILE", "/^[01][3456789][0-9]{9}\$/");
 define("IREGULAR_PASSWORD", "/[0-9]+[a-zA-Z]+[0-9a-zA-Z]*|[a-zA-Z]+[0-9]+[0-9a-zA-Z]*/");
 define("AMAP_WEB_KEY", "a22e5ce1bfcf07cfd2f3268ef7d7baed");
 define("AMAP_WXAPP_KEY", "11a073e4cc6bc36baeaa46a5f9190bbb");
+define("AMAP_WEB_SERVICE_KEY","b92e1bd7388cbfa4cf46ba4cdb23a832");
 define("AMAP_ADMIN_KEY","fceeb4f0418e80182e1dad169a6a424c");

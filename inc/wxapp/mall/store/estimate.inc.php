@@ -1,4 +1,6 @@
 <?php
+        ini_set("display_errors", "1"); //显示出错信息
+        error_reporting(E_ALL ^ E_NOTICE);
 defined("IN_IA") or exit("Access Denied");
 global $_W;
 global $_GPC;
@@ -18,7 +20,7 @@ if ($ta == 'index') {
     imessage('', '', 'ajax');
 } else {
     if ($ta == 'price') {
-        $data = array(
+        $condition = array(
             'remark' => '备注',
             'time' => '09-07',
             'end_address' => array(
@@ -31,19 +33,23 @@ if ($ta == 'index') {
                 'address' => '广东省广州市天河区天河公园',
                 'location_x' => '23.128003',
                 'location_y' => '113.366739'
-            )
+            ),
+            'service_type' => 'indoor', //indoor,up,down
+            'floor' => 5,
+            'stairs_type' => 'stairs'
         );
-        $condition = array();
         // $params = json_decode(htmlspecialchars_decode($_GPC['extra']), true);
         // if (!empty($params)) {
         //     //获取地址
         // }
-        $condition = $data;
+        // $condition = array_merge($condition,$params);
         $order = carry_order_calculate_delivery_fee($condition, intval($_GPC['is_calculate']));
         if (is_error($order)) {
-            message($order, '', 'ajax');
+            imessage($order, '', 'ajax');
         }
+        // mload()->lmodel("redPacket");
+        // $result = array('order' => $order,"redPackets" => $redPacket_available($order['carry_fee']));
         $result = array('order' => $order);
-        message(error(0, $result), '', 'ajax');
+        imessage(error(0, $result), '', 'ajax');
     }
 }
