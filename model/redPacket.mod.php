@@ -7,7 +7,8 @@ function redPacket_cron()
     pdo_query("update " . tablename("hello_banbanjia_activity_redpacket_record") . " set status = 3 where uniacid = :uniacid and status = 1 and endtime < :time", array(":uniacid" => $_W["uniacid"], ":time" => TIMESTAMP));
     return true;
 }
-function redPacket_grant($params,$wxtpl_notice = true){
+function redPacket_grant($params, $wxtpl_notice = true)
+{
     global $_W;
     if (empty($params["title"])) {
         return error(-1, "红包标题不能为空");
@@ -35,7 +36,7 @@ function redPacket_grant($params,$wxtpl_notice = true){
         if (empty($params["uid"])) {
             return error(-1, "用户uid有误");
         }
-    } 
+    }
     $insert = array(
         "uniacid" => $_W["uniacid"],
         "title" => $params["title"],
@@ -107,5 +108,66 @@ function redPacket_grant($params,$wxtpl_notice = true){
         }
     }
     return $redpacket_id;
+}
 
+function redPacket_available($price, $filter = array())
+{
+    global $_W;
+    if (empty($filter)) {
+        $filter["scene"] = "carry";
+    }
+    $scene = $filter['scene'];
+    $condition = " where uniacid = :uniacid and uid = :uid and status = 1 and scene = :scene and `condition` <= :price";
+    $params = array(":uniacid" => $_W["uniacid"], ":price" => floatval($price), ":uid" => $_W["member"]["uid"], ":scene" => trim($scene));
+    if (!$_W["member"]["is_mall_newmember"]) {
+        $condition .= " and type != :type";
+        $params[":type"] = "mallNewMember";
+    }
+    $redPackets = pdo_fetchall("select * from " . tablename("hello_banbanjia_activity_redpacket_record") . $condition, $params);
+    if (!empty($redPackets)) {
+        foreach ($redPackets as $key => &$redPacket) {
+            $check = redpacket_available_check($redPacket, $price, $filter);
+            if (is_error($check)) {
+                unset($redPackets[$key]);
+            }
+            $redPacket["day_cn"] = "限" . date("Y-m-d", $redPacket["starttime"]) . "~" . date("Y-m-d", $redPacket["endtime"]) . "使用";
+            // $redPacket["time_cn"] = totime($redPacket["times_limit"]);
+            if ($redPacket["scene"] == "carry" && 0 < $redPacket["order_type_limit"]) {
+                $order_types = order_types();
+                $redPacket["order_type_cn"] = "仅限" . $order_types[$redPacket["order_type_limit"]]["text"] . "单使用";
+            }
+        }
+        $redPackets = array_values($redPackets);
+    }
+    return $redPackets;
+}
+function redpacket_available_check($redpacketOrId, $price = 0, $filter = array())
+{
+    global $_W;
+    $redpacket = $redpacketOrId;
+    if (!is_array($redpacketOrId)) {
+        $redpacketOrId = intval($redpacketOrId);
+        $redpacket = pdo_get("hello_banbanjia_activity_redpacket_record", array("uniacid" => $_W["uniacid"], "uid" => $_W["member"]["uid"], "status" => 1, "id" => $redpacketOrId));
+    }
+    if (empty($redpacket)) {
+        return error(-1, "红包记录不存在");
+    }
+    if (TIMESTAMP < $redpacket["starttime"] || $redpacket["endtime"] < TIMESTAMP) {
+        return error(-1, "红包使用期限无效");
+    }
+    if ($price < $redpacket["condition"]) {
+        return error(-1, "未达到红包使用金额");
+    }
+    if (!empty($filter["sid"]) && !empty($redpacket["sid"]) && $redpacket["sid"] != $filter["sid"]) {
+        return error(-1, "限指定门店使用");
+    }
+    $scene = isset($filter["scene"]) ? $filter["scene"] : "carry";
+    if ($redpacket["scene"] != $scene) {
+        return error(-1, "红包使用场景无效");
+    }
+    $redpacket["data"] = iunserializer($redpacket["data"]);
+    if (empty($redpacket["data"]["discount_bear"])) {
+        $redpacket["data"]["discount_bear"] = array("plateform_charge" => $redpacket["discount"], "agent_charge" => 0, "store_charge" => 0);
+    }
+    return $redpacket;
 }
