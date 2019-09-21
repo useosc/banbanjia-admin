@@ -11,27 +11,25 @@ if($ta == 'create'){
     if(empty($params)){
         imessage(error(-1,'参数错误'),'','ajax');
     }
-    $start_address = $params['start_address'];
-    $end_address = $params['end_address'];
     $order = carry_order_calculate_delivery_fee($params);
     // $delivery_info = $order['deliveryInfo'];
     $data = array(
         "uniacid" => $_W['uniacid'],
         'uid' => $_W['member']['uid'],
         'order_channel' => $_GPC['from'],
-        'order_type' => 'free',
+        'order_type' => $params['order_type'],
         'order_sn' => date("YmdHis") . random(6,true),
-        'start_address' => $start_address['address'],
-        'start_location_x' => $start_address['location_x'],
-        'start_location_y' => $start_address['location_y'],
-        'end_address' => $end_address['address'],
-        'end_location_x' => $end_address['location_x'],
-        'end_location_y' => $end_address['location_y'],
-        'service_type' => $order['service_type'],
-        'floor' => $order['floor'],
-        'stairs_type' => $order['stairs_type'],
+        'start_address' => $params['start_address'],
+        'start_location_x' => $params['start_location_x'],
+        'start_location_y' => $params['start_location_y'],
+        'end_address' => $params['end_address'],
+        'end_location_x' => $params['end_location_x'],
+        'end_location_y' => $params['end_location_y'],
+        'service_type' => $params['service_type'],
+        'floor' => $params['floor'],
+        'stairs_type' => $params['stairs_type'],
         'distance' => $order['distance'],
-        'goods_volume' => $order['goods_volume'],
+        'goods_volume' => $params['goods_volume'],
         // 'carry_time' => $order['carry_time'],
         'km_fee' => $order['km_fee'],
         'volume_fee' => $order['volume_fee'],

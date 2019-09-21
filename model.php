@@ -63,6 +63,15 @@ function mload() //返回加载器
     // ihttp_email();
 }
 
+function pload() //插件加载器
+{
+    static $ploader = NULL;
+    if (empty($ploader)) {
+        $ploader = new Ploader();
+    }
+    return $ploader;
+}
+
 function iurl($segment, $params = array(), $addhost = false) //生成链接
 {
     global $_W;

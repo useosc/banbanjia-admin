@@ -635,10 +635,96 @@
             KEY `openid` (`openid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_superredpacket` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) NOT NULL DEFAULT '0',
+            `name` varchar(255) NOT NULL DEFAULT '',
+            `type` varchar(20) NOT NULL DEFAULT '',
+            `data` text NOT NULL,
+            `grant_object` longtext NOT NULL,
+            `condition` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `starttime` int(10) unsigned NOT NULL DEFAULT '0',
+            `endtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `addtime` (`addtime`),
+            KEY `type` (`type`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_activity_redpacket_record` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(50) NOT NULL,
+            `activity_id` int(10) unsigned NOT NULL DEFAULT '0',
+            `super_share_id` int(10) unsigned NOT NULL DEFAULT '0',
+            `channel` varchar(20) NOT NULL,
+            `uid` int(10) unsigned NOT NULL,
+            `order_id` int(10) unsigned NOT NULL DEFAULT '0',
+            `code` int(10) unsigned NOT NULL DEFAULT '0',
+            `type` varchar(20) NOT NULL DEFAULT '',
+            `discount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+            `condition` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+            `starttime` int(10) unsigned NOT NULL DEFAULT '0',
+            `endtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `status` tinyint(3) NOT NULL DEFAULT '1',
+            `remark` varchar(300) NOT NULL DEFAULT '',
+            `granttime` int(10) unsigned NOT NULL DEFAULT '0',
+            `usetime` int(10) unsigned NOT NULL DEFAULT '0',
+            `category_limit` varchar(500) NOT NULL,
+            `times_limit` varchar(500) NOT NULL,
+            `is_show` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `scene` varchar(100) NOT NULL DEFAULT 'waimai',
+            `order_type_limit` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `is_notice` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `noticetime` int(10) unsigned NOT NULL DEFAULT '0',
+            `openid` varchar(50) NOT NULL,
+            `grantday` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `data` text NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `redpacketid` (`activity_id`),
+            KEY `uid` (`uid`),
+            KEY `status` (`status`),
+            KEY `is_show` (`is_show`),
+            KEY `scene` (`scene`),
+            KEY `endtime` (`endtime`),
+            KEY `is_notice` (`is_notice`),
+            KEY `noticetime` (`noticetime`),
+            KEY `uniacid_uid_orderid` (`uniacid`,`uid`,`order_id`),
+            KEY `uniacid_type_uid_aid` (`uniacid`,`type`,`uid`,`activity_id`),
+            KEY `uniacid_type_openid_aid` (`uniacid`,`type`,`openid`,`activity_id`),
+            KEY `uniacid_status_endtime` (`uniacid`,`status`,`endtime`)  
+        ) ENGINE=MyISAM AUTO_INCREMENT=30000 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_paylog` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `order_sn` varchar(20) NOT NULL,
+            `uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `order_id` int(10) unsigned NOT NULL DEFAULT '0',
+            `order_type` varchar(30) NOT NULL,
+            `fee` varchar(10) NOT NULL,
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `paytime` int(10) unsigned NOT NULL DEFAULT '0',
+            `data` varchar(1000) NOT NULL,
+            `out_trade_order_id` varchar(50) NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `order_sn` (`order_sn`),
+            KEY `order_id` (`order_id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=4000 DEFAULT CHARSET=utf8;
+
+
         INSERT INTO ims_hello_banbanjia_plugin VALUES
         ('40','wxapp','biz','搬搬家','../addons/hello_banbanjia/static/img/plugin/wxapp.jpg','','搬搬家，国内一流搬家平台','1','0','1');
         INSERT INTO ims_hello_banbanjia_plugin VALUES 
         ('41','diypage','biz','平台装修','../addons/hello_banbanjia/static/img/plugin/diypage.jpg','','可自定义底部菜单，自定义页面等','1','0','1');
+        INSERT INTO ims_hello_banbanjia_plugin VALUES 
+        ('42','superRedpacket','biz','超级红包','../addons/hello_banbanjia/static/img/plugin/superRedpacket.jpg','','超级红包可实现主动发送和分享红包功能！！！！！！','1','0','1');
         INSERT INTO ims_hello_banbanjia_service_config VALUES
         ('1','1','5','1');
         INSERT INTO `ims_hello_banbanjia_service_now_data` VALUES 
@@ -681,6 +767,9 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_member_history`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_order_estimate`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_wxapp_formid_log`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_superredpacket`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_activity_redpacket_record`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_paylog`;
         ]]>
     </upgrade>
 </manifest>

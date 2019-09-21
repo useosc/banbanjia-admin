@@ -47,10 +47,15 @@ function carry_order_calculate_delivery_fee($data, $is_calculate = 0)
     $km_fee = $config_carry['km_fee']; //物流费
     $volume_fee = $config_carry['volume_fee']; //包干服务费
 
-    if (!empty($data['start_address']['location_x']) && !empty($data['end_address']['location_y'])) {
-        $origins = array($data['start_address']['location_y'], $data['start_address']['location_x']);
-        $destionation = array($data['end_address']['location_y'], $data['start_address']['location_x']);
-        // $distance_type = array("riding" => 2,"driving" => 1,"line" => 0,"walking" =>3); //默认直线
+    // if (!empty($data['start_address']['location_x']) && !empty($data['end_address']['location_y'])) {
+    //     $origins = array($data['start_address']['location_y'], $data['start_address']['location_x']);
+    //     $destionation = array($data['end_address']['location_y'], $data['start_address']['location_x']);
+    //     // $distance_type = array("riding" => 2,"driving" => 1,"line" => 0,"walking" =>3); //默认直线
+    //     $distance = calculate_distance($origins, $destionation);
+    // }
+    if(!empty($data['start_location_x']) && !empty($data['end_location_y'])){
+        $origins = array($data['start_location_y'],$data['start_location_x']);
+        $destionation = array($data['end_location_y'],$data['end_location_x']);
         $distance = calculate_distance($origins, $destionation);
     }
 
@@ -106,15 +111,16 @@ function carry_order_calculate_delivery_fee($data, $is_calculate = 0)
     $discount_fee = 0; //折扣
     // $carry_fee = $distance_fee + $gvolume_fee;
 
+    $service_fee = 6;
     $data = array(
-        "service_type" => $data['service_type'],
-        "floor" => $data['floor'],
-        "stairs_type" => $data['stairs_type'],
         "distance" => $distance,
-        "goods_volume" => $data['goods_volume'],
-        "total_fee" => $discount_fee + $gvolume_fee,
+        "km_fee" => $distance_fee,
+        "volume_fee" => $gvolume_fee,
+        "service_fee" => $service_fee,
+        "options_fee" => 0,
+        "total_fee" => $discount_fee + $gvolume_fee + $service_fee,
         "discount_fee" => $discount_fee,
-        "final_fee" => $discount_fee + $gvolume_fee - $discount_fee,
+        "final_fee" => $discount_fee + $gvolume_fee + $service_fee - $discount_fee,
         "fees" => array_values($fees)
         // "redpacket" => $redpacket
     );

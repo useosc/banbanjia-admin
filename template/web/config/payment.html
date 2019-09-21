@@ -1,0 +1,458 @@
+{itemplate 'public/header'}
+<div class="page clearfix">
+    <form class="form-horizontal form form-validate" id="form1" action="" method="post" enctype="multipart/form-data">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#base" aria-controls="base" role="tab" data-toggle="pill">支付参数</a></li>
+			<li role="presentation"><a href="#wechat" aria-controls="wechat" role="tab" data-toggle="pill">微信端</a></li>
+			<li role="presentation"><a href="#h5" aria-controls="h5" role="tab" data-toggle="pill">H5端</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" role="tabpanel" id="base">
+                <div class="alert alert-warning">
+                    注意：支付授权目录严格区分http和https链接，如果您不确定你的域名使用的是http还是https链接，您可以把http和https的支付授权模块都加上<br>
+					注意：微信支付需要在公众平台->微信支付->公众号支付 追加两条支付授权目录:<br>
+					目录一：<a href="javascript:;" class="js-clip" data-text="{$_W['siteroot']}app/">{$_W['siteroot']}app/</a><br>
+					目录二：<a href="javascript:;" class="js-clip" data-text="{$_W['siteroot']}">{$_W['siteroot']}</a>
+                </div>
+                <h3>微信小程序支付参数</h3>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">微信支付方式</label>
+                    <div class="col-sm-9 col-xs-12">
+						<div class="radio radio-inline">
+							<input type="radio" value="default" name="wechat[type]" id="wechat-type-default" {if $payment['wechat']['type'] == 'default'}checked{/if}>
+							<label for="wechat-type-default">本公众号</label>
+						</div>
+						<div class="radio radio-inline">
+							<input type="radio" value="borrow" name="wechat[type]" id="wechat-type-borrow" {if $payment['wechat']['type'] == 'borrow'}checked{/if}>
+							<label for="wechat-type-borrow">借用</label>
+						</div>
+					</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">公众号(AppId)</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" name="wechat[core][appid]" value="{$payment['wechat']['core']['appid']}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">应用密钥(AppSecret)</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" name="wechat[core][appsecret]" value="{$payment['wechat']['core']['appsecret']}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">微信支付商户号(Mch_Id)</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" name="wechat[core][mchid]" value="{$payment['wechat']['core']['mchid']}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">微信支付密钥(APIKEY)</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="wechat[core][apikey]" value="{$payment['wechat']['core']['apikey']}">
+                            <span class="input-group-addon js-random">生成新的</span>
+                        </div>
+                        <span class="help-block">此值需要手动在腾讯商户后台API密钥保持一致，<a href="http://bbs.we7.cc/thread-5788-1-1.html" target="_blank">查看设置教程</a></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">CERT证书文件</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea name="wechat[core][apiclient_cert]" class="form-control" placeholder="为保证安全性，不显示证书内容，若要修改，请直接输入" cols="30" rows="7"></textarea>
+                        <span class="help-block">
+                            {if !empty($payment['wechat']['core']['apiclient_cert'])}
+                                <span class="label label-success">已上传</span>
+                            {else}
+                                <span class="label label-danger">未上传</span>
+                            {/if}
+                            从商户平台上下载支付证书，解压并取得其中的<span class="bg-danger">apiclient_cert.pem</span>用记事本打开并复制文件内容，填至此处
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">KEY证书密钥</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea name="wechat[core][apiclient_key]" class="form-control" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入" cols="30" rows="7"></textarea>
+                        <span class="help-block">
+                            {if !empty($payment['wechat']['core']['apiclient_key'])}
+                                <span class="label label-success">已上传</span>
+                            {else}
+                                <span class="label label-danger">未上传</span>
+                            {/if}
+                            从商户平台上下载支付证书, 解压并取得其中的 <span class="bg-danger">apiclient_key.pem</span> 用记事本打开并复制文件内容, 填至此处
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">ROOTCA证书</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea name="wechat[core][rootca]" class="form-control" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入" cols="30" rows="7"></textarea>
+                        <span class="help-block">
+                            {if !empty($payment['wechat']['core']['rootca'])}
+                                <span class="label label-success">已上传</span>
+                            {else}
+                                <span class="label label-danger">未上传</span>
+                            {/if}
+                            从商户平台上下载支付证书, 解压并取得其中的 <span class="bg-danger"> rootca.pem</span> 用记事本打开并复制文件内容, 填至此处。如果您下载的证书文件夹里没有 rootca.pem 证书，则此项可不填写
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+					<div class="col-sm-9 col-xs-12">
+						<a id="del-default" href="{php echo iurl('config/trade/del_cert', array('pay_type' => 'wechat', 'wechat_type' => 'default'))}" class="btn btn-danger btn-sm js-post {if $payment['wechat']['type'] != 'default'}hide{/if}" data-toggle="tooltip" data-placement="top" data-confirm="删除后需上传新的证书才可正常使用，确定删除吗?">删除本公众号证书</a>
+						<a id="del-borrow" href="{php echo iurl('config/trade/del_cert', array('pay_type' => 'wechat', 'wechat_type' => 'borrow'))}" class="btn btn-danger btn-sm js-post {if $payment['wechat']['type'] != 'borrow'}hide{/if}" data-toggle="tooltip" data-placement="top" data-confirm="删除后需上传新的证书才可正常使用，确定删除吗?">删除借用证书</a>
+					</div>
+                </div>
+                
+                <h3>H5微信支付参数</h3>
+                <div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">公众号(AppId)</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" class="form-control" name="h5[appid]" value="{$payment['h5_wechat']['appid']}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">应用密钥(AppSecret)</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" class="form-control" name="h5[appsecret]" value="{$payment['h5_wechat']['appsecret']}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">微信支付商户号(Mch_Id)</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" class="form-control" name="h5[mchid]" value="{$payment['h5_wechat']['mchid']}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">微信支付密钥(APIKEY)</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+							<input type="text" class="form-control" name="h5[apikey]" value="{$payment['h5_wechat']['apikey']}">
+							<span class="input-group-addon js-random">生成新的</span>
+						</div>
+						<span class="help-block">此值需要手动在腾讯商户后台API密钥保持一致，<a href="http://bbs.we7.cc/thread-5788-1-1.html" target="_blank">查看设置教程</a></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">CERT证书文件</label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea name="h5[apiclient_cert]" class="form-control" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入" cols="30" rows="7"></textarea>
+						<span class="help-block">
+							{if !empty($payment['h5_wechat']['apiclient_cert'])}
+								<span class="label label-success">已上传</span>
+							{else}
+								<span class="label label-danger">未上传</span>
+							{/if}
+							从商户平台上下载支付证书, 解压并取得其中的 <span class="bg-danger">apiclient_cert.pem</span> 用记事本打开并复制文件内容, 填至此处
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">KEY证书密钥</label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea name="h5[apiclient_key]" class="form-control" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入" cols="30" rows="7"></textarea>
+						<span class="help-block">
+							{if !empty($payment['h5_wechat']['apiclient_key'])}
+								<span class="label label-success">已上传</span>
+							{else}
+								<span class="label label-danger">未上传</span>
+							{/if}
+							从商户平台上下载支付证书, 解压并取得其中的 <span class="bg-danger">apiclient_key.pem</span> 用记事本打开并复制文件内容, 填至此处
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">ROOTCA证书</label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea name="h5[rootca]" class="form-control" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入" cols="30" rows="7"></textarea>
+						<span class="help-block">
+							{if !empty($payment['h5_wechat']['rootca'])}
+								<span class="label label-success">已上传</span>
+							{else}
+								<span class="label label-danger">未上传</span>
+							{/if}
+							从商户平台上下载支付证书, 解压并取得其中的 <span class="bg-danger"> rootca.pem</span> 用记事本打开并复制文件内容, 填至此处。如果您下载的证书文件夹里没有 rootca.pem 证书，则此项可不填写
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+					<div class="col-sm-9 col-xs-12">
+						<a href="{php echo iurl('config/trade/del_cert', array('pay_type' => 'h5_wechat'))}" class="btn btn-danger btn-sm js-post" data-toggle="tooltip" data-placement="top" data-confirm="删除后需上传新的证书才可正常使用，确定删除吗?">删除已有证书</a>
+					</div>
+                </div>
+                
+                <h3>支付宝支付参数</h3>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">支付宝账号</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" class="form-control" name="alipay[account]" value="{$payment['alipay']['account']}">
+						<span class="help-block">
+							 如您没有支付宝帐号，<a href="https://memberprod.alipay.com/account/reg/enterpriseIndex.htm" target="_blank">请点击这里注册</a>
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">合作者身份</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" class="form-control" name="alipay[partner]" value="{$payment['alipay']['partner']}">
+						<span class="help-block">
+							支付宝签约用户请在此处填写支付宝分配给您的合作者身份，签约用户的手续费按照您与支付宝官方的签约协议为准。<br>
+							如果您还未签约，<a href="https://memberprod.alipay.com/account/reg/enterpriseIndex.htm" target="_blank">请点击这里签约</a>；如果已签约,<a href="https://b.alipay.com/order/pidKey.htm?pid=2088501719138773&product=fastpay" target="_blank">请点击这里获取PID、Key</a>;如果在签约时出现合同模板冲突，请咨询0571-88158090
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">校验密钥</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" class="form-control" name="alipay[secret]" value="{$payment['alipay']['secret']}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">支付宝应用id(用于退款)</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" class="form-control" name="alipay[appid]" value="{$payment['alipay']['appid']}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">密钥类型</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="radio radio-inline">
+							<input type="radio" value="RSA" name="alipay[rsa_type]" id="alipay-rsatype-1" {if $payment['alipay']['rsa_type'] == 'RSA' || empty($payment['alipay']['rsa_type'])}checked{/if}>
+							<label for="alipay-rsatype-1">RSA</label>
+						</div>
+						<div class="radio radio-inline">
+							<input type="radio" value="RSA2" name="alipay[rsa_type]" id="alipay-rsatype-2" {if $payment['alipay']['rsa_type'] == 'RSA2'}checked{/if}>
+							<label for="alipay-rsatype-2">RSA2</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">应用私钥(private_key,用于退款)</label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea name="alipay[private_key]" class="form-control" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入" cols="30" rows="7"></textarea>
+						<span class="help-block">
+							{if !empty($payment['alipay']['private_key'])}
+								<span class="label label-success">已上传</span>
+							{else}
+								<span class="label label-danger">未上传</span>
+							{/if}
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">支付宝公钥(public_key,用于退款)</label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea name="alipay[public_key]" class="form-control" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入" cols="30" rows="7"></textarea>
+						<span class="help-block">
+							{if !empty($payment['alipay']['public_key'])}
+								<span class="label label-success">已上传</span>
+							{else}
+								<span class="label label-danger">未上传</span>
+							{/if}
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+					<div class="col-sm-9 col-xs-12">
+						<a href="{php echo iurl('config/trade/del_cert', array('pay_type' => 'alipay'))}" class="btn btn-danger btn-sm js-post" data-toggle="tooltip" data-placement="top" data-confirm="删除后需上传新的证书才可正常使用，确定删除吗?">删除已有证书</a>
+					</div>
+                </div>
+                
+            </div>
+
+
+            <div class="tab-pane" role="tabpanel" id="wechat">
+                <div class="panel panel-default panel-payment-switch">
+                    <div class="panel-body">
+                        <div class="col-sm-9 col-xs-12">
+                            <h4>微信支付</h4>
+                            <span>
+                                <p>在开启微信支付前，请到 <a href="{php echo iurl('config/trade/payment');}" target="_blank">支付参数</a> 去设置好参数。</p>
+                            </span>
+                        </div>
+                        <div class="col-sm-2 pull-right">
+                            <input type="checkbox" class="js-switch"  name="weixin[wechat]" value="1" {if in_array('wechat', $payment['weixin'])}checked{/if}/>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default panel-payment-switch">
+                    <div class="panel-body">
+                        <div class="col-sm-9 col-xs-12">
+                            <h4>余额支付</h4>
+                            <span>开启后，粉丝可以用账户余额去平台消费.</span>
+                        </div>
+                        <div class="col-sm-2 pull-right">
+                            <input type="checkbox" name="weixin[credit]" value="1" class="js-switch" {if in_array('credit', $payment['weixin'])}checked{/if}/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-pane" role="tabpanel" id="h5">
+                <div class="panel panel-default panel-payment-switch">
+					<div class="panel-body">
+						<div class="col-sm-9 col-xs-12">
+							<h4>微信支付</h4>
+							<span>
+								<p>在开启微信支付前，请到 <a href="{php echo iurl('config/trade/payment');}" target="_blank">支付参数</a> 去设置好参数。<span class="text-danger">Wap中使用微信支付,需要去微信支付商户平台开启“H5支付”产品权限</span></p>
+							</span>
+						</div>
+						<div class="col-sm-2 pull-right">
+							<input type="checkbox" class="js-switch"  name="wap[wechat]" value="1" {if in_array('wechat', $payment['wap'])}checked{/if}/>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default panel-payment-switch">
+					<div class="panel-body">
+						<div class="col-sm-9 col-xs-12">
+							<h4>支付宝</h4>
+							<span>
+								<p>在开启支付宝支付前，请到 <a href="{php echo iurl('config/trade/payment');}" target="_blank">支付参数</a> 去设置好参数。</p>
+							</span>
+						</div>
+						<div class="col-sm-2 pull-right">
+							<input type="checkbox" name="wap[alipay]" value="1" class="js-switch" {if in_array('alipay', $payment['wap'])}checked{/if}/>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default panel-payment-switch">
+					<div class="panel-body">
+						<div class="col-sm-9 col-xs-12">
+							<h4>余额支付</h4>
+							<span>开启后，粉丝可以用账户余额去平台消费.</span>
+						</div>
+						<div class="col-sm-2 pull-right">
+							<input type="checkbox" name="wap[credit]" value="1" class="js-switch" {if in_array('credit', $payment['wap'])}checked{/if}/>
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+        <div class="form-group">
+			<div class="col-sm-9 col-xs-9 col-md-9">
+				<input type="hidden" name="token" value="{$_W['token']}">
+				<input type="submit" value="提交" class="btn btn-primary">
+			</div>
+		</div>
+    </form>
+</div>
+<script>
+$(function(){
+    $('.js-random').click(function(){
+        var letters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        var token = '';
+        for(var i =0 ;i<32;i++){
+            var j = parseInt(Math.random()*32);
+            token += letters[j];
+        }
+        $(this).prev().val(token);
+    });
+    $('#wechat-type-default, #wechat-type-borrow').click(function(){
+		$('#wechat-partner-container').addClass('hide');
+		$('#wechat-core-container').removeClass('hide');
+    });
+    $('#wechat-type-partner, #wechat-type-borrow-partner').click(function(){
+		$('#wechat-core-container').addClass('hide');
+		$('#wechat-partner-container').removeClass('hide');
+	});
+	$('#wechat-version-1').click(function(){
+		$('.wechat-version-1').removeClass('hide');
+		$('.wechat-version-2').addClass('hide');
+	});
+	$('#wechat-version-2').click(function(){
+		$('.wechat-version-1').addClass('hide');
+		$('.wechat-version-2').removeClass('hide');
+	});
+
+	$('#wechat-type-default').click(function(){
+		$('#del-default').removeClass('hide');
+		$('#del-borrow').addClass('hide');
+		$('#del-partner').addClass('hide');
+		$('#del-borrow_partner').addClass('hide');
+	});
+	$('#wechat-type-borrow').click(function(){
+		$('#del-borrow').removeClass('hide');
+		$('#del-default').addClass('hide');
+		$('#del-partner').addClass('hide');
+		$('#del-borrow_partner').addClass('hide');
+	});
+	$('#wechat-type-partner').click(function(){
+		$('#del-partner').removeClass('hide');
+		$('#del-borrow').addClass('hide');
+		$('#del-default').addClass('hide');
+		$('#del-borrow_partner').addClass('hide');
+	});
+	$('#wechat-type-borrow-partner').click(function(){
+		$('#del-borrow_partner').removeClass('hide');
+		$('#del-borrow').addClass('hide');
+		$('#del-partner').addClass('hide');
+		$('#del-default').addClass('hide');
+    });
+    $(document).on('click', '.del-item', function() {
+		$(this).parents('.input-group').remove();
+    });
+    $('#form1').submit(function(){
+		$('#form1').attr('stop', 1);
+		var wechat_type = $(':radio[name="wechat[type]"]:checked').val();
+		if(!wechat_type) {
+			Notify.info('微信支付方式不能为空');
+			return false;
+		}
+		if(wechat_type == 'default' || wechat_type == 'borrow') {
+			var appid = $.trim($(':text[name="wechat[core][appid]"]').val());
+			if(!appid) {
+				Notify.info('公众号(appid)不能为空');
+				return false;
+			}
+			var appsecret = $.trim($(':text[name="wechat[core][appsecret]"]').val());
+			if(!appsecret) {
+				Notify.info('应用密钥(AppSecret)不能为空');
+				return false;
+			}
+			var mchid = $.trim($(':text[name="wechat[core][mchid]"]').val());
+			if(!mchid) {
+				Notify.info('微信支付商户号(Mch_Id)不能为空');
+				return false;
+			}
+			var apikey = $.trim($(':text[name="wechat[core][apikey]"]').val());
+			if(!appid) {
+				Notify.info('微信支付密钥(APIKEY)不能为空');
+				return false;
+			}
+		} else {
+			var appid = $.trim($(':text[name="wechat[partner][appid]"]').val());
+			if(!appid) {
+				Notify.info('公众号(appid)不能为空');
+				return false;
+			}
+			var appsecret = $.trim($(':text[name="wechat[partner][appsecret]"]').val());
+			if(!appsecret) {
+				Notify.info('应用密钥(AppSecret)不能为空');
+				return false;
+			}
+			var sub_appid = $.trim($(':text[name="wechat[partner][sub_appid]"]').val());
+			if(!appsecret) {
+				Notify.info('服务商公众号(AppId)不能为空');
+				return false;
+			}
+			var mchid = $.trim($(':text[name="wechat[partner][mchid]"]').val());
+			if(!appsecret) {
+				Notify.info('服务商微信支付商户号(Mch_Id)不能为空');
+				return false;
+			}
+			var apikey = $.trim($(':text[name="wechat[partner][apikey]"]').val());
+			if(!appid) {
+				Notify.info('微信支付密钥(APIKEY)不能为空');
+				return false;
+			}
+		}
+		$('#form1').attr('stop', 0);
+		return true;
+	});
+})
+</script>
+{itemplate 'public/footer'}

@@ -37,9 +37,9 @@
                transition: background-color 0.4s, left 0.2s;
 }
 .switchery.checked {
-	border-color: #1ab394; 
-	box-shadow: #1ab394 0px 0px 0px 16px inset;
-	background-color: #1ab394;
+	border-color: #337ab7; 
+	box-shadow: #337ab7 0px 0px 0px 16px inset;
+	background-color:#337ab7;
 	-webkit-transition: border 0.4s, box-shadow 0.4s, -webkit-box-shadow 0.4s, background-color 1.2s; 
 	             transition: border 0.4s, box-shadow 0.4s, -webkit-box-shadow 0.4s, background-color 1.2s; 
 }

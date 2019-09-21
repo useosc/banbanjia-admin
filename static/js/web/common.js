@@ -38,9 +38,9 @@ define(["jquery", "bootstrap"], function ($, bs) {
                 }()
             }, 1)
     }, $(".btn").hover(function () {
-        $(this).tooltip("show")
+        // $(this).tooltip("show")
     }, function () {
-        $(this).tooltip("hide")
+        // $(this).tooltip("hide")
     }), irequire(["jquery.slimscroll"], function () {
         $(".slimscroll").slimScroll({
             height: "auto",

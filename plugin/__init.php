@@ -17,5 +17,14 @@ if (!$plugin["status"]) {
 // if (empty($status)) {
 //     imessage("公众号没有使用该插件的权限", referer(), "error");
 // }
-
+$_W['_plugin']['config'] = $_config_plugin = get_plugin_config($_W["_plugin"]["name"]);
+pload()->model($_W['_plugin']['name']);
+if (!empty($_GPC["filter"])) {
+    $_GPC["filter"] = json_decode(htmlspecialchars_decode($_GPC["filter"]), true);
+    if (is_array($_GPC["filter"])) {
+        foreach ($_GPC["filter"] as $key => $val) {
+            $_GPC[$key] = $val;
+        }
+    }
+}
 ?>
