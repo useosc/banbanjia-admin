@@ -209,6 +209,15 @@ function icheck_verifycode($mobile, $code)
     }
     return false;
 }
+//格式化模板消息
+function sys_wechat_tpl_format($params)
+{
+    $send = array();
+    foreach ($params as $key => $param) {
+        $send[$key] = array("value" => $param, "color" => "#ff510");
+    }
+    return $send;
+}
 //计算距离
 //$distance_type = array("riding" => 2, "driving" => 1, "line" => 0, "walking" => 3);
 function calculate_distance($origins, $destination, $type = 0)

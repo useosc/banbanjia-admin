@@ -75,10 +75,34 @@ function icheckauth($force = true) //鉴权
         if (defined('IN_WXAPP')) {
             $_W['openid'] = $_W['member']['openid'] = $_W['openid_wxapp'];
         }
+        member_group_update();
         $_W['member']['is_store_newmember'] = 1;
         $_W['member']['is_mall_newmember'] = 1;
         $config_newmember_condition = 0;
-
+        if (!empty($_W['we7_hello_banbanjia']['config']['activity'])) {
+            $config_newmember_condition = $_W['we7_hello_banbanjia']['config']['activity']['newmember']['newmember_condition'];
+        }
+        if ($_GPC['sid'] > 0) { //店铺新客
+            if ($config_newmember_condition == 1) {
+                $is_exist = pdo_fetch('select id from ' . tablename('hello_banbanjia_carry_order') . ' where uniacid = :uniacid and sid = :sid and uid = :uid and status != 6', array(':uniacid' => $_W['uniacid'], ':sid' => intval($_GPC['sid']), ':uid' => $_W['member']['uid']));
+            } else {
+                $is_exist = pdo_get('hello_banbanjia_carry_order', array('uniacid' => $_W['uniacid'], 'sid' => intval($_GPC['sid']), 'uid' => $_W['member']['uid']), array('id'));
+            }
+            if (!empty($is_exist)) {
+                $_W['member']['is_store_newmember'] = 0;
+                $_W['member']['is_mall_newmember'] = 0;
+            }
+        }
+        if ($_W['member']['is_mall_newmember'] == 1) { //平台新客
+            if ($config_newmember_condition == 1) {
+                $is_exist = pdo_fetch('select id from ' . tablename('hello_banbanjia_carry_order') . ' where uniacid = :uniacid and uid = :uid and status != 6', array(':uniacid' => $_W['uniacid'], ':uid' => $_W['member']['uid']));
+            } else {
+                $is_exist = pdo_get('hello_banbanjia_carry_order', array('uniacid' => $_W['uniacid'], 'uid' => $_W['member']['uid']), array('id'));
+            }
+            if (!empty($is_exist)) {
+                $_W['member']['is_mall_newmember'] = 0;
+            }
+        }
         if (!$_W['member']['status'] && $force) {
             imessage('您暂时无权访问平台', 'close', 'info');
         }
@@ -115,6 +139,21 @@ function get_member($openid, $field = 'openid')
         $info["account"] = iunserializer($info["account"]);
         $update = array();
         if (empty($info['token'])) {
+            $info['token'] = random(32);
+            pdo_update('hello_banbanjia_members', array('token' => $info['token']), array('id' => $info['id']));
+        }
+        if ($info["svip_status"] == 1 && $info["svip_endtime"] <= TIMESTAMP) { //超级会员
+            $update["svip_status"] = 2;
+            $info["svip_status"] = $update["svip_status"];
+        }
+        if (!empty($update)) {
+            pdo_update("hello_banbanjia_members", $update, array("id" => $info["id"]));
+        }
+        $openid = $info["openid"];
+        $info["svip_credit1"] = floatval($info["svip_credit1"]);
+        $info["account"] = iunserializer($info["account"]);
+        $update = array();
+        if (empty($info['token'])) {
             $update['token'] = random(32);
             $info['token'] = $update['token'];
         }
@@ -129,11 +168,119 @@ function get_member($openid, $field = 'openid')
         return $info;
     }
 }
+//用户等级
 function member_groups()
 {
     global $_W;
     $config_member = $_W['we7_hello_banbanjia']['config']['member'];
     return $config_member['group'];
+}
+//更新用户等级
+function member_group_update($wx_tpl = false)
+{
+    global $_W;
+    if ($_W['member']['groupid_updatetime'] > TIMESTAMP - 600) {
+        return true;
+    }
+    $condition = ' where uniacid = :uniacid and is_pay = 1 and uid = :uid';
+    $params = array(
+        ':uniacid' => $_W['uniacid'],
+        ':uid' => $_W['member']['uid'],
+    );
+    $config_member = $_W['we7_hello_banbanjia']['config']['member'];
+    if ($config_member['group_update_mode'] == 'order_money') {
+        //搬运订单消费总额满
+        $condition .= " and status = 5";
+        $result = pdo_fetchcolumn('select sum(final_fee) from' . tablename('hello_banbanjia__carry_order') . $condition, $params);
+        $result = round($result, 2);
+    } elseif ($config_member['group_update_mode'] == 'order_count') {
+        //搬运订单消费次数满
+        $condition .= " and status = 5";
+        $result = pdo_fetchcolumn('select count(*) from' . tablename('hello_banbanjia__carry_order') . $condition, $params);
+        $result = intval($result);
+    }
+    $old_group_id = $_W['member']['groupid'];
+    $groups = member_groups();
+    foreach ($groups as $group) {
+        if (($result >= $group['group_condition']) && ($group['group_condition'] > $groups[$old_group_id]['group_condition'])) {
+            $group_id = $group['id'];
+        }
+    }
+    pdo_update('hello_banbanjia_members', array('groupid' => $group_id, 'groupid_updatetime' => TIMESTAMP), array('uniacid' => $_W['uniacid'], 'uid' => $_W['member']['uid']));
+    if ($wx_tpl) {
+        //微信模板消息
+    }
+    $_W['member']['groupid'] = $group_id;
+    $_W['member']['groupname'] = $groups[$group_id]['title'];
+    return true;
+}
+//用户账变
+function member_credit_update($uid, $credittype, $creditval = 0, $log = array(), $wxtpl_notice = true)
+{
+    global $_W;
+    $fields = array("id", "uid", "groupid", "groupid_updatetime", "uid_majia", "uid_qianfan", "openid", "token", "credit1", "credit2", "avatar", "nickname", "sex", "realname", "mobile", "password", "mobile_audit", "setmeal_id", "setmeal_day_free_limit", "setmeal_deliveryfee_free_limit", "setmeal_starttime", "setmeal_endtime", "is_sys", "status", "addtime", "spread1", "spread2");
+    $member = pdo_get("hello_banbanjia_members", array("uniacid" => $_W["uniacid"], "uid" => $uid));
+    if (empty($member)) {
+        return error(-1, "会员不存在");
+    }
+    if (!in_array($credittype, array("credit1", "credit2"))) {
+        return error("-1", "积分类型有误");
+    }
+    $credittype = trim($credittype);
+    $creditval = floatval($creditval);
+    if (empty($creditval)) {
+        return true;
+    }
+    if ($member["is_sys"] == 1) {
+        load()->model("mc");
+        $result = mc_credit_update($uid, $credittype, $creditval, $log);
+    } else {
+        $value = $member[$credittype];
+        if (0 < $creditval || 0 <= $value + $creditval) {
+            pdo_update("hello_banbanjia_members", array($credittype => $value + $creditval), array("uid" => $uid));
+            $result = true;
+        } else {
+            return error("-1", "积分类型为" . $credittype . "的积分不够，无法操作。");
+        }
+    }
+    if (!empty($wxtpl_notice)) {
+        load()->func("communication");
+        $openid = member_uid2openid($uid);
+        if (empty($openid)) {
+            return true;
+        }
+        $member = get_member($uid);
+        $config = $_W["we7_hello_banbanjia"]["config"];
+        if ($credittype == "credit1") {
+            $params = array("first" => "您在" . $config["mall"]["title"] . "的账户积分有新的变动", "keyword1" => "积分变动", "keyword2" => (string) $creditval . "积分", "keyword3" => date("Y-m-d H:i", TIMESTAMP), "keyword4" => 0 < $creditval ? "积分充值" : "积分消费", "remark" => implode("\n", array("积分余额:" . $member["credit1"], "备注:" . $log[1])));
+        } else {
+            $params = array("first" => "您在" . $config["mall"]["title"] . "的账户余额有新的变动", "keyword1" => "余额变动", "keyword2" => (string) $creditval . "余额", "keyword3" => date("Y-m-d H:i", TIMESTAMP), "keyword4" => 0 < $creditval ? "余额充值" : "余额消费", "remark" => implode("\n", array("账户余额:" . $member["credit2"], "备注:" . $log[1])));
+        }
+        $send = sys_wechat_tpl_format($params);
+        $acc = TyAccount::create($_W["acid"]);
+        $url = ivurl("pages/member/mine", array(), true);
+        $miniprogram = "";
+        if (MODULE_FAMILY == "wxapp") {
+            $miniprogram = array("appid" => $_W["we7_hello_banbanjia"]["config"]["wxapp"]["basic"]["key"], "pagepath" => "pages/member/mine");
+        }
+        if (!is_error($acc)) {
+            $status = $acc->sendTplNotice($openid, $_W["we7_hello_banbanjia"]["config"]["notice"]["wechat"]["account_change_tpl"], $send, $url, $miniprogram);
+            if (is_error($status)) {
+                slog("wxtplNotice", "平台账户变动微信通知会员", $send, $status["message"]);
+            }
+        }
+    }
+    return $result;
+}
+//uid2openid
+function member_uid2openid($uid = 0)
+{
+    global $_W;
+    if (empty($uid)) {
+        $uid = $_W["member"]["uid"];
+    }
+    $openid = pdo_fetchcolumn("select openid from " . tablename("hello_banbanjia_members") . " where uid = :uid", array(":uid" => $uid));
+    return $openid;
 }
 //绑定手机号
 function bind_phone($phone)

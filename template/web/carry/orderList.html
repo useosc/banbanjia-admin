@@ -40,9 +40,9 @@
 				<div class="btn-group">
 					<div class="btn-group">
 						<a href="{php echo ifilter_url('order_type:');}" class="btn {if $order_type == ''}btn-primary{else}btn-default{/if}">不限</a>
-						<a href="{php echo ifilter_url('order_type:free');}" class="btn {if $order_type == 'free'}btn-primary{else}btn-default{/if}">免费搬家</a>
-						<a href="{php echo ifilter_url('order_type:share');}" class="btn {if $order_type == 'share'}btn-primary{else}btn-default{/if}">共享搬家</a>
-						<a href="{php echo ifilter_url('order_type:company');}" class="btn {if $order_type == 'company'}btn-primary{else}btn-default{/if}">搬家公司</a>
+						<a href="{php echo ifilter_url('order_type:free');}" class="btn {if $order_type == 'free'}btn-primary{else}btn-default{/if}">搬移</a>
+						<a href="{php echo ifilter_url('order_type:share');}" class="btn {if $order_type == 'share'}btn-primary{else}btn-default{/if}">搬运</a>
+						<!-- <a href="{php echo ifilter_url('order_type:company');}" class="btn {if $order_type == 'company'}btn-primary{else}btn-default{/if}">搬家公司</a> -->
 					</div>
 				</div>
 			</div>
@@ -119,6 +119,139 @@
 		</div>
     </div>
 </form>
+<div class="clearfix order-list">
+	{if !empty($orders)}
+	<div class="col-md-8">
+		{loop $orders $order}
+		<div class="panel-order">
+			<div class="pay-info {$order['pay_type_class']}"></div>
+			<div class="panel-heading clearfix">
+				<div class="order-info pull-left">
+					<span class="serial-sn">
+						#<strong>{$order['id']}</strong>
+					</span>
+					<span class="send-time">
+						<strong>{php echo !empty($order['carry_time']) ? $order['carry_time'] : '立即搬运'}</strong>
+						<span class="grayest">（{php echo date('Y-m-d H:i',$order['addtime'])} 下单）</span>
+						{if $order['is_pay'] == 1}
+						<span>{$pay_types[$order['pay_type']]}</span>
+						{/if}
+						<span>&nbsp;{$order_channels[$order['order_channel']]}</span>
+					</span>
+				</div>
+				<div class="order-status pull-right"><strong>{$order_status[$order['status']]}</strong></div>
+			</div>
+			{if $order['status'] == 4}
+				<div class="order-reason">
+					<i class="icon icon-time"></i>
+					取消原因:{$order['cancel_reason']}
+				</div>
+			{/if}
+			{if $order['deliveryer_id'] > 0}
+				<div class="delivery-info clearfix">
+					<div class="highlight">搬运：</div>
+					<div class="deliveryer-info">
+						<strong>{$deliveryers[$order['deliveryer_id']]['title']}</strong> &nbsp; &nbsp;{$deliveryers[$order['deliveryer_id']]['mobile']}
+						<div class="status-info">
+							{if $order['carry_status'] == 2}
+								搬运工已接单（接单时间：{php echo date('Y-m-d H:i',$order['carry_assign_time'])}）
+							{elseif $order['carry_status'] == 3}
+								搬运工已上门（上门时间：{php echo date('Y-m-d H:i',$order['carry_indoor_time'])}）
+							{elseif $order['carry_status'] == 4}
+								搬运已完成（完成时间：{php echo date('Y-m-d H:i',$order['carry_success_time'])}）
+							{/if}
+						</div>
+					</div>
+				</div>
+			{/if}
+			<div class="product-info">
+				<p class="product-title">
+					<span class="highlight">费用</span>
+					<span class="pull-right greenest toggle-product">展开 <i class="icon icon-angle-up"></i></span>
+				</p>
+				<div class="product-display hide">
+					{if $order['discount_fee'] > 0}
+						<div class="list-item clearfix">
+							<span class="pull-left">会员优惠</span>
+							<span class="pull-right">￥{$order['discount_fee']}</span>
+						</div>
+					{/if}
+					{if $order['carry_tips']>0}
+						<div class="list-item clearfix">
+							<span class="pull-left">小费</span>
+							<span class="pull-right">￥{$order['carry_tips']}</span>
+						</div>
+					{/if}
+					<div class="charge-info">
+						<div class="charge-title clearfix">
+							<div class="pull-left"><strong>小计</strong></div>
+							<div class="pull-right">￥{$order['total_fee']}</div>
+						</div>
+						<div class="charge-title clearfix">
+							<div class="pull-left"><strong>顾客实际支付</strong></div>
+							<div class="pull-right">￥{$order['final_fee']}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="btn-area">
+				{if $order['status'] < 3}
+					{if $order['is_pay'] == 1}
+						{if $order['status'] == 1}
+							<a href="javascript:;" class="btn btn-primary btn-sm btn-dispatch" data-id="{$order['id']}">调度</a>
+							<a href="{php echo iurl('carry/order/status',array('type'=>'carry_wait','id'=>$order['id']));}" class="btn btn-primary btn-sm js-post" data-confirm="确定通知搬运工抢单吗？">通知搬运工抢单</a>
+						{elseif $order['status'] == 2}
+							<a href="javascript:;" class="btn btn-primary btn-sm btn-dispatch" data-id="{$order['id']}">重新调度</a>
+							<a href="{php echo iurl('carry/order/end',array('id'=>$order['id']));}" class="btn btn-primary btn-sm js-post" data-confirm="确定完成订单吗？">完成订单</a>
+						{/if}
+						<a href="{php echo iurl('carry/order/cancel',array('id'=>$order['id']));}" class="btn btn-primary btn-sm js-post" data-confirm="取消订单并退款？">取消订单并退款</a>
+					{else}
+						<a href="{php echo iurl('carry/order/cancel',array('id'=>$order['id']));}" class="btn btn-primary btn-sm js-post" data-confirm='确定取消订单？'>取消订单</a>
+					{/if}
+				{/if}
+				{if $order['refund_status'] == 1}
+					<a href="{php echo iurl('carry/order/refund_handle', array('id' => $order['id']));}" class="btn btn-primary btn-sm js-post" data-confirm="确定发起退款吗?">发起退款</a>
+					<a href="{php echo iurl('carry/order/refund_status', array('id' => $order['id']));}" class="btn btn-primary btn-sm js-post" data-confirm="确定设置为已退款吗?">已退款</a>
+				{elseif $order['refund_status'] == 2}
+					<a href="{php echo iurl('carry/order/refund_query', array('id' => $order['id']));}" class="btn btn-primary btn-sm js-post">查询退款进度</a>
+					<a href="{php echo iurl('carry/order/refund_status', array('id' => $order['id']));}" class="btn btn-primary btn-sm js-post" data-confirm="确定设置为已退款吗?">已退款</a>
+				{/if}
+				<a href="{php echo iurl('carry/order/detail',array('id'=>$order['id']));}" target="_blank" class="btn btn-primary btn-sm">详情</a>
+			</div>
+
+		</div>
+		{/loop}
+	</div>
+	<div class="col-md-4">
+		<div class="panel panel-stat">
+			<div class="panel-heading">
+				<h3>当日订单概况</h3>
+			</div>
+			<div class="panel-body">
+				<div class="col-md-6">
+					<div class="title">已完成订单(笔)</div>
+					<div class="num-wrapper">
+						<a class="num" href="javascript:;">{php echo intval($stat['total_num']);}</a>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="title">预计收入(元)</div>
+					<div class="num-wrapper">
+						<a class="num" href="javascript:;">{php echo round($stat['total_price'], 2);}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{else}
+		<div class="no-result">
+			<p>还没有相关数据</p>
+		</div>
+	{/if}
+	<div class="col-md-12">
+		{$pager}
+	</div>
+</div>
 
 <div class="modal fade" id="order-export" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog ">
@@ -151,6 +284,19 @@
     </div>
 <script>
     irequire(['laytpl','hello'],function(laytpl,hello){
+		$(document).on('click', '.product-title .toggle-product', function(){
+			var $parent = $(this).parents('.panel-order');
+			var is_hide = $('.product-display', $parent).hasClass('hide');
+			if(is_hide) {
+				$('.product-display', $parent).removeClass('hide');
+				$(this).html('收起 <i class="icon icon-angle-up"></i>');
+			} else {
+				$('.product-display', $parent).addClass('hide');
+				$(this).html('展开 <i class="icon icon-angle-down"></i>');
+			}
+		});
+
+
         $('.btn-export').click(function(){
             $('#order-export').modal('show');
             $('.btn-export-submit').click(function(){

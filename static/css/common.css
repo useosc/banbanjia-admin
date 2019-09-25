@@ -70,6 +70,20 @@ a:hover, a:focus {
     background-color: #06c1ae
 }
 
+/* 共用 */
+.tag{ border-radius: 10px; text-align: center; font-weight: normal;border: 1px solid #eee; padding: 0px 6px; font-size: 12px;}
+.tag-danger{border-color: #FF5A5A; color: #FF5A5A;}
+.tag-success{border-color: #337ab7; color: #337ab7;}
+.tag-default{border-color: #333; color: #333;}
+.border-0-lr{border-left: 0; border-right: 0;}
+.border-0-l{border-left: 0;}
+.grayest{color: #8d8d8d; text-align: center}
+.greenest,.greenest:hover,.greenest:focus{color: #337ab7;}
+.orange{color: #f90;}
+.btn-green{font-size: 12px; padding: 4px; color: #06c1ae; border: 1px solid #06c1ae; border-radius: 5px; cursor: pointer}
+.btn-green:hover{border-color: #06c1ae; background-color: #e1fefb;}
+.btn-gray{font-size: 12px; padding: 3px 8px; color: #D2D2D2; border: 1px solid #D2D2D2; border-radius: 5px; cursor: pointer}
+
 /* 统计列表 */
 
 .panel-stat {
@@ -136,6 +150,74 @@ a:hover, a:focus {
     border: 1px solid #e4e4e4;
     margin-top: 15px;
 }
+
+/* 历史订单 */
+.order-list .col-md-8{padding-left: 0}
+.panel-order{font-size: 14px; color: #555; border: 1px solid #f2f2f2; margin-bottom: 15px; position: relative}
+.panel-order .panel-heading{padding: 5px 15px;border-bottom: 1px solid #eee; border-top: 4px solid #337ab7}
+.panel-order .user-info{padding: 10px 20px;border-bottom: 1px solid #eee}
+.panel-order .user-info .user-location{margin-top: 10px}
+.panel-order .user-info .order-num{color: #858692}
+.panel-order .user-info .user-location .fa-map-marker{margin-right: 5px}
+.panel-order .product-info{padding: 10px 0 0 20px;  border-bottom: 1px solid #eee}
+.panel-order .product-info .product-title{padding-right: 20px; cursor: pointer}
+.panel-order .product-display .remark{padding: 3px 0 2px; border-bottom: 1px solid #eee}
+.panel-order .product-display .remark .orange{margin-left: 0}
+.panel-order .product-display .table-order{padding: 10px 20px 10px 0;}
+.panel-order .product-display .table-order .table{margin-bottom: 0}
+.panel-order .product-display .table-order td{border: none; padding: 0; font-size: 14px}
+.panel-order .product-display .table-order .goods-name{width: 40%;}
+.panel-order .product-display .table-order .goods-price{width: 10%; text-align: right}
+.panel-order .product-display .table-order .goods-num,.panel-order .product-display .table-order .total-price{width: 20%; text-align: right}
+.panel-order .product-display .list-item{padding: 10px 20px 10px 0; border-top: 1px solid #eee; font-size: 14px}
+.panel-order .charge-info{padding: 10px 20px 10px 0; border-top: 1px solid #eee;}
+.panel-order .charge-info .charge-title{margin-bottom: 10px}
+.panel-order .charge-info .charge-pay{margin-bottom: 5px; font-size: 12px}
+.panel-order .charge-info .total{padding-top: 10px; border-top: 1px solid #eee;}
+.panel-order .charge-info strong{font-size: 12px}
+.panel-order .delivery-info{padding: 10px 20px; position: relative; border-bottom: 1px solid #eee}
+.panel-order .delivery-info .highlight{position: absolute; left: 20px; top: 9px}
+.panel-order .delivery-info .deliveryer-info{padding-left: 45px}
+.panel-order .delivery-info .status-info{color: #A0A0A0; font-size: 12px; margin-top: 5px}
+.panel-order .order-code{margin-bottom: 0; padding: 5px 20px 15px 0; text-align: right;}
+.panel-order .square{color: #fff; font-size: 14px; padding: 0 5px; margin-left: -15px;margin-right: 15px}
+.panel-order .square-success{background: #06c1ae; }
+.panel-order .spot{width: 4px; height: 4px;background: #06c1ae; display: block; margin-top: 8px; margin-left: -10px}
+.panel-order .send-time strong{font-size: 14px}
+.panel-order .order-status{font-size: 15px; padding-top: 7px}
+.panel-order .serial-sn{margin-right: 15px; font-size: 16px}
+.panel-order .serial-sn strong{font-size: 24px;}
+.panel-order .remark{font-size: 12px}
+.panel-order .highlight{font-size: 15px; font-weight: bold}
+.panel-order .btn-area{padding: 10px 15px;  text-align: right; background-color: #f8f8f8}
+.panel-order .btn-area .btn{margin-left: 10px}
+.panel-order .pay-info{position: absolute; top: 35%; left: 43%; width:120px; height: 65px;}
+.panel-order .pay-info.have-pay{background: url(../img/have-pay.png) no-repeat 0 0; background-size: cover;}
+.panel-order .pay-info.delivery-pay{background: url(../img/delivery-pay.png) no-repeat 0 0; background-size: cover; width: 120px; height: 80px}
+.panel-order.eleme .order-info{color: #2395ff;}
+.panel-order.eleme .grayest{color: #2395ff;}
+.panel-order.meituan .order-info{color: #FFB814;}
+.panel-order.meituan .grayest{color: #FFB814;}
+.panel-order.meituan .serial-sn:before{content: "美"; font-size: 22px; margin-right: .3rem;}
+.panel-order.eleme .serial-sn:before{content: "饿"; font-size: 22px; margin-right: .3rem;}
+.panel-order .order-reason{text-indent: -8px; color: #00abe4; background: rgba(229,246,252,.4); padding:10px 20px;}
+.panel-order .order-remind{text-indent: -8px; color: #00abe4; background: #FFF8F6; padding:10px 20px;}
+.panel-order.eleme .panel-heading{border-top: 4px solid #2395ff;}
+.panel-order.eleme .btn-area a{background-color: #2395ff; border-color: #2395ff;}
+.panel-order.eleme .user-info .greenest{color: #2395ff;}
+.panel-order.eleme .product-info .greenest{color: #2395ff;}
+.panel-order.meituan .panel-heading{border-top: 4px solid #FFB814;}
+.panel-order.meituan .btn-area a{background-color: #FFB814; border-color: #FFB814;}
+.panel-order.meituan .user-info .greenest{color: #FFB814;}
+.panel-order.meituan .product-info .greenest{color: #FFB814;}
+.panel-order.reserve .order-info{color: #ff8c26;}
+.panel-order.reserve .grayest{color: #ff8c26;}
+.panel-order.reserve .serial-sn:before{content: "预"; font-size: 22px; margin-right: .3rem;}
+.panel-order.reserve .panel-heading{border-top: 4px solid #ff8c26;}
+.panel-order.reserve .btn-area a{background-color: #ff8c26; border-color: #ff8c26;}
+.panel-order.reserve .user-info .greenest{color: #ff8c26;}
+.panel-order.reserve .product-info .greenest{color: #ff8c26;}
+.order-detail table tr:first-child td{border: none}
 
 /* web端消息 */
 
@@ -215,7 +297,7 @@ a:hover, a:focus {
 /* 表单 */
 
 /* 改变水平表单的样式 */
-
+#js-modal .form-horizontal{max-width: 100%;}
 .form-horizontal {
     max-width: 950px;
 }

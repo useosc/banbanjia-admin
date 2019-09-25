@@ -53,9 +53,9 @@ function carry_order_calculate_delivery_fee($data, $is_calculate = 0)
     //     // $distance_type = array("riding" => 2,"driving" => 1,"line" => 0,"walking" =>3); //默认直线
     //     $distance = calculate_distance($origins, $destionation);
     // }
-    if(!empty($data['start_location_x']) && !empty($data['end_location_y'])){
-        $origins = array($data['start_location_y'],$data['start_location_x']);
-        $destionation = array($data['end_location_y'],$data['end_location_x']);
+    if (!empty($data['start_location_x']) && !empty($data['end_location_y'])) {
+        $origins = array($data['start_location_y'], $data['start_location_x']);
+        $destionation = array($data['end_location_y'], $data['end_location_x']);
         $distance = calculate_distance($origins, $destionation);
     }
 
@@ -110,6 +110,14 @@ function carry_order_calculate_delivery_fee($data, $is_calculate = 0)
     // $fees = array_merge($fees);
     $discount_fee = 0; //折扣
     // $carry_fee = $distance_fee + $gvolume_fee;
+    $activityed = carry_order_count_activity($distance_fee, array("redpacket_id" => $data['redpacket_id']));
+    if (!empty($activityed['redPacket'])) {
+        $redpacket = $activityed['redPacket'];
+        $fees[] = array('title' => '红包', 'fee' => 0 - $activityed['redPacket']['discount']);
+        $discount_fee += $activityed['total'];
+    } else {
+        unset($data['redPacket_id']);
+    }
 
     $service_fee = 6;
     $data = array(
@@ -121,11 +129,14 @@ function carry_order_calculate_delivery_fee($data, $is_calculate = 0)
         "total_fee" => $discount_fee + $gvolume_fee + $service_fee,
         "discount_fee" => $discount_fee,
         "final_fee" => $discount_fee + $gvolume_fee + $service_fee - $discount_fee,
-        "fees" => array_values($fees)
+        "fees" => array_values($fees),
+        "activityed" => $activityed,
+        "redpacket" => $redpacket,
+        "redpacket_id" => $redpacket['id']
         // "redpacket" => $redpacket
     );
     // $data = array(
-        // "service_type" => "free",
+    // "service_type" => "free",
     //     "floor" => 5,
     //     "stairs_type" => "stairs",
     //     "distance" => 6,
@@ -232,6 +243,49 @@ function carry_order_status_update($id, $type, $extra = array())
         }
     }
 }
+//搬运订单计算活动
+function carry_order_count_activity($delivery_fee = 0, $data = array())
+{
+    $activityed = array('list' => '', 'total' => 0, 'activity' => 0, 'token' => 0);
+    if (!empty($data['redpacket_id'])) {
+        mload()->lmodel('redPacket');
+        $redpacket = redPacket_available_check($data['redpacket_id'], $delivery_fee, array('scene' => 'carry'));
+        if (!is_error($redpacket)) {
+            $activityed["list"]["redPacket"] = array("text" => "-￥" . $redpacket["discount"], "value" => $redpacket["discount"], "type" => "redPacket", "name" => "平台红包优惠", "icon" => "redPacket_b.png", "redPacket_id" => $redpacket["id"], "plateform_discount_fee" => $redpacket["discount"], "agent_discount_fee" => 0, "store_discount_fee" => 0);
+            $activityed["redPacket"] = $redpacket;
+            $activityed["total"] += $redpacket["discount"];
+            $activityed["activity"] += $redpacket["discount"];
+            $activityed["store_discount_fee"] += 0;
+            $activityed["agent_discount_fee"] += 0;
+            $activityed["plateform_discount_fee"] += $redpacket["discount"];
+        }
+    }
+    return $activityed;
+}
+//搬运订单状态查询
+function carry_order_fetch_status_log($id)
+{
+    global $_W;
+    $data = pdo_fetchall("SELECT * FROM " . tablename("hello_banbanjia_carry_order_status_log") . " WHERE uniacid = :uniacid and oid = :oid order by id asc", array(":uniacid" => $_W['uniacid'], ":oid" => $id), "id");
+    return $data;
+}
+//搬运订单退款查询
+function carry_order_fetch_refund_status_log($id)
+{
+    global $_W;
+    $data = pdo_fetchall("SELECT * FROM " . tablename("hello_banbanjia_order_refund_log") . " WHERE uniacid = :uniacid and oid = :oid and order_type = :order_type order by id asc", array(":uniacid" => $_W["uniacid"], ":oid" => $id, ":order_type" => "carry"), "id");
+    return $data;
+}
+
+//搬运订单类型
+function carry_order_types()
+{
+    $data = array(
+        'free' => '搬移',
+        'share' => '搬运'
+    );
+    return $data;
+}
 //搬运订单搬运状态
 function carry_order_delivery_status()
 {
@@ -286,4 +340,20 @@ function order_refund_status()
         "6" => "退款被驳回"
     );
     return $refund_status;
+}
+//下单渠道
+function order_channel($channel = "", $all = false)
+{
+    $data = array(
+        "web" => "PC下单",
+        "wxapp" => "小程序下单",
+        "wap" => "移动端下单",
+    );
+    if (!empty($channel)) {
+        $data = $data[$channel];
+        if (empty($all)) {
+            $data = $data["text"];
+        }
+    }
+    return $data;
 }

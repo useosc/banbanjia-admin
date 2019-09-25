@@ -469,7 +469,7 @@
             KEY `pay_type` (`pay_type`)
         ) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8;
 
-        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_carry_order` (
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_carry_order_bak` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
             `uid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -527,6 +527,107 @@
             KEY `is_pay` (`is_pay`),
             KEY `pay_type` (`pay_type`)
         ) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_order_refund_log` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `order_type` varchar(20) NOT NULL DEFAULT 'carry',
+            `refund_id` int(10) NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `oid` int(10) unsigned NOT NULL DEFAULT '0',
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `type` varchar(20) NOT NULL COMMENT 'apply,handel,success',
+            `title` varchar(30) NOT NULL,
+            `note` varchar(255) NOT NULL,
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `sid` (`sid`),
+            KEY `oid` (`oid`),
+            KEY `refund_id` (`uniacid`,`refund_id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_carry_order` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `order_sn` varchar(20) NOT NULL,
+            `order_channel` varchar(20) NOT NULL DEFAULT 'wxapp' COMMENT 'wxapp,wap,pc',
+            `order_type` varchar(20) NOT NULL DEFAULT 'free' COMMENT 'free,share',
+            `start_address` varchar(100) NOT NULL,
+            `start_location_x` varchar(20) NOT NULL,
+            `start_location_y` varchar(20) NOT NULL,
+            `estimate_time` varchar(10) NOT NULL COMMENT '预估花费时间',
+            `actual_time` varchar(10) COMMENT '实际花费时间',
+            `carry_time` varchar(30) NOT NULL,
+            `pay_type` varchar(15),
+            `is_pay` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `paytime` int(10) unsigned NOT NULL DEFAULT '0',
+            `carry_status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '1:待接单，2：待上门，3：搬运中，4：已完成',
+            `deliveryer_id` int(10) unsigned NOT NULL DEFAULT '0',
+            `carry_handle_type` varchar(15) NOT NULL DEFAULT 'wechat',
+            `carry_assign_time` int(10) NOT NULL DEFAULT '0',
+            `carry_indoor_time` int(10) NOT NULL DEFAULT '0' COMMENT '上门时间',
+            `carry_success_location_x` varchar(15),
+            `carry_success_location_y` varchar(15),
+            `carry_success_time` int(10),
+            `status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '订单状态1:待接单,2:进行中,3:已完成,4:已取消',
+            `carry_fee` varchar(10) NOT NULL DEFAULT '0.00',
+            `time_fee` varchar(10) NOT NULL DEFAULT '0.00' COMMENT '附加时间费',
+            `options_fee` varchar(10) NOT NULL DEFAULT '0.00',
+            `carry_tips` varchar(10) NOT NULL DEFAULT '0.00',
+            `total_fee` varchar(10) NOT NULL DEFAULT '0.00',
+            `discount_fee` varchar(20) NOT NULL DEFAULT '0.00',
+            `final_fee` varchar(20) NOT NULL DEFAULT '0.00',
+            `deliveryer_fee` varchar(10) NOT NULL,
+            `deliveryer_total_fee` varchar(10) NOT NULL DEFAULT '0',
+            `plateform_serve_fee` varchar(10) NOT NULL DEFAULT '0.00',
+            `plateform_serve` varchar(1000) NOT NULL,
+            `remark` varchar(200) NOT NULL,
+            `data` text NOT NULL,
+            `out_trade_no` varchar(50) NOT NULL,
+            `transaction_id` varchar(60) NOT NULL,
+            `refund_status` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `refund_out_no` varchar(40) NOT NULL,
+            `refund_apply_time` int(10) unsigned NOT NULL DEFAULT '0',
+            `refund_success_time` int(10) unsigned NOT NULL DEFAULT '0',
+            `refund_channel` varchar(30) NOT NULL,
+            `refund_account` varchar(30) NOT NULL,
+            `stat_year` int(10) unsigned NOT NULL DEFAULT '0',
+            `stat_month` int(10) unsigned NOT NULL DEFAULT '0',
+            `stat_day` int(10) unsigned NOT NULL DEFAULT '0',
+            `transfer_deliveryer_id` int(10) unsigned NOT NULL DEFAULT '0',
+            `transfer_carry_status` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `spread1` int(10) unsigned NOT NULL DEFAULT '0',
+            `spread2` int(10) unsigned NOT NULL DeFAULT '0',
+            `spreadbalance` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `uid` (`uid`),
+            KEY `addtime` (`addtime`),
+            KEY `paytime` (`paytime`),
+            KEY `is_pay` (`is_pay`),
+            KEY `pay_type` (`pay_type`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_carry_order_status_log` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `oid` int(10) unsigned NOT NULL DEFAULT '0',
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `type` varchar(20) NOT NULL,
+            `role` varchar(30) NOT NULL,
+            `role_cn` varchar(30) NOT NULL,
+            `title` varchar(30) NOT NULL,
+            `note` varchar(255) NOT NULL,
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacdi`),
+            KEY `oid` (`oid`),
+            KEY `status` (`status`),
+            KEY `type` (`type`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=500 DEFAULT CHARSET=utf8;
 
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_service_chat_log` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -754,6 +855,8 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_text`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_oauth_fans`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_domestic_order`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_carry_order_bak`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_order_refund_log`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_carry_order`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_service_chat_log`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_service_groups`;

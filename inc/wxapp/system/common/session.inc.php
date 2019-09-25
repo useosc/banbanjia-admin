@@ -183,7 +183,7 @@ if ($_GPC['from'] == 'wxapp') {
         $salt = random(6, true);
         $password = md5(md5($salt . $password) . $salt);
         try {
-            $mall_member = array("uniacid" => $_W["uniacid"], "uid" => $fans["uid"] ? $fans["uid"] : date("His") . random(3, true), "mobile" => $mobile, "platform" => 1, "is_sys" => 1, "status" => 1, "token" => random(32), "addtime" => TIMESTAMP, "mobile_audit" => 1, "salt" => $salt, "password" => $password, "token" => random(32));
+            $mall_member = array("uniacid" => $_W["uniacid"], "uid" => $fans["uid"] ? $fans["uid"] : date("His") . random(3, true), "mobile" => $mobile, "platform" => 1, "is_sys" => 2, "status" => 1, "token" => random(32), "addtime" => TIMESTAMP, "mobile_audit" => 1, "salt" => $salt, "password" => $password, "token" => random(32));
             pdo_insert("hello_banbanjia_members", $mall_member);
             $key = "we7_hello_banbanjia_member_session_" . $_W['uniacid'];
             $cookie = array('uid' => $mall_member['uid'], 'hash' => $password);
