@@ -1,0 +1,45 @@
+{itemplate 'public/header'}
+<form action="./index.php" class="form-horizontal form-filter" >
+	{php echo tpl_form_filter_hidden('spread/members/index');}
+	<div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">状态</label>
+		<div class="col-sm-9 col-xs-12">
+			<div class="btn-group">
+				<a href="{php echo ifilter_url('spread_status:-1');}" class="btn {if $spread_status == -1}btn-primary{else}btn-default{/if}">不限</a>
+				<a href="{php echo ifilter_url('spread_status:0');}" class="btn {if $spread_status == 0}btn-primary{else}btn-default{/if}">待审核</a>
+				<a href="{php echo ifilter_url('spread_status:1');}" class="btn {if $spread_status == 1}btn-primary{else}btn-default{/if}">正常</a>
+				<a href="{php echo ifilter_url('spread_status:2');}" class="btn {if $spread_status == 2}btn-primary{else}btn-default{/if}">黑名单</a>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">等级</label>
+		<div class="col-sm-9 col-xs-12">
+			<div class="btn-group">
+				<a href="{php echo ifilter_url('spread_groupid:0');}" class="btn {if $spread_groupid == 0}btn-primary{else}btn-default{/if}">不限</a>
+				{loop $group $grade}
+					<a href="{php echo ifilter_url('spread_groupid:' . $grade['id']);}" class="btn {if $spread_groupid == $grade['id']}btn-primary{else}btn-default{/if}">{$grade['title']}</a>
+				{/loop}
+			</div>
+		</div>
+	</div>
+	<!-- <div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">成为推广员时间</label>
+		<div class="col-sm-9 col-xs-12">
+			{php echo itpl_form_field_daterange('spreadtime', array('placeholder' => '成为推广员的时间'));}
+		</div>
+	</div> -->
+	<div class="form-group form-inline">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">搜索栏</label>
+		<div class="col-sm-3 col-xs-12">
+			<input type="text" name="membername" value="{$_GPC['membername']}" class="form-control" placeholder="昵称/姓名/手机号"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+		<div class="col-sm-3 col-xs-12">
+			<button class="btn btn-primary">筛选</button>
+		</div>
+	</div>
+</form>
+{itemplate 'public/footer'}

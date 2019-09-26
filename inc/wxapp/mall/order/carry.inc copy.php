@@ -16,42 +16,40 @@ if($ta == 'create'){
     $data = array(
         "uniacid" => $_W['uniacid'],
         'uid' => $_W['member']['uid'],
+        'order_channel' => $_GPC['from'],
         'order_type' => $params['order_type'],
         'order_sn' => date("YmdHis") . random(6,true),
         'start_address' => $params['start_address'],
         'start_location_x' => $params['start_location_x'],
         'start_location_y' => $params['start_location_y'],
-        'estimate_time' => $params['estimate_time'],
-        'carry_time' => $params['carry_time'],
+        'end_address' => $params['end_address'],
+        'end_location_x' => $params['end_location_x'],
+        'end_location_y' => $params['end_location_y'],
+        'service_type' => $params['service_type'],
+        'floor' => $params['floor'],
+        'stairs_type' => $params['stairs_type'],
+        'distance' => $order['distance'],
+        'goods_volume' => $params['goods_volume'],
+        // 'carry_time' => $order['carry_time'],
+        'km_fee' => $order['km_fee'],
+        'volume_fee' => $order['volume_fee'],
+        'service_fee' => $order['service_fee'],
         'options_fee' => $order['options_fee'],
         'pay_type' => '',
         'is_pay' => 0,
-        'carry_fee' => $order['carry_fee'],
-        'time_fee' => $order['time_fee'],
+        // 'carry_fee' => $order['carry_fee'],
         'total_fee' => $order['total_fee'],
         'discount_fee' => $order['discount_fee'],
         'final_fee' => $order['final_fee'],
-        'remark' => $params['remark'],
-        'deliveryer_fee' => 0,
-        'deliveryer_total_fee' => 0,
-        'order_channel' => $_GPC['from'],
         'carry_status' => 1,
         'status' => 1,
         'addtime' => TIMESTAMP,
     );
     
-    $data["spreadbalance"] = 1;
-    // if (check_plugin_permit("spread")) {
-    //     pload()->model("spread");
-    //     $data = order_spread_commission_calculate("carry", $data);
-    // }
-
     // $data['data'] = iserializer($data['data']);
     pdo_insert('hello_banbanjia_carry_order',$data);
     $orderid = pdo_insertid();
     // 隐私号
     // carry_order_insert_status_log($orderid,"place_order");
-    carry_order_insert_discount($orderid,$order['activityed']['list']);
-    carry_order_insert_status_log($orderid,"place_order");
     imessage(error(0,$orderid),'','ajax');
 }

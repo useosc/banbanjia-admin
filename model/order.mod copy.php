@@ -36,68 +36,9 @@ mload()->lmodel('order.extra');
 //     return $data;
 // }
 
-//计算搬运费 new
+
+//计算搬运费
 function carry_order_calculate_delivery_fee($data, $is_calculate = 0)
-{
-    global $_W;
-    $config_carry = get_system_config('carry');
-    $time_fee = $config_carry['time_fee']; //时间费规则
-
-    $estimate_time = $data['estimate_time']; //预估时间
-
-    $time_over_fee = 0;
-    if ($estimate_time <= $time_fee[0]['over_time']) {
-        $time_fee_total = $time_fee['start_fee'];
-    } else {
-        foreach ($time_fee as $key => $row) {
-            if (strval($key) != 'start_fee') {
-                if ($estimate_time > $row['over_time'] && empty($time_fee[$key + 1]['over_time'])) {
-                    $time_over = round($estimate_time - $row['over_time'], 2);
-                    $time_over_fee += round($row['pre_time_fee'] * $time_over, 2);
-                } else if ($estimate_time > $row['over_time'] && $estimate_time <= $time_fee[$key + 1]['over_time']) {
-                    $time_over = round($estimate_time - $row['over_time'], 2);
-                    $time_over_fee += round($row['pre_time_fee'] * $time_over, 2);
-                } else if ($estimate_time > $row['over_time'] && $estimate_time > $time_fee[$key + 1]['over_time']) {
-                    $time_over = round($time_fee[$key + 1]['over_time'] - $row['over_time'], 2);
-                    $time_over_fee += round($row['pre_time_fee'] * $time_over, 2);
-                }
-            }
-        }
-        $time_fee_total = $time_fee['start_fee'] + $time_over_fee;
-    }
-    $fees['base'] = array('title' => '基础搬运费', 'fee' => $time_fee['start_fee']);
-    if (0 < $time_over_fee) {
-        $fees[] = array('title' => '时间附加费', 'fee' => $time_over_fee);
-    }
-
-    $carry_fee = $time_fee_total;
-    $discount_fee = 0; //折扣
-    $activityed = carry_order_count_activity($carry_fee, array("redpacket_id" => $data['redpacket_id']));
-    if (!empty($activityed['redPacket'])) {
-        $redpacket = $activityed['redPacket'];
-        $fees[] = array('title' => '红包', 'fee' => 0 - $activityed['redPacket']['discount']);
-        $discount_fee += $activityed['total'];
-    } else {
-        unset($data['redPacket_id']);
-    }
-
-    $data = array(
-        // "options_fee" => 0,
-        "carry_fee" => $carry_fee,
-        "time_fee" => $time_over_fee,
-        "total_fee" => $carry_fee,
-        "discount_fee" => $discount_fee,
-        "final_fee" => $carry_fee - $discount_fee,
-        "fees" => array_values($fees),
-        "activityed" => $activityed,
-        "redpacket" => $redpacket,
-        "redpacket_id" => $redpacket['id']
-    );
-    return $data;
-}
-
-//计算搬运费bak
-function carry_order_calculate_delivery_fee_bak($data, $is_calculate = 0)
 {
     global $_W;
     $config_carry = get_system_config('carry');
@@ -220,11 +161,7 @@ function carry_order_fetch($id)
     if (empty($order)) {
         return false;
     }
-    if ($order['carry_status'] == 1 && 0 < $_W['deliveryer']['id']) 
-    {
-        $order["deliveryer_fee"] = carry_order_calculate_deliveryer_fee($order, $_W["deliveryer"]);
-        $order["deliveryer_total_fee"] = $order["deliveryer_fee"] + $order["delivery_tips"];
-    }
+    if ($order['carry_status'] == 1 && 0 < $_W['deliveryer']['id']) { }
     $carry_status = carry_order_delivery_status();
     $order_status = carry_order_status();
     $pay_types = order_pay_types();
@@ -325,63 +262,6 @@ function carry_order_count_activity($delivery_fee = 0, $data = array())
     }
     return $activityed;
 }
-// 搬运订单更新使用红包
-function carry_order_insert_discount($id, $discount_data)
-{
-    global $_W;
-    if (empty($discount_data)) {
-        return false;
-    }
-    if (!empty($discount_data["redPacket"])) {
-        pdo_update("hello_banbanjia_activity_redpacket_record", array("status" => 2, "usetime" => TIMESTAMP, "order_id" => $id), array("uniacid" => $_W["uniacid"], "id" => $discount_data["redPacket"]["redPacket_id"]));
-    }
-    // foreach ($discount_data as $data) {
-    //     $insert = array("uniacid" => $_W["uniacid"], "oid" => $id, "type" => $data["type"], "name" => $data["name"], "icon" => $data["icon"], "note" => $data["text"], "fee" => $data["value"], "store_discount_fee" => floatval($data["store_discount_fee"]), "agent_discount_fee" => floatval($data["agent_discount_fee"]), "plateform_discount_fee" => floatval($data["plateform_discount_fee"]));
-    //     pdo_insert("hello_banbanjia_carry_order_discount", $insert);
-    // }
-    return true;
-}
-//更新搬运订单状态
-function carry_order_insert_status_log($id, $type, $note = "", $extra = array())
-{
-    global $_W;
-    if (empty($type)) {
-        return false;
-    }
-    $config = $_W["_plugin"]["config"];
-    $order = carry_order_fetch($id);
-    $notes = array(
-        "place_order" => array("status" => 1, "title" => "订单提交成功", "note" => "单号：" . $order['order_sn'], "ext" => array(array("key" => "pay_time_limit", "title" => "待支付", "note" => "请在订单提交后" . $config['pay_time_limit'] . "分钟内完成支付"))),
-        "pay" => array("status" => 2, "title" => "订单已支付", "note" => "支付成功.付款时间:" . date("Y-m-d H:i:s", $order['paytime']), "ext" => array(array("key" => "handle_time_limit", "title" => "待接单", "note" => "超出" . $config['handle_time_limit'] . "分钟未接单，平台将自动取消订单"))),
-        "carry_assign" => array("status" => 3, "title" => "已接单", "note" => ""),
-        "carry_indoor" => array("status" => 4, "title" => "已上门", "note" => ""),
-        "end" => array("status" => 5, "title" => "订单已完成", "note" => "任何意见和吐槽,都欢迎联系我们"),
-        "cancel" => array("status" => 6, "title" => "订单已取消", "note" => ""),
-        "carry_transfer" => array("status" => 7, "title" => "搬运工申请转单", "note" => ""), 
-        "direct_transfer" => array("status" => 8, "title" => "搬运工发起定向转单申请", "note" => ""),
-        "direct_transfer_agree" => array("status" => 9, "title" => "搬运工同意接受转单", "note" => ""),
-        "direct_transfer_refuse" => array("status" => 10, "title" => "搬运工拒绝接受转单", "note" => "")
-    );
-    $title = $notes[$type]['title'];
-    $note = $note ? $note : $notes[$type]['note'];
-    $role = !empty($extra['role']) ? $extra['role'] : $_W['role'];
-    $role_cn = !empty($extra["role_cn"]) ? $extra["role_cn"] : $_W["role_cn"];
-    $data = array("uniacid" => $_W["uniacid"], "oid" => $id, "status" => $notes[$type]["status"], "role" => $role, "role_cn" => $role_cn, "type" => $type, "title" => $title, "note" => $note, "addtime" => TIMESTAMP);
-    pdo_insert("hello_banbanjia_carry_order_status_log", $data);
-    if (!empty($notes[$type]["ext"])) {
-        foreach ($notes[$type]["ext"] as $val) {
-            if ($val["key"] == "pay_time_limit" && !$config["pay_time_limit"]) {
-                unset($val["note"]);
-            }
-            if ($val["key"] == "handle_time_limit" && !$config["handle_time_limit"]) {
-                unset($val["note"]);
-            }
-            $data = array("uniacid" => $_W["uniacid"], "oid" => $id, "title" => $val["title"], "note" => $val["note"], "addtime" => TIMESTAMP);
-            pdo_insert("hello_banbanjia_carry_order_status_log", $data);
-        }
-    }
-    return true;
-}
 //搬运订单状态查询
 function carry_order_fetch_status_log($id)
 {
@@ -407,7 +287,7 @@ function carry_order_types()
     return $data;
 }
 //搬运订单搬运状态
-function carry_order_carry_status()
+function carry_order_delivery_status()
 {
     $data = array(
         "1" => "待接单",

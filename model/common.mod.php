@@ -320,6 +320,33 @@ function mlog_fetch_all($filter = array())
     return array("logs" => $logs, "pager" => $pager);
 }
 
+//获取可用的支付方式
+function get_available_payment($order_type = "", $sid = 0, $all = false, $orderType = 1)
+{
+    global $_W;
+    $payment = $_W["we7_hello_banbanjia"]["config"]["payment"];
+    if (empty($order_type)) {
+        $payment = $payment["weixin"];
+    }
+
+    if ($all) {
+        $routers = array(
+            "alipay" => array("title" => "支付宝", "value" => "alipay"),
+            "wechat" => array("title" => "微信支付", "value" => "wechat"),
+            "credit" => array("title" => "余额支付", "value" => "credit"),
+            "delivery" => array("title" => "货到付款", "value" => "delivery"),
+            "yimafu" => array("title" => "一码付", "value" => "yimafu"),
+            "peerpay" => array("title" => "找朋友代付", "value" => "peerpay")
+        );
+        $payments = array();
+        foreach ($payment as $item) {
+            $payments[] = $routers[$item];
+        }
+        return $payments;
+    } else {
+        return $payment;
+    }
+}
 //获取可用插件
 function get_available_plugin()
 {

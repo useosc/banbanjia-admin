@@ -149,6 +149,33 @@ function ifilter_url($params) //替换参数重新生成链接
     $query = http_build_query($query_arr);
     return "./index.php?" . $query;
 }
+//检查插件权限
+function check_plugin_permit($name)
+{
+    global $_W;
+    static $_plugins = array();
+    if (isset($_plugins[$name])) {
+        return $_plugins[$name];
+    }
+    $dir = WE7_BANBANJIA_PLUGIN_PATH . $name . "/inc";
+    if (!is_dir($dir)) {
+        $_plugins[$name] = false;
+        return $_plugins[$name];
+    }
+    $plugin = pdo_get("hello_banbanjia_plugin", array("name" => $name), array("id", "name"));
+    if (empty($plugin)) {
+        $_plugins[$name] = false;
+        return $_plugins[$name];
+    }
+    mload()->lmodel('common');
+    $permits = get_account_permit();
+    if (empty($permits) || in_array($name, $permits["plugins"])) {
+        $_plugins[$name] = true;
+    } else {
+        $_plugins[$name] = false;
+    }
+    return $_plugins[$name];
+}
 //检查插件是否存在
 function check_plugin_exist($name)
 {
@@ -226,9 +253,9 @@ function calculate_distance($origins, $destination, $type = 0)
         'key' => AMAP_WEB_SERVICE_KEY,
         'destination' => implode(',', $destination),
     );
-    if ($type == 2) { 
+    if ($type == 2) {
         $query['origins'] = implode(',', $origins);
-		$url = 'http://restapi.amap.com/v4/direction/bicycling?';
+        $url = 'http://restapi.amap.com/v4/direction/bicycling?';
     } else {
         $query['origins'] = implode(',', $origins);
         $query['type'] = $type;

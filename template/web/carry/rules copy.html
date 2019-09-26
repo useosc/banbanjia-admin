@@ -186,7 +186,7 @@
 	<form action="" class="form-horizontal form form-validate" id="form2" method="POST" enctype="multipart/form-data" style="max-width: 90%">
 		<input type="hidden" name="form_type" value="price_setting">
 		<h3>计价设置</h3>
-		<!-- <div class="form-group">
+		<div class="form-group">
 			<label class="col-xs-12 col-sm-3 col-md-2 control-label">国内物流：</label>
 			<div class="col-sm-9 col-xs-12">
 				<div class="input-group" style="margin-bottom:10px;">
@@ -205,9 +205,9 @@
 							<input type="text" class="form-control" name="km_fee[pre_km_fee][]" value="{$row['pre_km_fee']}">
 							<span class="input-group-addon">元</span>
 							<span class="input-group-addon"><a href="javascript:;" onclick="$(this).parent().parent().remove();"><i class="fa fa-times"></i></a></span>
-							<span class="input-group-addon">元，最高</span>
+							<!-- <span class="input-group-addon">元，最高</span>
 							<input type="text" class="form-control" name="carry_fee[max_fee]" value="{$config_carry['carry_fee']['max_fee']}">
-							<span class="input-group-addon">元</span>
+							<span class="input-group-addon">元</span> -->
 						</div>
 						{/if}
 					{/loop}
@@ -219,43 +219,8 @@
 					<span class="text-danger">计费规则：例如设置 起步3km内5元，每增加 1km 加 1 元，超过6km，每增加 1km 加 2 元。如果搬运距离5km，搬运费：5 + （5-3）X 1 = 7元；搬运距离8km，搬运费：5 + （8-3）X 2 = 15元。</span>
 				</span>
 			</div>
-		</div> -->
-
-		<div class="form-group">
-			<label class="col-xs-12 col-sm-3 col-md-2 control-label">搬运时间计费：</label>
-			<div class="col-sm-9 col-xs-12">
-				<div class="input-group" style="margin-bottom:10px;">
-					<span class="input-group-addon">每单基础搬运费</span>
-					<input type="text" class="form-control" name="time_fee[start_fee]" value="{$config_carry['time_fee']['start_fee']}">
-					<span class="input-group-addon">元</span>
-				</div>
-				<div id="time_setting">
-					{if !empty($config_carry['time_fee'])}
-					{loop $config_carry['time_fee'] $key $row}
-						{if strval($key) != 'start_fee'}
-						<div class="input-group" style="margin-bottom:10px;">
-							<span class="input-group-addon">超过</span>
-							<input type="text" class="form-control" name="time_fee[over_time][]" value="{$row['over_time']}">
-							<span class="input-group-addon">小时，超过部分每小时增加</span>
-							<input type="text" class="form-control" name="time_fee[pre_time_fee][]" value="{$row['pre_time_fee']}">
-							<span class="input-group-addon">元</span>
-							<span class="input-group-addon"><a href="javascript:;" onclick="$(this).parent().parent().remove();"><i class="fa fa-times"></i></a></span>
-							<!-- <span class="input-group-addon">元，最高</span>
-							<input type="text" class="form-control" name="carry_fee[max_fee]" value="{$config_carry['carry_fee']['max_fee']}">
-							<span class="input-group-addon">元</span> -->
-						</div>
-						{/if}
-					{/loop}
-					{/if}
-				</div>
-				<br>
-				<a href="javascript:;" class="add-time"><i class="fa fa-plus-circle"></i>添加计费规则</a>
-				<span class="help-block">
-					<span class="text-danger">计费规则：例如设置 起步价10元，超过1小时，每增加 5小时 加  5元，超过6小时，每增加 1小时 加 2 元。如果搬运时间6小时，搬运费：10 + （6-1）X 5 = 35元；搬运时间8小时，搬运费：10 + （6-1）X 5 + (8-6) X 2 = 39元。</span>
-				</span>
-			</div>
 		</div>
-		<!-- <div class="form-group">
+		<div class="form-group">
 			<label class="col-xs-12 col-sm-3 col-md-2 control-label">包干服务费：</label>
 			<div class="col-sm-9 col-xs-12">
 					<div class="input-group" style="margin-bottom:10px;">
@@ -282,7 +247,7 @@
 					<br>
 					<a href="javascript:;" class="add-volume"><i class="fa fa-plus-circle"></i>添加计费规则</a>
 					<span class="help-block">
-						<span class="text-danger">计费规则：同上</span> -->
+						<span class="text-danger">计费规则：同上</span>
 					</span>
 				<!-- <div class="radio radio-inline">
 					<input type="radio" value="1" name="volume_status" id="volume-status-1" {if $config_carry['volume_status'] == '1'}checked{/if}>
@@ -313,9 +278,9 @@
 						</div>
 					</div>
 				</div> -->
-			<!-- </div>
-		</div> -->
-		<!-- <div class="form-group">
+			</div>
+		</div>
+		<div class="form-group">
 			<label class="col-xs-12 col-sm-3 col-md-2 control-label">服务类型：</label>
 			<div class="col-sm-9 col-xs-12">
 				<div class="input-group" style="margin-bottom:10px;">
@@ -343,7 +308,7 @@
 					<span class="text-danger">不收取费用，可设置为0</span>
 				</span>
 			</div>
-		</div> -->
+		</div>
 		<div class="form-group" id="attrs-container">
 			<label class="col-xs-12 col-sm-3 col-md-2 control-label">附加费：</label>
 			<div class="col-sm-9 col-xs-12">
@@ -434,18 +399,7 @@ $(document).on('click','.add-attr',function () {
 		'		<div>';
 	$('#tpl').append(html);
 });
-$(document).on('click','.add-time',function () { //时间计费
-	var html = '<div class="input-group" style="margin-bottom:10px;">'+
-		'			<span class="input-group-addon">超过</span>'+
-		'			<input type="text" class="form-control" name="time_fee[over_time][]">'+
-		'			<span class="input-group-addon">小时，超过部分每小时增加</span>'+
-		'			<input type="text" class="form-control" name="time_fee[pre_time_fee][]">'+
-		'			<span class="input-group-addon">元</span>'+
-		'			<span class="input-group-addon"><a href="javascript:;" onclick="$(this).parent().parent().remove();"><i class="fa fa-times"></i></a></span>'+
-		'		<div>';
-	$('#time_setting').append(html);
-});
-$(document).on('click','.add-km',function () { //物流计费
+$(document).on('click','.add-km',function () {
 	var html = '<div class="input-group" style="margin-bottom:10px;">'+
 		'			<span class="input-group-addon">超过</span>'+
 		'			<input type="text" class="form-control" name="km_fee[over_km][]">'+
