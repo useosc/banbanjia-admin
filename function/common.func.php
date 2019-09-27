@@ -91,7 +91,7 @@ function iaes_pkcs7_decode($encrypt_data, $key, $iv = false) //微信小程序�
     // }
     // $pc = new Prpcrypt($key);
     $pc = new WXBizDataCrypt($key);
-    $result = $pc->decryptData($encrypt_data,$iv);
+    $result = $pc->decryptData($encrypt_data, $iv);
     // $result = $pc->decrypt($encrypt_data, $iv);
     if ($result[0] != 0) {
         return error($result[0], "解密失败");
@@ -102,6 +102,15 @@ function iaes_pkcs7_decode($encrypt_data, $key, $iv = false) //微信小程序�
 function is_validMobile($mobile)
 {
     if (preg_match("/^[01][3456789][0-9]{9}\$/", $mobile) || preg_match("/^[8][0-9]{11}\$/", $mobile)) {
+        return true;
+    }
+    return false;
+}
+// 是否是小程序端
+function is_wxapp()
+{
+    global $_W;
+    if (defined('IN_WXAPP') && $_GPC['from'] == 'wxapp') {
         return true;
     }
     return false;

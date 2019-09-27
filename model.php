@@ -89,7 +89,7 @@ function iurl($segment, $params = array(), $addhost = false) //生成链接
 }
 
 function imurl($segment, $params = array(), $addhost = false)
-{
+{ //手机端
     global $_W;
     list($ctrl, $ac, $op, $ta) = explode("/", $segment);
     $basic = array("ctrl" => $ctrl, "ac" => $ac, "op" => $op, "ta" => $ta, "do" => "mobile", "m" => "hello_banbanjia");

@@ -327,6 +327,10 @@ function get_available_payment($order_type = "", $sid = 0, $all = false, $orderT
     $payment = $_W["we7_hello_banbanjia"]["config"]["payment"];
     if (empty($order_type)) {
         $payment = $payment["weixin"];
+    }else{
+        if(is_wxapp()){
+            $payment = $payment['wxapp'];
+        }
     }
 
     if ($all) {
@@ -342,7 +346,15 @@ function get_available_payment($order_type = "", $sid = 0, $all = false, $orderT
         foreach ($payment as $item) {
             $payments[] = $routers[$item];
         }
-        return $payments;
+
+        $test = array(
+            array("title" => "微信支付", "value" => "wechat"),
+            array("title" => "支付宝", "value" => "alipay"),
+            array("title" => "余额支付", "value" => "credit")
+        );
+
+        // return $payments;
+        return $test;
     } else {
         return $payment;
     }

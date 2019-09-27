@@ -45,7 +45,7 @@ function icheckauth($force = true) //鉴权
             }
         }
     } else {
-        if (defined("IN_WEB")) { //h5
+        if (defined("IN_WAP")) { //h5
             // $key = "we7_hello_banbanjia_member_session_" . $_W['uniacid'];
             // if (isset($_GPC[$key])) {
             //     $session = json_decode(base64_decode($_GPC[$key]), true);
@@ -113,7 +113,7 @@ function icheckauth($force = true) //鉴权
         if (defined('IN_WXAPP')) {
             imessage(error(41009, '请先登录'), '', 'ajax');
         } else {
-            if (defined('IN_WEB')) {
+            if (defined('IN_WAP')) {
                 $result = array("errno" => 41009, "message" => "请先登录", "sessionid" => $_W["session_id"], true);
                 imessage($result, "", "ajax");
             }

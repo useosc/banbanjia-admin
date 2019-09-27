@@ -51,7 +51,7 @@ if($ta == 'create'){
     $orderid = pdo_insertid();
     // 隐私号
     // carry_order_insert_status_log($orderid,"place_order");
-    carry_order_insert_discount($orderid,$order['activityed']['list']);
-    carry_order_insert_status_log($orderid,"place_order");
+    // carry_order_insert_discount($orderid,$order['activityed']['list']);
+    // carry_order_insert_status_log($orderid,"place_order");
     imessage(error(0,$orderid),'','ajax');
 }

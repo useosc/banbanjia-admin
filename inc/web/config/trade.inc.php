@@ -6,6 +6,7 @@ $op = trim($_GPC["op"]) ? trim($_GPC["op"]) : "payment";
 if ($op == 'payment') {
     $_W["page"]["title"] = "支付方式";
     if ($_W['ispost']) {
+        load()->func('file');
         $config_old_payment = $_config['payment'];
         $config_payment = array(
             "wechat" => array(

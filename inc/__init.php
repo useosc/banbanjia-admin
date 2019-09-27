@@ -88,15 +88,24 @@ if (defined("IN_SYS")) { //web/index 后台入口文件进入
     //     }
     // } else {
     $_W["ochannel"] = "wxapp";  //小程序端
-    $_W["channel"] = $_W["ochannel"];
     if ($_GPC["from"] == "wxapp") {
         define("IN_WXAPP", 1);
     } else {
-        if ($_GPC['from'] == 'web') { //web手机端
-            $_W['ochannel'] = 'web';
-            define('IN_WEB', 1);
+        // if ($_GPC['from'] == 'web') { //web手机端
+        //     $_W['ochannel'] = 'web';
+        //     define('IN_WEB', 1);
+        // }
+        if ($_GPC['from'] == 'wap') { //wap手机端
+            $_W['ochannel'] = 'wap';
+            define('IN_WAP', 1);
+        }
+        if($_GPC['from'] == 'pc') { //pc前端
+            $_W['ochannel'] = 'pc';
+            define('IN_PC', 1);
         }
     }
+    $_W["channel"] = $_W["ochannel"];
+    
     require WE7_BANBANJIA_PATH . "inc/wxapp/__init.php";
     $file_init = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W["_ctrl"] . "/__init.php";
     $file_path = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W["_ctrl"] . "/" . $_W["_ac"] . "/" . $_W["_op"] . ".inc.php";

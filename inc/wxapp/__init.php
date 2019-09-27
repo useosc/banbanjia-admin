@@ -19,7 +19,7 @@ if (empty($_config_mall['delivery_title'])) {
     $_config_mall['delivery_title'] = '平台专送';
 }
 $config_close = $_W['we7_hello_banbanjia']['config']['close'];
-if($_W['ochannel'] == 'wxapp' || $_W['ochannel'] == 'web'){
+if($_W['ochannel'] == 'wxapp' || $_W['ochannel'] == 'wap'){
     $_W['we7_wxapp']['config'] = get_plugin_config('wxapp');
 }
 $config_wxapp = $_config_wxapp = $_W['we7_wxapp']['config'];
