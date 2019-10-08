@@ -40,6 +40,27 @@ if ($op == 'payment') {
                 "rootca" => $config_old_payment["h5_wechat"]["rootca"]
             ),
         );
+
+        $keys = array('private_key','public_key'); //支付宝公钥私钥
+        foreach($keys as $key){
+            if(!empty($_GPC['alipay'][$key])){
+                $text = $_GPC['alipay'][$key];
+                $text = str_replace("\\r","",$text);
+                $text = str_replace("\\n","",$text);
+                $text = implode(str_split($text,64),"\n");
+                if($key == 'private_key'){
+                    $text = "-----BEGIN RSA PRIVATE KEY-----\n" . $text . "\n-----END RSA PRIVATE KEY-----";
+                }else{
+                    $text = "-----BEGIN PUBLIC KEY-----\n" . $text . "\n-----END PUBLIC KEY-----";
+                }
+                @unlink(MODULE_ROOT . "/cert/" . $config_payment['alipay'][$key] . '/' . $key . '.pem');
+                @rmdir(MODULE_ROOT . "/cert/" . $config_payment["alipay"][$key]);
+                $name = random(10);
+                $status = ifile_put_contents('cert/' . $name . '/' . $key . '.pem',$text);
+                $config_payment['alipay'][$key] = $name;
+            }
+        }
+
         set_system_config('payment', $config_payment);
         imessage(error(0, '支付方式设置成功'), referer(), 'ajax');
     }

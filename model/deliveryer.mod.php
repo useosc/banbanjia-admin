@@ -8,7 +8,7 @@ function icheckdeliveryer()
     global $_W;
     global $_GPC;
     $_W['deliveryer'] = array();
-    if (defined("IN_WXAPP")) {
+    if (defined("IN_WXAPP") || defined('IN_MOBILE')) {
         $token = trim($_GPC["token"]);
         if (!empty($token)) {
             $deliveryer = deliveryer_fetch($token, "token");

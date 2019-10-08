@@ -90,6 +90,9 @@
 						工作状态 <br>
 						微信模板消息提醒 <br>
 					</th>
+					<th>
+						搬运单权限<br>
+					</th>
 					<th>身份信息</th>
 					<th style="width:400px; text-align:right;">操作</th>
 				</tr>
@@ -156,6 +159,9 @@
 						<div style="margin: 10px 0;">
 							<input type="checkbox" data-on-text="模板" data-off-text="关闭" class="js-checkbox" data-href="{php echo iurl('deliveryer/plateform/extra', array('id' => $item['id'], 'type' => 'accept_wechat_notice', 'value' => $item['extra']['accept_wechat_notice']));}" value="1" {if $item['extra']['accept_wechat_notice'] == 1}checked{/if}>
 						</div>
+					</td>
+					<td>
+						<input type="checkbox" class="js-checkbox" data-on-text="搬运" data-off-text="关闭" data-href="{php echo iurl('deliveryer/plateform/permit',array('id'=>$item['id'],'fields'=>'is_carry','value'=>$item['is_carry']));}" value="1" {if $item['is_carry'] == 1}checked{/if}>
 					</td>
 					<td>
 						{if $item['auth_info']}

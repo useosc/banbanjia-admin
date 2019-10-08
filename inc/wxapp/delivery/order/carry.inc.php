@@ -3,6 +3,9 @@ defined("IN_IA") or exit("Access Denied");
 global $_W;
 global $_GPC;
 $ta = trim($_GPC["ta"]) ? trim($_GPC["ta"]) : "list";
+if (empty($_W['deliveryer']['is_carry'])) {
+    imessage(error(-1, '您没有接搬运单的权限，请联系管理员授权'), "", "ajax");
+}
 mload()->lmodel('order');
 if ($ta == 'list') {
     $_W['page']['title'] = '订单列表';
@@ -12,7 +15,7 @@ if ($ta == 'list') {
     $condition .= " and carry_status = :status";
     $params[":status"] = $status;
     $can_collect_order = 1;
-    if ($config_carry['dispatch_mode'] != 1) {
+    if ($config_carry['dispatch_mode'] != 1 && !$config_delivery["can_collect_order"]) {
         $can_collect_order = 0;
     }
     if ($status == 1) {
@@ -34,6 +37,8 @@ if ($ta == 'list') {
     }
     $result = array(
         "orders" => $orders,
+        "can_collect_order" => $can_collect_order,
+        "deliveryer" => $_W['deliveryer']
     );
     imessage(error(0, $result), '', 'ajax');
 }

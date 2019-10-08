@@ -167,7 +167,7 @@ if ($_GPC['from'] == 'wxapp') {
             // var_dump($_W["member"]);exit;
         }
     }
-} else if ($_GPC['from'] == 'web') { //h5接口
+} else if ($_GPC['from'] == 'wap') { //h5接口
     if ($ta == 'register') { //h5手机号注册
         $mobile = trim($_GPC["mobile"]) ? trim($_GPC["mobile"]) : imessage(error(-1, "请输入手机号"), "", "ajax");
         $password = trim($_GPC["password"]) ? trim($_GPC["password"]) : imessage(error(-1, "密码不能为空"), "", "ajax");

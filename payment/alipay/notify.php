@@ -1,10 +1,25 @@
 <?php
-error_reporting(0);
+// error_reporting(0);
+error_reporting(E_ALL);
 define('IN_MOBILE', true);
+//记录到文件
+function logs($data)
+{
+    $tt = '--------------' . date("Y-m-d H:i:s") . '
+';
+    $data = is_array($data) ? print_r($data, true) : $data;
+    $tt .= $data . '
+';
+    file_put_contents('./logs/log.txt', $tt, FILE_APPEND);
+}
+
 if (!empty($_POST)) {
     require "../../../../framework/bootstrap.inc.php";
     require "../../../../addons/hello_banbanjia/payment/__init.php";
     require "../../../../addons/hello_banbanjia/class/TyAccount.class.php";
+    require "../../../../addons/hello_banbanjia/class/alipay.class.php";
+    require "../../../../addons/hello_banbanjia/defines.php";
+    logs($_POST);
     $out_trade_no = $_POST["out_trade_no"];
     $body = explode(":", $_POST["body"]);
     $_W["weid"] = intval($body[0]);
@@ -12,6 +27,7 @@ if (!empty($_POST)) {
     $_W["account"] = uni_fetch($_W["uniacid"]);
     $_W["uniaccount"] = $_W["account"];
     $_W["acid"] = $_W["uniaccount"]["acid"];
+    $_W['we7_hello_banbanjia']['config'] = get_system_config();
     $type = trim($body[1]) ? trim($body[1]) : "wap";
     $payment_from = trim($body[2]);
     if ($payment_from == "plugincenter") {
@@ -19,6 +35,8 @@ if (!empty($_POST)) {
     } else {
         $config_payment = get_system_config("payment");
     }
+    // var_dump($config_payment);exit;
+    // logs($config_payment);
     if ($type == "wap") {
         $config_alipay = $config_payment["alipay"];
         if (empty($config_alipay)) {
@@ -26,20 +44,25 @@ if (!empty($_POST)) {
         }
         $prepares = array();
         foreach ($_POST as $key => $value) {
-            if ($key != "sign" && $key != "sign_type") {
+            if ($key != "sign" && $key != "sign_type" && !empty($value)) {
                 $prepares[] = (string) $key . "=" . $value;
             }
         }
         sort($prepares);
-        $string = implode($prepares, "&");
-        $string .= $config_alipay["secret"];
-        $sign = md5($string);
+
+        $string = implode("&", $prepares);
+
+        load()->lclass('alipay');
+        $alipayClass = new Alipay('wap');
+        $params['string'] = $string;
+        $params['sign'] = $_POST['sign'];
+        $params['sign_type'] = $_POST['sign_type'];
+        $is_right = $alipayClass->checkSign($params);
     }
-    if ($sign == $_POST["sign"] || $rsaverify) {
+    if ($is_right || $rsaverify) {
         $_POST["query_type"] = "notify";
         $log = pdo_fetch("SELECT * FROM " . tablename("core_paylog") . " WHERE `uniontid`=:uniontid", array(":uniontid" => $out_trade_no));
-        if (!empty($log) && $log["status"] == "0" && ($_POST["total_fee"] == $log["card_fee"] || $_POST["total_amount"] == $log["card_fee"])) 
-        {
+        if (!empty($log) && $log["status"] == "0" && ($_POST["total_fee"] == $log["card_fee"] || $_POST["total_amount"] == $log["card_fee"])) {
             $log["transaction_id"] = $_POST["trade_no"];
             $log["type"] = "alipay";
             $record = array();
@@ -72,7 +95,5 @@ if (!empty($_POST)) {
             }
         }
     }
-
-
 }
 exit('fail');

@@ -3,12 +3,12 @@ defined("IN_IA") or exit("Access Denied");
 global $_W;
 global $_GPC;
 mload()->lmodel('deliveryer');
-if ($_W["_ac"] != "auth") { //如果不等你
+if ($_W["_ac"] != "auth") { //如果不等
     icheckdeliveryer();
     $_deliveryer = $deliveryer = $_W["deliveryer"];
     // $relation = deliveryer_push_token($_W["deliveryer"]);
     // $_W["wxapp"]["jpush_relation"] = $relation;
-    if ($_GPC['from'] == 'web') {
+    if ($_GPC['from'] == 'wxapp') {
         collect_wxapp_formid();
     }
 }

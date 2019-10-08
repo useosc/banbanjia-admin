@@ -289,3 +289,14 @@ function calculate_distance($origins, $destination, $type = 0)
         return round($result['results'][0]['distance'] / 1000, 3);
     }
 }
+//保存字符串到文件
+function ifile_put_contents($filename,$data)
+{
+    global $_W;
+    load()->func('file');
+    $filename = MODULE_ROOT . '/' . $filename;
+    mkdirs(dirname($filename));
+    file_put_contents($filename,$data);
+    @chmod($filename,$_W['config']['setting']['filemode']);
+    return is_file($filename);
+}

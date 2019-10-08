@@ -5,11 +5,11 @@ global $_GPC;
 icheckAuth();
 $ta = trim($_GPC["ta"]) ? trim($_GPC["ta"]) : "index";
 mload()->lmodel('order');
-if($ta == 'create'){
+if ($ta == 'create') {
     // $id = intval($_GPC['id']);
-    $params = json_decode(htmlspecialchars_decode($_GPC['extra']),true);
-    if(empty($params)){
-        imessage(error(-1,'参数错误'),'','ajax');
+    $params = json_decode(htmlspecialchars_decode($_GPC['extra']), true);
+    if (empty($params)) {
+        imessage(error(-1, '参数错误'), '', 'ajax');
     }
     $order = carry_order_calculate_delivery_fee($params);
     // $delivery_info = $order['deliveryInfo'];
@@ -17,7 +17,7 @@ if($ta == 'create'){
         "uniacid" => $_W['uniacid'],
         'uid' => $_W['member']['uid'],
         'order_type' => $params['order_type'],
-        'order_sn' => date("YmdHis") . random(6,true),
+        'order_sn' => date("YmdHis") . random(6, true),
         'start_address' => $params['start_address'],
         'start_location_x' => $params['start_location_x'],
         'start_location_y' => $params['start_location_y'],
@@ -39,7 +39,7 @@ if($ta == 'create'){
         'status' => 1,
         'addtime' => TIMESTAMP,
     );
-    
+
     $data["spreadbalance"] = 1;
     // if (check_plugin_permit("spread")) {
     //     pload()->model("spread");
@@ -47,11 +47,23 @@ if($ta == 'create'){
     // }
 
     // $data['data'] = iserializer($data['data']);
-    pdo_insert('hello_banbanjia_carry_order',$data);
+    pdo_insert('hello_banbanjia_carry_order', $data);
     $orderid = pdo_insertid();
     // 隐私号
     // carry_order_insert_status_log($orderid,"place_order");
     // carry_order_insert_discount($orderid,$order['activityed']['list']);
     // carry_order_insert_status_log($orderid,"place_order");
-    imessage(error(0,$orderid),'','ajax');
+    imessage(error(0, $orderid), '', 'ajax');
+}
+if ($ta == 'list') {
+    // $total_user = pdo_fetchcolumn("select count(*) from " . tablename("hello_banbanjia_carry_order") . " where uniacid = :uniacid", array(":uniacid" => $_W['uniacid']));
+    $condition = " where uniacid = :uniacid and uid = :uid";
+    $params = array(":uniacid" => $_W['uniacid'], ":uid" => $_W["member"]["uid"]);
+    $pindex = max(1, intval($_GPC['page']));
+    $psize = intval($_GPC['psize']) ? intval($_GPC['psize']) : 7;
+    $orders = pdo_fetchall("select * from " . tablename("hello_banbanjia_carry_order") . $condition . " order by id desc limit " . ($pindex - 1) * $psize . "," . $psize, $params);
+
+    $result = array("orders" => $orders);
+    imessage(error(0,$result),"","ajax");
+    return 1;
 }

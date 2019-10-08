@@ -159,3 +159,10 @@ if ($op == "post") {
     }
     include itemplate("deliveryer/plateform");
 }
+if ($op == 'permit') { //接单权限
+    $deliveryerId = intval($_GPC['id']);
+    $fields = trim($_GPC['fields']);
+    $value = intval($_GPC['value']) == 1 ? 0 : 1;
+    pdo_update('hello_banbanjia_deliveryer', array($fields => $value), array('uniacid' => $_W['uniacid'], 'id' => $deliveryerId));
+    imessage(error(0, ''), '', 'ajax');
+}

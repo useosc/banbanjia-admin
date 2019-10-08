@@ -220,8 +220,7 @@ function carry_order_fetch($id)
     if (empty($order)) {
         return false;
     }
-    if ($order['carry_status'] == 1 && 0 < $_W['deliveryer']['id']) 
-    {
+    if ($order['carry_status'] == 1 && 0 < $_W['deliveryer']['id']) {
         $order["deliveryer_fee"] = carry_order_calculate_deliveryer_fee($order, $_W["deliveryer"]);
         $order["deliveryer_total_fee"] = $order["deliveryer_fee"] + $order["delivery_tips"];
     }
@@ -249,6 +248,7 @@ function carry_order_fetch($id)
     $order['addtime_cn'] = date("Y-m-d H:i", $order['addtime']);
     return $order;
 }
+
 //搬运订单状态更新
 function carry_order_status_update($id, $type, $extra = array())
 {
@@ -258,15 +258,23 @@ function carry_order_status_update($id, $type, $extra = array())
         return error(-1, "订单不存在或已删除");
     }
     $config = get_system_config("carry");
-    if ($type == 'dispatch') {
+    if ($type == 'dispatch') { //派单
         if (empty($order['is_type'])) {
             return error(-1, '订单尚未支付，支付后才能进行调度派单');
         }
-        if ($config['dispatch_mode' == 1]) {
+        if ($config['dispatch_mode' == 1]) { //抢单
             carry_order_deliveryer_notice($id, "delivery_wait");
+        } else {
+            if ($config["dispatch_mode"] == 2) { } else { //系统分配
+
+            }
         }
-    } else {
-        if ($type == 'pay') { } else {
+    } else { //订单状态改变
+        if ($type == 'pay') {
+            carry_order_insert_status_log($id, "pay");
+            carry_order_status_notice($id, "pay");
+            carry_order_manager_notice($id, "new_delivery");
+        } else {
             if ($type == 'cancel') { } else {
                 if ($type == 'end') { }
                 if ($type == "carry_assign") {
@@ -305,6 +313,8 @@ function carry_order_status_update($id, $type, $extra = array())
             }
         }
     }
+
+    return true;
 }
 //搬运订单计算活动
 function carry_order_count_activity($delivery_fee = 0, $data = array())
@@ -341,14 +351,96 @@ function carry_order_insert_discount($id, $discount_data)
     // }
     return true;
 }
-//更新搬运订单状态
+// 搬运订单通知搬运工
+function carry_order_deliveryer_notice($id, $type, $deliveryer_id = 0, $note = "")
+{
+    global $_W;
+    $order = carry_order_fetch($id);
+    if (empty($order)) {
+        return error(-1, "订单不存在或已删除");
+    }
+    mload()->lmodel('deliveryer');
+    if (empty($deliveryer_id)) {
+        $filter = array("order_type" => "is_carry", "over_max_collect_show" => 0);
+        $deliveryers = deliveryer_fetchall(0, $filter);
+        if (empty($deliveryers)) {
+            carry_order_manager_notice($order["id"], "no_working_deliveryer");
+            return false;
+        }
+    } else {
+        $deliveryer = deliveryer_fetch($deliveryer_id);
+    }
+    $account = $order["uniacid"];
+    $channel_notice = "wechat";
+}
+// 搬运订单状态更新通知
+function carry_order_status_notice($id, $status, $note = "")
+{
+    global $_W;
+    $status_arr = array("pay", "carry_assign", "carry_indoor", "end", "cancel", "carry_notice");
+    if (!in_array($status, $status_arr)) {
+        return false;
+    }
+    $type = $status;
+    $order = carry_order_fetch($id);
+
+    return true;
+}
+
+// 搬运订单通知管理员
+function carry_order_manager_notice($order_id, $type, $note = "")
+{
+    global $_W;
+    $maneger = $_W["we7_hello_banbanjia"]["config"]["manager"];
+    if (empty($maneger)) {
+        return error(-1, "管理员信息不完善");
+    }
+    $order = carry_order_fetch($order_id);
+    if (empty($order)) {
+        return error(-1, "订单不存在或已经删除");
+    }
+    $acc = WeAccount::create($order['acid']);
+    if ($type == "new_carry") {
+        $title = "平台有新的搬运订单，请尽快调度处理";
+        $remark = array("订单类型: " . $order["order_type_cn"],  "总金额: " . $order["total_fee"], "支付方式: " . $order["pay_type_cn"], "支付时间: " . date("Y-m-d H: i", $order["paytime"]));
+    } else {
+        if ($type == "dispatch_error") {
+            $title = "平台有新的搬运订单，系统自动调度失败，请登录后台人工调度";
+            $remark = array("订单类型: " . $order["order_type_cn"], "总金额: " . $order["total_fee"]);
+        } else {
+            if ($type == "no_working_deliveryer") {
+                $title = "平台有新的待搬运订单,但没有接单中的搬运工,请尽快协调";
+                $remark = array("订单类型: 搬运订单");
+            }
+        }
+    }
+    if (!empty($note)) {
+        if (!is_array($note)) {
+            $remark[] = $note;
+        } else {
+            $remark[] = implode("\n", $note);
+        }
+    }
+    if (!empty($end_remark)) {
+        $remark[] = $end_remark;
+    }
+    $remark = implode("\n", $remark);
+    $send = tpl_format($title, $order["order_sn"], $order["status_cn"], $remark);
+    $status = $acc->sendTplNotice($maneger["openid"], $_W["we7_hello_banbanjia"]["config"]["notice"]["wechat"]["public_tpl"], $send);
+    if (is_error($status)) {
+        slog("wxtplNotice", "搬运订单通知平台管理员抢单", $send, $status["message"]);
+    }
+    return $status;
+}
+
+//插入搬运订单状态
 function carry_order_insert_status_log($id, $type, $note = "", $extra = array())
 {
     global $_W;
     if (empty($type)) {
         return false;
     }
-    $config = $_W["_plugin"]["config"];
+    $config = $_W['we7_hello_banbanjia']['config'];
     $order = carry_order_fetch($id);
     $notes = array(
         "place_order" => array("status" => 1, "title" => "订单提交成功", "note" => "单号：" . $order['order_sn'], "ext" => array(array("key" => "pay_time_limit", "title" => "待支付", "note" => "请在订单提交后" . $config['pay_time_limit'] . "分钟内完成支付"))),
@@ -357,7 +449,7 @@ function carry_order_insert_status_log($id, $type, $note = "", $extra = array())
         "carry_indoor" => array("status" => 4, "title" => "已上门", "note" => ""),
         "end" => array("status" => 5, "title" => "订单已完成", "note" => "任何意见和吐槽,都欢迎联系我们"),
         "cancel" => array("status" => 6, "title" => "订单已取消", "note" => ""),
-        "carry_transfer" => array("status" => 7, "title" => "搬运工申请转单", "note" => ""), 
+        "carry_transfer" => array("status" => 7, "title" => "搬运工申请转单", "note" => ""),
         "direct_transfer" => array("status" => 8, "title" => "搬运工发起定向转单申请", "note" => ""),
         "direct_transfer_agree" => array("status" => 9, "title" => "搬运工同意接受转单", "note" => ""),
         "direct_transfer_refuse" => array("status" => 10, "title" => "搬运工拒绝接受转单", "note" => "")
@@ -407,7 +499,7 @@ function carry_order_types()
     return $data;
 }
 //搬运订单搬运状态
-function carry_order_carry_status()
+function carry_order_delivery_status()
 {
     $data = array(
         "1" => "待接单",

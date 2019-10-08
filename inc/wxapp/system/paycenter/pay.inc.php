@@ -59,11 +59,14 @@ $logo = $_config["mall"]["logo"];
 $routers = array(
     "carry" => array("title" => "搬运-" . $record['order_sn']),
 );
+
 $router = $routers[$type];
 $title = $router['title'];
 $data = array('title' => $title, 'logo' => tomedia($logo), 'fee' => $record['fee']);
+//更新订单支付详情
 pdo_update("hello_banbanjia_paylog", array("data" => iserializer($data)), array("id" => $record["id"]));
 $params = array("module" => "hello_banbanjia", "ordersn" => $record["order_sn"], "tid" => $record["order_sn"], "user" => $_W["member"]["openid_wxapp"], "fee" => $record["fee"], "title" => $title, "order_type" => $type, "sid" => $order["sid"], "title" => urldecode($title));
+//更新联合支付历史
 $log = pdo_get("core_paylog", array("uniacid" => $_W["uniacid"], "module" => $params["module"], "tid" => $params["tid"]));
 if (empty($log)) {
     $log = array("uniacid" => $_W["uniacid"], "acid" => $_W["acid"], "openid" => $params["user"], "module" => $params["module"], "uniontid" => date("YmdHis") . random(14, 1), "tid" => $params["tid"], "fee" => $params["fee"], "card_fee" => $params["fee"], "status" => "0", "is_usecard" => "0");
@@ -85,7 +88,7 @@ if (empty($payment)) {
 }
 
 
-if ($_GPC['type']) {
+if ($_GPC['type']) { //支付预览页信息（支付时限）
     if ($type == 'carry') {
         $config_carry = get_system_config('carry');
         if (is_array($config_carry) && 0 < $config_carry['pay_time_limit']) {
