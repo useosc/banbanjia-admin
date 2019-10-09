@@ -131,3 +131,20 @@ function sys_notice_deliveryer_settle($deliveryer_id, $note = "")
     }
     return $status;
 }
+
+function deliveryer_order_num_update($deliveryer_id)
+{ //更新搬运工正在接单数
+    global $_W;
+    $deliveryer = pdo_get("hello_banbanjia_deliveryer", array('uniacid' => $_W['uniacid'], 'id' => $deliveryer_id), array('id', 'status'));
+    if (empty($deliveryer)) {
+        return error(-1, "搬运工不存在");
+    }
+    if ($deliveryer["status"] != 1) {
+        return error(-1, "搬运工已被删除");
+    }
+    $params = array(":uniacid" => $_W["uniacid"], ":deliveryer_id" => $deliveryer_id);
+    $carry_num = pdo_fetchcolumn("select count(*) from " . tablename("hello_banbanjia_carry_order") . " where uniacid = :uniacid and deliveryer_id = :deliveryer_id and (carry_status = 2 or carry_status = 3) and status < 3", $params);
+    $update["order_carry_num"] = intval($carry_num);
+    pdo_update("hello_banbanjia_deliveryer", $update, array('uniacid' => $_W['uniacid'], 'id' => $deliveryer['id']));
+    return true;
+}

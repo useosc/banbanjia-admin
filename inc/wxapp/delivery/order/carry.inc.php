@@ -23,7 +23,9 @@ if ($ta == 'list') {
     } else {
         if ($status == 4) {
             $condition .= " and deliveryer_id = :deliveryer_id";
-        } else { }
+        } else { //转单
+            $condition .= " and deliveryer_id = :deliveryer_id";
+         }
         $params[":deliveryer_id"] = $_deliveryer['id'];
     }
     $pindex = max(1, intval($_GPC['page']));
@@ -42,7 +44,7 @@ if ($ta == 'list') {
     );
     imessage(error(0, $result), '', 'ajax');
 }
-if ($ta == 'collect') {
+if ($ta == 'collect') { //旧接单
     $id = intval($_GPC['id']);
     $order = carry_order_fetch($id);
     if (empty($order)) {
@@ -53,4 +55,24 @@ if ($ta == 'collect') {
         imessage(error(-1, $status["message"]), "", "ajax");
     }
     imessage(error(0, "抢单成功"), referer(), "ajax");
+}
+if ($ta == 'status') { //新接单
+    $id = intval($_GPC['id']);
+    $type = trim($_GPC['type']);
+
+    if (empty($id)) {
+        imessage(error(-1, '请选择订单'), '', 'ajax');
+    }
+    $types = array('carry_assign', 'carry_indoor', 'carry_success', 'direct_transfer_reply', 'carry_transfer', 'cancel', 'direct_transfer');
+    if (!in_array($type, $types)) {
+        imessage(error(-1, '订单操作有误'), '', 'ajax');
+    }
+    $extra = array('deliveryer_id' => $deliveryer['id'], 'carry_handle_type' => $_GPC['from']);
+
+    $result = carry_order_status_update($id, $type, $extra);
+    if (is_error($result)) {
+        imessage($result, '', 'ajax');
+    }
+
+    imessage(error(0,$result['message']),'','ajax');
 }

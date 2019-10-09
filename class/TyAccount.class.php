@@ -2,7 +2,7 @@
 defined("IN_IA") or exit("Access Denied");
 abstract class TyAccount
 {
-    public static function create($acidOrAccount = "", $type = "wechat")
+    public static function create($acidOrAccount = "", $type = "wxapp")
     {
         global $_W;
         if ($type != "wxapp") {

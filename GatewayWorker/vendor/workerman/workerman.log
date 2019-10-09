@@ -36,3 +36,8 @@ Stack trace:
 2019-08-26 17:41:34 pid:15208 Workerman[start.php] start in DEBUG mode
 2019-08-28 10:58:40 pid:2592 Workerman[start.php] start in DEBUG mode
 2019-08-28 15:13:50 pid:3679 Workerman[start.php] start in DEBUG mode
+2019-10-09 11:49:02 pid:9572 Workerman[start.php] start in DEBUG mode
+2019-10-09 11:52:49 pid:9572 Workerman[start.php] stopping ...
+2019-10-09 11:52:51 pid:9572 worker[WhisperBusinessWorker:9574] exit with status 9
+2019-10-09 11:52:51 pid:9572 Workerman[start.php] has been stopped
+2019-10-09 11:52:54 pid:10014 Workerman[start.php] start in DEBUG mode

@@ -2,7 +2,7 @@
 <div class="page clearfix page-config-store-delivery">
 	<h2>提成及提现设置</h2>
 	<form class="form-horizontal form form-validate" id="form1" action="" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="form_type" value="delivery_setting">
+		<input type="hidden" name="form_type" value="carry_setting">
 		<h3>搬运权限</h3>
 		<div class="form-group">
 			<label class="col-xs-12 col-sm-3 col-md-2 control-label">是否允许搬运工取消订单</label>
@@ -58,46 +58,46 @@
 			<div class="col-sm-9 col-xs-12">
 				<div class="input-group">
 					<label class="input-group-addon">
-						<input type="radio" name="deliveryer_carry_fee_type" value="1" {if $deliveryerCash['fee_delivery']['carry']['deliveryer_fee_type'] == 1 || !$deliveryerCash['fee_delivery']['carry']['deliveryer_fee_type']}checked{/if}>
+						<input type="radio" name="deliveryer_carry_fee_type" value="1" {if $deliveryerCash['fee_carry']['carry']['deliveryer_fee_type'] == 1 || !$deliveryerCash['fee_carry']['carry']['deliveryer_fee_type']}checked{/if}>
 					</label>
 					<span class="input-group-addon">每单固定</span>
-					<input type="text" class="form-control" name="deliveryer_carry_fee_1" {if $deliveryerCash['fee_delivery']['carry']['deliveryer_fee_type'] == 1}value="{$deliveryerCash['fee_delivery']['carry']['deliveryer_fee']}"{/if}>
+					<input type="text" class="form-control" name="deliveryer_carry_fee_1" {if $deliveryerCash['fee_carry']['carry']['deliveryer_fee_type'] == 1}value="{$deliveryerCash['fee_carry']['carry']['deliveryer_fee']}"{/if}>
 					<span class="input-group-addon">元</span>
 				</div>
 				<br>
-				<div class="input-group">
+				<!-- <div class="input-group">
 					<label class="input-group-addon">
-						<input type="radio" name="deliveryer_carry_fee_type" value="2" {if $deliveryerCash['fee_delivery']['carry']['deliveryer_fee_type'] == 2}checked{/if}>
+						<input type="radio" name="deliveryer_carry_fee_type" value="2" {if $deliveryerCash['fee_carry']['carry']['deliveryer_fee_type'] == 2}checked{/if}>
 					</label>
 					<span class="input-group-addon">每单按照订单搬运费提成</span>
-					<input type="text" class="form-control" name="deliveryer_carry_fee_2" {if $deliveryerCash['fee_delivery']['carry']['deliveryer_fee_type'] == 2}value="{$deliveryerCash['fee_delivery']['carry']['deliveryer_fee']}"{/if}>
+					<input type="text" class="form-control" name="deliveryer_carry_fee_2" {if $deliveryerCash['fee_carry']['carry']['deliveryer_fee_type'] == 2}value="{$deliveryerCash['fee_carry']['carry']['deliveryer_fee']}"{/if}>
 					<span class="input-group-addon">%</span>
 				</div>
 				<br>
 				<div class="input-group">
 					<label class="input-group-addon">
-						<input type="radio" name="deliveryer_carry_fee_type" value="3" {if $deliveryerCash['fee_delivery']['carry']['deliveryer_fee_type'] == 3}checked{/if}>
+						<input type="radio" name="deliveryer_carry_fee_type" value="3" {if $deliveryerCash['fee_carry']['carry']['deliveryer_fee_type'] == 3}checked{/if}>
 					</label>
 					<span class="input-group-addon">每单基础搬运费</span>
-					<input type="text" class="form-control" name="deliveryer_carry_fee_3[start_fee]" {if $deliveryerCash['fee_delivery']['carry']['deliveryer_fee_type'] == 3}value="{$deliveryerCash['fee_delivery']['carry']['deliveryer_fee']['start_fee']}"{/if}>
+					<input type="text" class="form-control" name="deliveryer_carry_fee_3[start_fee]" {if $deliveryerCash['fee_carry']['carry']['deliveryer_fee_type'] == 3}value="{$deliveryerCash['fee_carry']['carry']['deliveryer_fee']['start_fee']}"{/if}>
 					<span class="input-group-addon">元,超过</span>
-					<input type="text" class="form-control" name="deliveryer_carry_fee_3[start_km]" {if $deliveryerCash['fee_delivery']['carry']['deliveryer_fee_type'] == 3}value="{$deliveryerCash['fee_delivery']['carry']['deliveryer_fee']['start_km']}"{/if}>
+					<input type="text" class="form-control" name="deliveryer_carry_fee_3[start_km]" {if $deliveryerCash['fee_carry']['carry']['deliveryer_fee_type'] == 3}value="{$deliveryerCash['fee_carry']['carry']['deliveryer_fee']['start_km']}"{/if}>
 					<span class="input-group-addon">公里,超过部分每公里增加</span>
-					<input type="text" class="form-control" name="deliveryer_carry_fee_3[pre_km]" {if $deliveryerCash['fee_delivery']['carry']['deliveryer_fee_type'] == 3}value="{$deliveryerCash['fee_delivery']['carry']['deliveryer_fee']['pre_km']}"{/if}>
+					<input type="text" class="form-control" name="deliveryer_carry_fee_3[pre_km]" {if $deliveryerCash['fee_carry']['carry']['deliveryer_fee_type'] == 3}value="{$deliveryerCash['fee_carry']['carry']['deliveryer_fee']['pre_km']}"{/if}>
 					<span class="input-group-addon">元,最高</span>
-					<input type="text" class="form-control" name="deliveryer_carry_fee_3[max_fee]" {if $deliveryerCash['fee_delivery']['carry']['deliveryer_fee_type'] == 3}value="{$deliveryerCash['fee_delivery']['carry']['deliveryer_fee']['max_fee']}"{/if}>
+					<input type="text" class="form-control" name="deliveryer_carry_fee_3[max_fee]" {if $deliveryerCash['fee_carry']['carry']['deliveryer_fee_type'] == 3}value="{$deliveryerCash['fee_carry']['carry']['deliveryer_fee']['max_fee']}"{/if}>
 					<span class="input-group-addon">元</span>
 				</div>
-				<br>
+				<br> -->
 				<div class="input-group">
 					<label class="input-group-addon">
-						<input type="radio" name="deliveryer_carry_fee_type" value="4" {if $deliveryerCash['fee_delivery']['carry']['deliveryer_fee_type'] == 4}checked{/if}>
+						<input type="radio" name="deliveryer_carry_fee_type" value="4" {if $deliveryerCash['fee_carry']['carry']['deliveryer_fee_type'] == 4}checked{/if}>
 					</label>
 					<span class="input-group-addon">每单按照订单金额提成</span>
-					<input type="text" class="form-control" name="deliveryer_carry_fee_4" {if $deliveryerCash['fee_delivery']['carry']['deliveryer_fee_type'] == 4}value="{$deliveryerCash['fee_delivery']['carry']['deliveryer_fee']}"{/if}>
+					<input type="text" class="form-control" name="deliveryer_carry_fee_4" {if $deliveryerCash['fee_carry']['carry']['deliveryer_fee_type'] == 4}value="{$deliveryerCash['fee_carry']['carry']['deliveryer_fee']}"{/if}>
 					<span class="input-group-addon">%</span>
 				</div>
-				<div class="help-block"><span class="text-danger">第三种提成模式仅适用于开启按照距离收取搬运费的计费模式。最高设置为0表示不限制。</span></div>
+				<!-- <div class="help-block"><span class="text-danger">第三种提成模式仅适用于开启按照距离收取搬运费的计费模式。最高设置为0表示不限制。</span></div> -->
 			</div>
 		</div>
 		<div class="form-group">

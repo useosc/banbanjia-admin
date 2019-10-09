@@ -19,10 +19,10 @@ if ($op == "settle") {
 } else {
     if ($op == 'cash') {
         $_W["page"]["title"] = "提成及提现";
-        $deliveryerCash = $_config["delivery"]["cash"];
+        $deliveryerCash = $_config["carry"]["cash"];
         if ($_W['ispost']) {
             $form_type = trim($_GPC["form_type"]);
-            if ($form_type == "delivery_setting") {
+            if ($form_type == "carry_setting") {
                 $deliveryerCash["collect_max_carry"] = intval($_GPC["collect_max_carry"]);
                 $deliveryerCash["permit_cancel"] = array("status_carry" => intval($_GPC["permit_cancel"]["status_carry"]));
                 $deliveryerCash["permit_transfer"] = array(
@@ -31,7 +31,7 @@ if ($op == "settle") {
                 );
                 $deliveryer_carry_fee_type = intval($_GPC["deliveryer_carry_fee_type"]);
                 $deliveryer_carry_fee = 0;
-                if ($deliveryer_carry_fee_type == 1) {
+                if ($deliveryer_carry_fee_type == 1) { //固定金额
                     $deliveryer_carry_fee = floatval($_GPC["deliveryer_carry_fee_1"]);
                 } else {
                     if ($deliveryer_carry_fee_type == 2) {
@@ -40,13 +40,13 @@ if ($op == "settle") {
                         if ($deliveryer_carry_fee_type == 3) {
                             $deliveryer_carry_fee = array("start_fee" => floatval($_GPC["deliveryer_carry_fee_3"]["start_fee"]), "start_km" => floatval($_GPC["deliveryer_carry_fee_3"]["start_km"]), "pre_km" => floatval($_GPC["deliveryer_carry_fee_3"]["pre_km"]), "max_fee" => floatval($_GPC["deliveryer_carry_fee_3"]["max_fee"]));
                         } else {
-                            if ($deliveryer_carry_fee_type == 4) {
+                            if ($deliveryer_carry_fee_type == 4) { //订单提成
                                 $deliveryer_carry_fee = floatval($_GPC["deliveryer_carry_fee_4"]);
                             }
                         }
                     }
                 }
-                $deliveryerCash["fee_delivery"] = array("carry" => array("deliveryer_fee_type" => $deliveryer_carry_fee_type, "deliveryer_fee" => $deliveryer_carry_fee));
+                $deliveryerCash["fee_carry"] = array("carry" => array("deliveryer_fee_type" => $deliveryer_carry_fee_type, "deliveryer_fee" => $deliveryer_carry_fee));
             } else {
                 if ($form_type == "getcash_setting") {
                     $deliveryerCash["fee_getcash"] = array("get_cash_fee_limit" => floatval($_GPC["fee_getcash"]["get_cash_fee_limit"]), "get_cash_fee_rate" => floatval($_GPC["fee_getcash"]["get_cash_fee_rate"]), "get_cash_fee_min" => floatval($_GPC["fee_getcash"]["get_cash_fee_min"]), "get_cash_fee_max" => floatval($_GPC["fee_getcash"]["get_cash_fee_max"]), "get_cash_period" => intval($_GPC["fee_getcash"]["get_cash_period"]));
@@ -57,13 +57,13 @@ if ($op == "settle") {
             unset($deliveryerCash["get_cash_fee_min"]);
             unset($deliveryerCash["get_cash_fee_max"]);
             unset($deliveryerCash["get_cash_period"]);
-            set_system_config(base64_decode("ZGVsaXZlcnkuY2FzaA=="), $deliveryerCash);
+            set_system_config("carry.cash", $deliveryerCash);
             $deliveryerCash["permit_cancel"] = iserializer($deliveryerCash["permit_cancel"]);
             $deliveryerCash["permit_transfer"] = iserializer($deliveryerCash["permit_transfer"]);
-            $deliveryerCash["fee_delivery"] = iserializer($deliveryerCash["fee_delivery"]);
+            $deliveryerCash["fee_carry"] = iserializer($deliveryerCash["fee_carry"]);
             $deliveryerCash["fee_getcash"] = iserializer($deliveryerCash["fee_getcash"]);
             $update = $deliveryerCash;
-            if ($form_type == "delivery_setting") {
+            if ($form_type == "carry_setting") {
                 unset($update["fee_getcash"]);
             } else {
                 if ($form_type == "getcash_setting") {

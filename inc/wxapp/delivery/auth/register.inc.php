@@ -1,12 +1,13 @@
 <?php
-// ini_set("display_errors", "1"); //显示出错信息
-// error_reporting(E_ALL);
+ini_set("display_errors", "1"); //显示出错信息
+error_reporting(E_ALL);
 defined("IN_IA") or exit("Access Denied");
 global $_W;
 global $_GPC;
 $config_mall = $_W["we7_hello_banbanjia"]["config"]["mall"];
 // $config_mall["logo"] = tomedia($config_mall["logo"]);
-$config_deliveryer = $_W["we7_hello_banbanjia"]["config"]["delivery"];
+$config_deliveryer = $_W["we7_hello_banbanjia"]["config"]["carry"];
+// $config_deliveryer = $_W["we7_hello_banbanjia"]["config"]["delivery"];
 $ta = trim($_GPC["ta"]) ? trim($_GPC["ta"]) : "index";
 if ($ta == "index") {
     if ($_W["ispost"]) {
@@ -40,11 +41,11 @@ if ($ta == "index") {
             }
             imessage(error(-1, "此手机号已注册, 请直接登录"), "", "ajax");
         }
-        $deliveryer = array("uniacid" => $_W["uniacid"], "mobile" => $mobile, "title" => $title, "salt" => random(6), "token" => random(32), "addtime" => TIMESTAMP, "auth_info" => iserializer($idCard), "collect_max_carry" => $config_deliveryer["cash"]["collect_max_carry"], "permit_cancel" => iserializer($config_deliveryer["cash"]["permit_cancel"]), "permit_transfer" => iserializer($config_deliveryer["cash"]["permit_transfer"]), "fee_getcash" => iserializer($config_deliveryer["cash"]["fee_getcash"]), "fee_delivery" => iserializer($config_deliveryer["cash"]["fee_delivery"]));
+        $deliveryer = array("uniacid" => $_W["uniacid"], "mobile" => $mobile, "title" => $title, "salt" => random(6), "token" => random(32), "addtime" => TIMESTAMP, "auth_info" => iserializer($idCard), "collect_max_carry" => $config_deliveryer["cash"]["collect_max_carry"], "permit_cancel" => iserializer($config_deliveryer["cash"]["permit_cancel"]), "permit_transfer" => iserializer($config_deliveryer["cash"]["permit_transfer"]), "fee_getcash" => iserializer($config_deliveryer["cash"]["fee_getcash"]), "fee_carry" => iserializer($config_deliveryer["cash"]["fee_carry"]));
         $deliveryer["password"] = md5(md5($deliveryer["salt"] . $password) . $deliveryer["salt"]);
         pdo_insert("hello_banbanjia_deliveryer", $deliveryer);
         $deliveryer_id = pdo_insertid();
-        sys_notice_deliveryer_settle($deliveryer_id);
+        // sys_notice_deliveryer_settle($deliveryer_id);
         imessage(error(0, "注册成功"), "", "ajax");
     }
     $result = array("config_mall" => $config_mall, array("state" => "we7sid-" . $_W["session_id"], "t" => TIMESTAMP), true);

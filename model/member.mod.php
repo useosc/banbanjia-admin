@@ -3,6 +3,17 @@
 use function Qiniu\json_decode;
 
 defined("IN_IA") or exit("Access Denied");
+if (!function_exists("member_wxapp2openid")) {
+    function member_wxapp2openid($openid_wxapp = "")
+    {
+        global $_W;
+        if (empty($openid_wxapp)) {
+            $openid_wxapp = $_W["openid_wxapp"];
+        }
+        $openid = pdo_fetchcolumn("select openid from " . tablename("hello_banbanjia_members") . " where uniacid = :uniacid and openid_wxapp = :openid_wxapp", array(":uniacid" => $_W["uniacid"], ":openid_wxapp" => $openid_wxapp));
+        return $openid;
+    }
+}
 
 function icheckauth($force = true) //鉴权
 {

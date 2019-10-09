@@ -1,4 +1,5 @@
 <?php
+// error_reporting(E_ALL ^ E_NOTICE);
 defined('IN_IA') or exit('Access Denied');
 mload()->lmodel('order.extra');
 // function domestic_order_calculate($condition = array())
@@ -277,36 +278,49 @@ function carry_order_status_update($id, $type, $extra = array())
         } else {
             if ($type == 'cancel') { } else {
                 if ($type == 'end') { }
-                if ($type == "carry_assign") {
+                if ($type == 'carry_assign') {
                     if ($order['status'] == 3) {
-                        return error(-1, "系统已完成，不能抢单或分配订单");
+                        return error(-1, '系统已完成，不能抢单或分配订单');
                     }
-                    if ($order['status'] == 4) {
-                        return error(-1, '系统已取消，不能抢单或分配订单');
+                    if ($order["status"] == 4) {
+                        return error(-1, "系统已取消， 不能抢单或分配订单");
                     }
-                    if (0 < $order['deliveryer_id']) {
-                        return error(-1, '来迟了，该订单已被别人接单');
+                    if (0 < $order["deliveryer_id"]) {
+                        return error(-1, "来迟了, 该订单已被别人接单");
                     }
-                    if (empty($extra['deliveryer_id'])) {
-                        return error(-1, '搬运工id不存在');
+                    if (empty($extra["deliveryer_id"])) {
+                        return error(-1, "搬运工id不存在");
                     }
-                    mload()->lmodel('deliveryer');
+                    mload()->lmodel("deliveryer");
                     $deliveryer = deliveryer_fetch($extra['deliveryer_id']);
                     if (empty($deliveryer)) {
-                        return error(-1, "配送员不存在");
+                        return error(-1, "搬运工不存在");
                     }
-                    if (0 < $deliveryer['collect_max_carry']) {
-                        $params = array(":uniacid" => $_W['uniacid'], ":deliveryer_id" => $deliveryer['id']);
-                        $num = pdo_fetchcolumn("select count(*) from " . tablename("hello_banbanjia_carry_order") . " where uniacid = :uniacid and deluveryer_id = :deliveryer_id and status = 2", $params);
+                    if (empty($deliveryer)) {
+                        return error(-1, "搬运工不存在");
+                    }
+                    if (0 < $deliveryer["collect_max_carry"]) {
+                        $params = array(":uniacid" => $_W["uniacid"], ":deliveryer_id" => $deliveryer["id"]);
+                        $num = pdo_fetchcolumn("select count(*) from " . tablename("hello_banbanjia_carry_order") . " where uniacid = :uniacid and deliveryer_id = :deliveryer_id and status = 2", $params);
                         $num = intval($num);
                         if ($deliveryer["collect_max_carry"] <= $num) {
-                            return error(-1, "每人最多可同时抢" . $deliveryer["collect_max_carry"] . "个搬运单");
+                            return error(-1, "每人最多可抢" . $deliveryer["collect_max_carry"] . "个搬运单");
                         }
                     }
-                    $update = array("status" => 2, "carry_status" => 2, "deliveryer_id" => $extra["deliveryer_id"], "carry_handle_type" => !empty($extra['carry_handle_type']) ? $extra['carry_handle_type'] : "wechat", "carry_assign_time" => TIMESTAMP);
-                    // $update['']
-                    // pdo_update("hello_banbanjia_carry_order",$update,array("uniacid" => $_W['uniacid'],"id"=>$id));
+                    $update = array("status" => 2, "carry_status" => 2, "deliveryer_id" => $extra["deliveryer_id"], "carry_handle_type" => !empty($extra["carry_handle_type"]) ? $extra["carry_handle_type"] : "wxapp", "carry_assign_time" => TIMESTAMP);
+                    $update["deliveryer_fee"] = carry_order_calculate_deliveryer_fee($order, $deliveryer);
+                    $update['deliveryer_total_fee'] = $update['deliveryer_fee'] + $order['carry_tips'];
+                    pdo_update("hello_banbanjia_carry_order", $update, array("uniacid" => $_W["uniacid"], "id" => $id));
 
+                    // carry_order_update_bill($order['id']);
+
+                    mload()->lmodel('deliveryer');
+                    deliveryer_order_num_update($deliveryer['id']);
+                    $note = "搬运工: " . $deliveryer['title'] . ", 手机号：" . $deliveryer['mobile'];
+                    carry_order_insert_status_log($id, "carry_assign", $note);
+                    $remark = array("搬运工: " . $deliveryer["title"], "手机号：" . $deliveryer["mobile"]);
+
+                    // carry_order_status_notice($id, "carry_assign", $remark);
 
                     return error(0, "抢单成功");
                 }
@@ -316,6 +330,39 @@ function carry_order_status_update($id, $type, $extra = array())
 
     return true;
 }
+
+//计算搬运工费用
+function carry_order_calculate_deliveryer_fee($order, $deliveryerOrid = 0)
+{
+    global $_W;
+    $deliveryer = $deliveryerOrid;
+    if (!is_array($deliveryer)) {
+        mload()->lmodel("deliveryer");
+        $deliveryer = deliveryer_fetch($deliveryerOrid);
+    }
+    if (empty($deliveryer)) {
+        return 0;
+    }
+    $config_carry = get_deliveryer_feerate($deliveryer, 'carry');
+    $plateform_carry_fee = floatval($config_carry['deliveryer_fee']);
+
+    if ($config_carry['deliveryer_fee_type'] == 4) {
+        $plateform_carry_fee = round($order['final_fee'] * $config_carry['deliveryer_fee'] / 100, 2);
+    }
+
+    return floatval($plateform_carry_fee);
+}
+
+//搬运工费率计算
+function get_deliveryer_feerate($deliveryer, $type = '')
+{
+    $carry_fee = iunserializer($deliveryer['fee_carry']);
+    if (!empty($carry_fee[$type])) {
+        return $carry_fee[$type];
+    }
+    return array();
+}
+
 //搬运订单计算活动
 function carry_order_count_activity($delivery_fee = 0, $data = array())
 {
@@ -383,6 +430,44 @@ function carry_order_status_notice($id, $status, $note = "")
     }
     $type = $status;
     $order = carry_order_fetch($id);
+    if (!empty($order['openid'])) {
+        $config_wxapp_basic = $_W['we7_hello_banbanjia']['config']['wxapp']['basic'];
+        $order_channel = $order['order_channel']; //wxapp wap pc
+        if ($order_channel == 'wxapp') {
+            mload()->lmodel('member');
+            $openid = member_wxapp2openid($order['openid']);
+            if (!empty($openid)) {
+                $order_channel = "wap";
+                $order["openid"] = $openid;
+            }
+        }
+        $acc = TyAccount::create($order['acid'], $order_channel);
+        $channel_notice = "wechat";
+
+        if ($order_channel == 'wxapp') {
+            $channel_notice = 'wxapp';
+            $send = array(
+                "keyword1" => array("value" => "搬运单", "color" => "#ff510"),
+                "keyword2" => array("value" => $order["order_type_cn"], "color" => "#ff510"),
+                "keyword3" => array("value" => $order["status_cn"], "color" => "#ff510"),
+                "keyword4" => array("value" => $order["accept_username"], "color" => "#ff510"),
+                "keyword5" => array("value" => $order["accept_mobile"], "color" => "#ff510"),
+                "keyword6" => array("value" => date("Y-m-d H:i"), "color" => "#ff510"),
+                "keyword7" => array("value" => $order["final_fee"], "color" => "#ff510"),
+                "keyword8" => array("value" => $order["order_sn"], "color" => "#ff510")
+            );
+            $public_tpl = $_W['we7_hello_banbanjia']['config']['wxapp']['wxtemplate']['public_tpl'];
+            $form_id = $order['data']['formId'];
+            $form_type = "formId";
+            if (empty($form_id) && 0 < $order['data']['prepay_times']) {
+                $form_type = 'prepayId';
+                $form_id = $order['data']['prepay_id'];
+            }
+            // if(!empty($form_id)){
+            //     if()
+            // }
+        }
+    }
 
     return true;
 }

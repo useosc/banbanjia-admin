@@ -1,0 +1,12 @@
+<div class="second-sidebar-title">评价</div>
+<div class="slimscroll nav">
+    <div class="menu-header">顾客反馈
+        <ul class="menu-item">
+            {ifp 'comment.comment'}
+                <li {if $_W['_ac'] == 'comment'}class="active"{/if}>
+                    <a href="{php echo iurl('comment/comment');}">用户评价</a>
+                </li>
+            {/if}
+        </ul>
+    </div>
+</div>

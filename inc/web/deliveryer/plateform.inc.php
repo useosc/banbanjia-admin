@@ -65,37 +65,25 @@ if ($op == "post") {
             }
         }
         $data = array("uniacid" => $_W["uniacid"], "mobile" => $mobile, "title" => trim($_GPC["title"]), "openid" => $openid, "openid_wxapp" => trim($_GPC["wechat"]["openid_wxapp"]), "nickname" => trim($_GPC["wechat"]["nickname"]), "avatar" => trim($_GPC["wechat"]["avatar"]), "sex" => trim($_GPC["sex"]), "age" => intval($_GPC["age"]), "is_errander" => intval($_GPC["is_errander"]), "is_takeout" => intval($_GPC["is_takeout"]), "collect_max_takeout" => intval($_GPC["collect_max_takeout"]), "collect_max_errander" => intval($_GPC["collect_max_errander"]), "permit_cancel" => iserializer($_GPC["permit_cancel"]), "permit_transfer" => iserializer($_GPC["permit_transfer"]), "fee_getcash" => iserializer($_GPC["fee_getcash"]));
-        $deliveryer_takeout_fee_type = intval($_GPC["deliveryer_takeout_fee_type"]);
-        $deliveryer_takeout_fee = 0;
-        if ($deliveryer_takeout_fee_type == 1) {
-            $deliveryer_takeout_fee = floatval($_GPC["deliveryer_takeout_fee_1"]);
+
+        $deliveryer_carry_fee_type = intval($_GPC["deliveryer_carry_fee_type"]);
+        $deliveryer_carry_fee = 0;
+        if ($deliveryer_carry_fee_type == 1) {
+            $deliveryer_carry_fee = floatval($_GPC["deliveryer_carry_fee_1"]);
         } else {
-            if ($deliveryer_takeout_fee_type == 2) {
-                $deliveryer_takeout_fee = floatval($_GPC["deliveryer_takeout_fee_2"]);
+            if ($deliveryer_carry_fee_type == 2) {
+                $deliveryer_carry_fee = floatval($_GPC["deliveryer_carry_fee_2"]);
             } else {
-                if ($deliveryer_takeout_fee_type == 3) {
-                    $deliveryer_takeout_fee = array("start_fee" => floatval($_GPC["deliveryer_takeout_fee_3"]["start_fee"]), "start_km" => floatval($_GPC["deliveryer_takeout_fee_3"]["start_km"]), "pre_km" => floatval($_GPC["deliveryer_takeout_fee_3"]["pre_km"]), "max_fee" => floatval($_GPC["deliveryer_takeout_fee_3"]["max_fee"]));
+                if ($deliveryer_carry_fee_type == 3) {
+                    $deliveryer_carry_fee = array("start_fee" => floatval($_GPC["deliveryer_carry_fee_3"]["start_fee"]), "start_km" => floatval($_GPC["deliveryer_carry_fee_3"]["start_km"]), "pre_km" => floatval($_GPC["deliveryer_carry_fee_3"]["pre_km"]), "max_fee" => floatval($_GPC["deliveryer_carry_fee_3"]["max_fee"]));
                 } else {
-                    if ($deliveryer_takeout_fee_type == 4) {
-                        $deliveryer_takeout_fee = floatval($_GPC["deliveryer_takeout_fee_4"]);
+                    if ($deliveryer_carry_fee_type == 4) { //订单提成
+                        $deliveryer_carry_fee = floatval($_GPC["deliveryer_carry_fee_4"]);
                     }
                 }
             }
         }
-        $deliveryer_errander_fee_type = intval($_GPC["deliveryer_errander_fee_type"]);
-        $deliveryer_errander_fee = 0;
-        if ($deliveryer_errander_fee_type == 1) {
-            $deliveryer_errander_fee = floatval($_GPC["deliveryer_errander_fee_1"]);
-        } else {
-            if ($deliveryer_errander_fee_type == 2) {
-                $deliveryer_errander_fee = floatval($_GPC["deliveryer_errander_fee_2"]);
-            } else {
-                if ($deliveryer_errander_fee_type == 3) {
-                    $deliveryer_errander_fee = array("start_fee" => floatval($_GPC["deliveryer_errander_fee_3"]["start_fee"]), "start_km" => floatval($_GPC["deliveryer_errander_fee_3"]["start_km"]), "pre_km" => floatval($_GPC["deliveryer_errander_fee_3"]["pre_km"]), "max_fee" => floatval($_GPC["deliveryer_errander_fee_3"]["max_fee"]));
-                }
-            }
-        }
-        $delivery_fee = array("takeout" => array("deliveryer_fee_type" => $deliveryer_takeout_fee_type, "deliveryer_fee" => $deliveryer_takeout_fee), "errander" => array("deliveryer_fee_type" => $deliveryer_errander_fee_type, "deliveryer_fee" => $deliveryer_errander_fee));
+        $delivery_fee = array("takeout" => array("deliveryer_fee_type" => $deliveryer_takeout_fee_type, "deliveryer_fee" => $deliveryer_takeout_fee), "errander" => array("deliveryer_fee_type" => $deliveryer_carry_fee_type, "deliveryer_fee" => $deliveryer_carry_fee));
         $data["fee_delivery"] = iserializer($delivery_fee);
         if ($_W["is_agent"]) {
             $data["agentid"] = intval($_GPC["agent_id"]);

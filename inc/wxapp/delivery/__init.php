@@ -13,7 +13,7 @@ if ($_W["_ac"] != "auth") { //如果不等
     }
 }
 $config_carry = $_W["we7_hello_banbanjia"]["config"]["carry"];
-$config_delivery = $_W["we7_hello_banbanjia"]["config"]["delivery"];
+$config_delivery = $_W["we7_hello_banbanjia"]["config"]["carry"];
 $_W["role"] = "deliveryer";
 $_W["role_cn"] = "搬运工:" . $_W["deliveryer"]["title"];
 if (!empty($_GPC["filter"])) {
