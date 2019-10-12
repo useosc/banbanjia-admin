@@ -236,6 +236,21 @@
             key `roleid` (`roleid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_category` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `type` varchar(20) NOT NULL DEFAULT 'member',
+            `alias` varchar(20) NOT NULL,
+            `score` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(30) NOT NULL,
+            `color` varchar(15) NOT NULL,
+            `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `is_system` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `type` (`type`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -252,13 +267,29 @@
             `location_y` varchar(15) NOT NULL,
             `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
             `displayorder` int(10) unsigned NOT NULL DEFAULT '0',
+            `sns` varchar(255) NOT NULL,
+            `notice` varchar(100) NOT NULL COMMENT '公告',
+            `tips` varchar(100) NOT NULL,
             `content` varchar(255) NOT NULL,
             `payment` varchar(255) NOT NULL,
+            `sailed` int(10) unsigned NOT NULL DEFAULT '0',
             `score` varchar(10) NOT NULL COMMENT '评分',
+            `comment_status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '评论审核.1:直接通过',
+            `sms_use_times` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '短信使用条数',
+            `wechat_qrcode` varchar(500) NOT NULL,
+            `custom_url` varchar(1000) NOT NULL,
+            `click` int(10) unsigned NOT NULL DEFAULT '0',
             `addtype` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '1:后台添加，2:申请入驻',
             `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `label` int(10) NOT NULL DEFAULT '0',
+            `is_rest` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `position` tinyint(3) NOT NULL DEFAULT '1',
             `data` text NOT NULL,
             `deltime` int(10) unsigned NOT NULL DEFAULT '0',
+            `cate_parentid1` int(10) unsigned NOT NULL,
+            `cate_childid1` int(10) unsigned NOT NULL,
+            `cate_parentid2` int(10) unsigned NOT NULL,
+            `cate_childid2` int(10) unsigned NOT NULL
             PRIMARY KEY (`id`),
             KEY `uniacid` (`uniacid`),
             KEY `title` (`title`)
@@ -277,6 +308,7 @@
             `wechat` varchar(1000) NOT NULL,
             `bank` varchar(1000) NOT NULL,
             `alipay` varchar(1000) NOT NULL,
+            `fee_period` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMETN '提现周期'
             PRIMARY KEY (`id`),
             KEY `uniacid` (`uniacid`),
             KEY `sid` (`sid`)
@@ -316,6 +348,20 @@
             KEY `sid` (`sid`),
             KEY `clerk_id` (`clerk_id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=600 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_category` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(20) NOT NULL,
+            `thumb` varchar(255) NOT NULL,
+            `link` varchar(255) NOT NULL,
+            `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `parentid` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `status` (`status`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=150 DEFAULT CHARSET=utf8;
 
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_system_log` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -884,10 +930,12 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_diypage`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_permit_role`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_permit_user`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_account`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_clerk`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_clerk`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_system_log`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_room_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_goods`;

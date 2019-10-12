@@ -1,4 +1,62 @@
 {itemplate 'public/header'}
+<form action="./index.php" class="form-horizontal form-filter">
+	<input type="hidden" name="c" value="site">
+	<input type="hidden" name="a" value="entry">
+	<input type="hidden" name="m" value="hello_banbanjia">
+	<input type="hidden" name="do" value="web"/>
+	<input type="hidden" name="ctrl" value="merchant"/>
+	<input type="hidden" name="ac" value="store"/>
+    <input type="hidden" name="op" value="list"/>
+    <div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">标签</label>
+		<div class="col-sm-9 col-xs-12">
+			<div class="btn-group">
+				<a href="{php echo ifilter_url('label:0');}" class="btn {if $label == 0}btn-primary{else}btn-default{/if}">不限</a>
+				{loop $store_label $row_label}
+					<a href="{php echo ifilter_url('label:' . $row_label['id']);}" class="btn {if $label == $row_label['id']}btn-primary{else}btn-default{/if}">{$row_label['title']}</a>
+				{/loop}
+			</div>
+		</div>
+    </div>
+    <div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">营业状态</label>
+		<div class="col-sm-9 col-xs-12">
+			<div class="btn-group">
+				<div class="btn-group">
+					<a href="{php echo ifilter_url('is_rest: -1');}" class="btn {if $is_rest == -1}btn-primary{else}btn-default{/if}">不限</a>
+					<a href="{php echo ifilter_url('is_rest: 0');}" class="btn {if $is_rest == '0'}btn-primary{else}btn-default{/if}">营业中</a>
+					<a href="{php echo ifilter_url('is_rest: 1');}" class="btn {if $is_rest == '1'}btn-primary{else}btn-default{/if}">打烊中</a>
+				</div>
+			</div>
+		</div>
+    </div>
+    <div class="form-group form-inline">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">其他</label>
+		<div class="col-sm-9 col-xs-12">
+			{if $_W['is_agent']}
+				<select name="agentid" class="select2 js-select2 form-control width-130">
+					<option value="0">选择代理区域</option>
+					{loop $_W['agents'] $agent}
+						<option value="{$agent['id']}" {if $agentid == $agent['id']}selected{/if}>{$agent['area']}</option>
+					{/loop}
+				</select>
+			{/if}
+			<select class="form-control" id="cid" name="cid">
+				<option value="0">所有分类</option>
+				{loop $categorys $category}
+					<option value="{$category['id']}" {if $cid == $category['id']}selected{/if}>{$category['title']}</option>
+				{/loop}
+			</select>
+			<input type="text" name="keyword" value="{$_GPC['keyword']}" class="form-control" placeholder="企业名称/企业id"/>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+            <div class="col-sm-9 col-xs-12">
+                <button class="btn btn-primary">筛选</button>
+            </div>
+        </div>
+	</div>
+</form>
 <form action="" class="form-table" method="post">
     <div class="panel panel-table">
         <div class="panel-heading clearfix">
@@ -46,6 +104,9 @@
                             <td><img src="{php echo tomedia($item['logo']);}" width="50"></td>
                             <td>{$item['title']}</td>
                             <td>
+                                <span class="label" style="background-color:{$store_label[$item['label']]['color']}">{$store_label[$item['label']]['title']}</span>
+                            </td>
+                            <td>
                                 <input type="checkbox" class="js-checkbox" data-on-text="营业" data-off-text="休息" data-href="{php echo iurl('merchant/store/is_in_business', array('id' => $item['id']));}" data-name="is_in_business" value="1" {if $item['is_in_business'] == 1}checked{/if}>
                                 <div style="margin-top: 10px;">
                                     <input type="checkbox" class="js-checkbox" data-on-text="显示" data-off-text="隐藏" data-href="{php echo iurl('merchant/store/status', array('id' => $item['id']));}" data-name="status" value="1" {if $item['status'] == 1}checked{/if}>
@@ -57,6 +118,11 @@
                                     <input type="checkbox" class="js-checkbox" data-on-text="置顶" data-off-text="不置顶" data-href="{php echo iurl('merchant/store/is_stick', array('id' => $item['id']));}" data-name="is_stick" value="1" {if $item['is_stick'] == 1}checked{/if}>
                                 </div>
                             </td>
+                            <td>
+                                <input type="text" name="sailed[]" value="{$item['sailed']}" class="form-control"/>
+                                <input type="text" name="click[]" value="{$item['click']}" class="form-control" style="margin: 10px 0;"/>
+                                <input type="text" name="displayorder[]" value="{$item['displayorder']}" class="form-control"/>
+                            </td>
                             <td style="text-align: right;overflow: inherit">
                                 <a href="javascript:;" class="btn btn-default btn-sm js-clip hide" data-url="{$item['sys_url']}"><i class="fa fa-link"></i></a>
                                 <div class="btn-group">
@@ -66,12 +132,39 @@
                                         <li><a href="{php echo iurl('merchant/store/storage',array('id'=>$item['id']))}" class="js-remove" data-confirm="企业将放入回收站，确定删除吗？">删除企业</a></li>
                                     </ul>
                                 </div>
+                                <a href="{php echo iurl('store/dashboard/index', array('_sid' => $item['id']))}" target="_blank" class="btn btn-default btn-sm" style="color:#D9534F;"><i class="fa fa-cog fa-spin"> </i> 管理</a>
                             </td>
-
                         </tr>
                     {/loop}
                 </tbody>
             </table>
+            {if !empty($lists)}
+            <div class="btn-region clearfix">
+                    <div class="pull-left">
+                            <input name="token" type="hidden" value="{$_W['token']}" />
+                            <input type="submit" class="btn btn-primary btn-sm pull-left" name="submit" value="提交修改" />
+                            <div class="dropup pull-left">
+                                <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    显示/隐藏/营业/打烊
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="padding: 10px 0;">
+                                    <li><a href="{php echo iurl('merchant/store/batch', array('type' => 'is_in_business', 'value' => 1))}" class="js-post" data-confirm="确定所有企业营业吗?">一键所有企业营业</a></li>
+                                    <li><a href="{php echo iurl('merchant/store/batch', array('type' => 'is_in_business', 'value' => 0))}" class="js-post" data-confirm="确定所有企业休息吗?">一键所有企业休息</a></li>
+                                    <li><a href="{php echo iurl('merchant/store/batch', array('type' => 'status', 'value' => 1))}" class="js-post" data-confirm="确定显示所有企业吗?">一键显示所有企业</a></li>
+                                    <li><a href="{php echo iurl('merchant/store/batch', array('type' => 'status', 'value' => 0))}" class="js-post" data-confirm="确定隐藏所有企业吗?">一键隐藏所有企业</a></li>
+                                </ul>
+                            </div>
+                            <a href="{php echo iurl('merchant/store/lots')}" class="btn btn-default btn-sm js-batch" data-batch="modal">批量操作(评论/自动接单)</a>
+                            <a href="{php echo iurl('merchant/store/sailed')}" class="btn btn-default btn-sm js-post" data-confirm="同步后,企业的销量将更新为企业近30天的订单成交数。注意：此操作针对所有企业">同步企业销量</a>
+                            <a href="{php echo iurl('merchant/store/business')}" class="btn btn-default btn-sm js-post" data-confirm="某些时候,企业已经到了营业时间，但是手机端显示休息中，您可以使用此功能进行修复">营业时间修复</a>
+                            <a href="{php echo iurl('merchant/store/carry_time')}" class="btn btn-default btn-sm js-post" data-confirm="此操作针对企业的预计搬家时间计算方式为'平台根据企业近30天的搬家时间计算得出'的企业<br>同步后,企业的预计搬家时间将更新为企业近30天的平均搬家时间">同步企业预计搬家时间</a>
+                        </div>
+                <div class="pull-right">
+                    {$pager}
+                </div>
+            </div>
+            {/if}
         </div>
     </div>
 </form>

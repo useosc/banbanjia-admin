@@ -1,0 +1,188 @@
+{itemplate 'public/header'}
+{if $op == 'index'}
+<form action="./index.php?" class="form-horizontal form-filter" id="form1">
+	{php echo tpl_form_filter_hidden('merchant/account/index');}
+	<div class="form-group form-inline">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">企业</label>
+		<div class="col-sm-9 col-xs-12">
+			{if $_W['is_agent']}
+				<select name="agentid" class="select2 js-select2 form-control width-130">
+					<option value="0">选择代理区域</option>
+					{loop $_W['agents'] $agent}
+						<option value="{$agent['id']}" {if $agentid == $agent['id']}selected{/if}>{$agent['area']}</option>
+					{/loop}
+				</select>
+			{/if}
+			<select name="sid" class="form-control select2 js-select2">
+				<option value="0" {if !$sid}selected{/if}>全部企业</option>
+				{loop $stores $store}
+					<option value="{$store['id']}" {if $sid == $store['id']}selected{/if}>{$store['title']}</option>
+				{/loop}
+			</select>
+		</div>
+	</div>
+</form>
+<form action="" class="form-table form" method="post" id="form-account">
+	<div class="panel panel-table">
+		<div class="panel-body table-responsive js-table">
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+				<tr>
+					<th width="40">
+						<div class="checkbox checkbox-inline" data-scope="#form-account">
+							<input type="checkbox" name="sids[]" value="{$account['sid']}"/>
+							<label></label>
+						</div>
+					</th>
+					<th>企业</th>
+					{if $_W['is_agent']}
+						<th>所属城市</th>
+					{/if}
+					<th>账户余额<br>保证金</th>
+					<!-- <th>搬运模式</th> -->
+					<th>提现费率</th>
+					<th>提现手续费</th>
+					<th>提现周期<br>最低提现</th>
+					<th style="width:350px; text-align:right;">操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				{loop $accounts $account}
+				<tr>
+					<td>
+						<div class="checkbox checkbox-inline">
+							<input type="checkbox" name="sid[]" value="{$account['sid']}"/>
+							<label></label>
+						</div>
+					</td>
+					<td>
+						{$stores[$account['sid']]['title']}
+					</td>
+					{if $_W['is_agent']}
+						<td>{php echo toagent($account['agentid'])}</td>
+					{/if}
+					<td>
+						<span class="label label-success">{$account['amount']}</span>
+						<br/>
+						<span class="label label-danger label-br">{$account['deposit']}</span>
+					</td>
+					<!-- <td>
+						<span class="{$delivery_modes[$account['delivery_mode']]['css']}">
+							{$delivery_modes[$account['delivery_mode']]['text']}
+						</span>
+						{if $account['delivery_mode'] == 2}
+						<br/>
+							{if $account['delivery_fee_mode'] == 1}
+								<span class="label label-success label-br">固定配送费: {$account['delivery_price']}元</span>
+							{elseif $account['delivery_fee_mode'] == 2}
+								<span class="label label-danger label-br">按距离收取配送费</span>
+								<br/>
+								<span class="label label-info label-br">{$account['delivery_price']['start_fee']}元包含{$account['delivery_price']['start_km']}公里</span>
+								<br/>
+								<span class="label label-info label-br">超过{$account['delivery_price']['start_km']}公里每公里加{$account['delivery_price']['pre_km_fee']}元</span>
+							{else}
+								<span class="label label-primary label-br">按区域收取配送费</span>
+							{/if}
+						{/if}
+					</td> -->
+					<td><span class="label label-primary label-br">{$account['fee_rate']}%</span></td>
+					<td>
+						{if $account['fee_rate'] > 0}
+							{if $account['fee_max'] > 0}
+							<span class="label label-success label-br">{$account['fee_min']}元 ~ {$account['fee_max']}元</span>
+							{else}
+							<span class="label label-success label-br">{$account['fee_min']} ~ 不限制</span>
+							{/if}
+						{else}
+						<span class="label label-success label-br">不限制</span>
+						{/if}
+					</td>
+					<td><span class="label label-warning label-br">{$account['fee_period']}天</span><br><span class="label label-warning label-br">{$account['fee_limit']}元</span></td>
+					<td style="text-align:right;">
+						<a href="javascript:;" class="btn btn-danger btn-sm account-turncate-item" data-type="single" data-sid="{$account['sid']}">账户清零</a>
+						<a href="{php echo iurl('merchant/account/changes', array('id' => $account['sid']))}" class="btn btn-default btn-sm js-modal">账户变动</a>
+						<a href="{php echo iurl('merchant/account/set', array('id' => $account['sid']))}" class="btn btn-default btn-sm" title="账户设置" data-toggle="tooltip" data-placement="top">账户设置</a>
+						<a href="{php echo iurl('merchant/current/list', array('sid' => $account['sid']))}" class="btn btn-default btn-sm" title="账户明细" data-toggle="tooltip" data-placement="top" target="_blank">账户明细</a>
+					</td>
+				</tr>
+				{/loop}
+				</tbody>
+			</table>
+			<div class="btn-region clearfix">
+				<div class="pull-left">
+					<a href="javascript:;" class="btn btn-sm btn-danger account-turncate-item">账户清零</a>
+					<a href="{php echo iurl('merchant/account/deposit')}" class="btn btn-default btn-sm js-batch" data-batch="modal">保证金设置</a>
+				</div>
+				<div class="pull-right">
+					{$pager}
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+
+<div class="modal fade" id="modal-account-turncate">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">账户清零原因</h4>
+			</div>
+			<div class="modal-body">
+				<form action="">
+					<div class="form-group">
+						<textarea class="form-control" name="remark" placeholder="请输入账户清零原因" rows="7"></textarea>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-primary account-turncate-submit">提交</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(function(){
+	$(document).on('click', '.account-turncate-item', function(){
+		var $this = $(this);
+		var type = $this.data('type');
+		var ids = [];
+		if(type == 'single') {
+			var sid = $(this).data('sid');
+			ids.push(sid);
+		} else {
+			$('#form-account :checkbox[name="sid[]"]:checked').each(function(){
+				var id = $(this).val();
+				if(id) {
+					ids.push(id);
+				}
+			});
+		}
+		if(ids.length == 0) {
+			Notify.info('请选择要操作的账户');
+			return false;
+		}
+
+		$('#modal-account-turncate').modal('show');
+		$(document).on('click', '.account-turncate-submit', function(){
+			var remark = $.trim($('#modal-account-turncate textarea[name="remark"]').val());
+			if(!remark) {
+				Notify.info('账户清零原因不能为空');
+				return false;
+			}
+			$.post("{php echo iurl('merchant/account/turncate')}", {ids: ids, remark: remark}, function(data){
+				var result = $.parseJSON(data);
+				if(result.message.errno != 0) {
+					Notify.info(util.message.message, '', 'error');
+				} else {
+					$('#modal-account-turncate').modal('hide');
+					Notify.success('清空账户余额成功', location.href);
+				}
+			});
+		});
+	});
+});
+</script>
+{/if}
+{itemplate 'public/footer'}

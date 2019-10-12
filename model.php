@@ -315,3 +315,10 @@ function sys_notice_settle($sid,$type = "clerk",$note ="")
         
     }
 }
+//企业标签
+function category_store_label()
+{
+    global $_W;
+    $data = pdo_fetchall("select id, title, alias,  color, is_system, displayorder from" . tablename("hello_banbanjia_category") . " where uniacid = :uniacid and type = :type order by is_system desc, displayorder desc", array(":uniacid" => $_W["uniacid"], ":type" => "QY_store_label"), "id");
+    return $data;
+}
