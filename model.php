@@ -300,3 +300,18 @@ function ifile_put_contents($filename,$data)
     @chmod($filename,$_W['config']['setting']['filemode']);
     return is_file($filename);
 }
+
+function sys_notice_settle($sid,$type = "clerk",$note ="")
+{//入驻通知
+    global $_W;
+    $store = store_fetch($sid,array('id','title','addtime','status','address'));
+    if (empty($store)) {
+        return error(-1, "公司不存在");
+    }
+    $store["manager"] = store_manager($sid);
+    $store_status = array(1 => "审核通过", 2 => "审核中", 3 => "审核未通过");
+    $acc = WeAccount::create($_W['acid']);
+    if($type == 'clerk'){
+        
+    }
+}

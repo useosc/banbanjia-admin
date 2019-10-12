@@ -324,6 +324,120 @@ function carry_order_status_update($id, $type, $extra = array())
 
                     return error(0, "抢单成功");
                 }
+                if ($type == 'carry_indoor') { //确认上门
+                    if ($order["status"] == 3) {
+                        return error(-1, "系统已完成， 不能变更状态");
+                    }
+                    if ($order["status"] == 4) {
+                        return error(-1, "系统已取消， 不能变更状态");
+                    }
+                    if (empty($extra["deliveryer_id"])) {
+                        return error(-1, "搬运工不存在");
+                    }
+                    $deliveryer = pdo_get("hello_banbanjia_deliveryer", array("uniacid" => $_W["uniacid"], "id" => $extra["deliveryer_id"]));
+                    if (empty($deliveryer)) {
+                        return error(-1, "搬运工不存在");
+                    }
+                    if ($deliveryer["status"] != 1) {
+                        return error(-1, "搬运工已被删除");
+                    }
+                    if ($order["deliveryer_id"] != $deliveryer["id"]) {
+                        return error(-1, "该订单不是您搬运，不能确认取货");
+                    }
+                    $update = array("status" => 2, "carry_status" => 3, "carry_indoor_time" => TIMESTAMP, "carry_handle_type" => !empty($extra["carry_handle_type"]) ? $extra["carry_handle_type"] : "wxapp");
+                    pdo_update("hello_banbanjia_carry_order", $update, array("uniacid" => $_W["uniacid"], "id" => $id));
+                    $note = "搬运工：" . $deliveryer["title"] . ", 手机号：" . $deliveryer["mobile"] . "已上门";
+                    carry_order_insert_status_log($id, "carry_indoor", $note);
+                    // carry_order_status_notice($id, "carry_indoor");
+                    return error(0, "确认上门成功");
+                }
+                if ($type == "carry_success") {
+                    if ($order["status"] == 3) {
+                        return error(-1, "系统已完成， 不能变更状态");
+                    }
+                    if ($order["status"] == 4) {
+                        return error(-1, "系统已取消， 不能变更状态");
+                    }
+                    if (empty($extra["deliveryer_id"])) {
+                        return error(-1, "搬运工不存在");
+                    }
+                    $deliveryer = pdo_get("hello_banbanjia_deliveryer", array("uniacid" => $_W["uniacid"], "id" => $extra["deliveryer_id"]));
+                    if (empty($deliveryer)) {
+                        return error(-1, "搬运工不存在");
+                    }
+                    if ($deliveryer["status"] != 1) {
+                        return error(-1, "搬运工已被删除");
+                    }
+                    if ($order["deliveryer_id"] != $deliveryer["id"]) {
+                        return error(-1, "该订单不是您搬运，不能确认完成");
+                    }
+                    // if ($config["verification_code"] == 1) {
+                    //     if (empty($extra["code"])) {
+                    //         return error(-1, "收货码不能为空");
+                    //     }
+                    //     if ($extra["code"] != $order["code"]) {
+                    //         return error(-1, "收货码有误");
+                    //     }
+                    // }
+                    $update = array("status" => 3, "carry_status" => 4, "carry_success_time" => TIMESTAMP, "carry_success_location_x" => $deliveryer["location_x"], "carry_success_location_y" => $deliveryer["location_y"]);
+                    pdo_update("hello_banbanjia_carry_order", $update, array("uniacid" => $_W["uniacid"], "id" => $id));
+                    mload()->lmodel("deliveryer");
+                    deliveryer_order_num_update($deliveryer["id"]);
+                    $total_deliveryer_fee = $order["deliveryer_fee"] + $order["delivery_tips"];
+                    // if (0 < $total_deliveryer_fee) { //更新积分
+                    //     mload()->lmodel("deliveryer");
+                    //     deliveryer_update_credit2($order["deliveryer_id"], $total_deliveryer_fee, 1, $id, "", "carry");
+                    // }
+                    // if (0 < $order["agentid"]) { //代理
+                    //     $remark = "搬运订单,id:" . $order["id"];
+                    //     agent_update_account($order["agentid"], $order["agent_final_fee"], 1, $order["id"], $remark, "carry");
+                    // }
+                    carry_order_insert_status_log($id, "end");
+                    // carry_order_status_notice($id, "end");
+                    return error(0, "确认送达成功");
+                }
+                if ($type == 'end') { //已完成
+                    if ($order["status"] == 3) {
+                        return error(-1, "系统已完成， 请勿重复操作");
+                    }
+                    if ($order["status"] == 4) {
+                        return error(-1, "系统已取消， 不能在进行其他操作");
+                    }
+                    $update = array("status" => 3, "carry_status" => 4, "carry_success_time" => TIMESTAMP);
+                    if (0 < $order["deliveryer_id"]) {
+                        $deliveryer = pdo_get("hello_banbanjia_deliveryer", array("uniacid" => $_W["uniacid"], "id" => $order["deliveryer_id"]));
+                        if (!empty($deliveryer)) {
+                            mload()->lmodel("deliveryer");
+                            deliveryer_order_num_update($deliveryer["id"]);
+                            $update["carry_success_location_x"] = $deliveryer["location_x"];
+                            $update["carry_success_location_y"] = $deliveryer["location_y"];
+                        }
+                    }
+                    pdo_update("hello_banbanjia_carry_order", $update, array("uniacid" => $_W['uniacid'], 'id' => $id));
+                    $total_deliveryer_fee = $order["deliveryer_fee"] + $order["carry_tips"];
+                    if (0 < $total_deliveryer_fee) {
+                        mload()->lmodel("deliveryer");
+                        deliveryer_update_credit2($order["deliveryer_id"], $total_deliveryer_fee, 1, $id, "", "carry");
+                    }
+                    $credit1_config = $config["credit"]["credit1"];
+                    if (!empty($credit1_config) && $credit1_config["status"] == 1 && 0 < $credit1_config["grant_num"] && 0 < $order["uid"]) {
+                        $credit1 = $credit1_config["grant_num"];
+                        if ($credit1_config["grant_type"] == 2) {
+                            $credit1 = round($order["final_fee"] * $credit1_config["grant_num"], 2);
+                        }
+                        if (0 < $credit1) {
+                            mload()->lmodel("member");
+                            $result = member_credit_update($order["uid"], "credit1", $credit1, array(0, "搬运订单完成, 赠送:" . $credit1 . "积分"));
+                            if (is_error($result)) {
+                                slog("credit1Update", "搬运下单送积分-order_id:" . $order["id"], array("order_id" => $order["id"], "uid" => $order["uid"], "credit_type" => "credit1"), $result["message"]);
+                            }
+                        }
+                    }
+                    // carry_order_insert_status_log($id, "end", $extra["note"]);
+                    // carry_order_status_notice($id, "end", $extra["note"]);
+                    return error(0,'订单完成成功');
+ 
+                }
             }
         }
     }

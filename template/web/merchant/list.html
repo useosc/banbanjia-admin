@@ -1,3 +1,78 @@
 {itemplate 'public/header'}
-<a href="{php echo iurl('merchant/store/post');}" class="btn btn-primary btn-sm">添加企业</a>
+<form action="" class="form-table" method="post">
+    <div class="panel panel-table">
+        <div class="panel-heading clearfix">
+            <a href="{php echo iurl('merchant/store/post');}" class="btn btn-primary btn-sm">添加企业</a>
+        </div>
+        <div class="panel-body table-responsive js-table">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="checkbox checkbox-inline">
+                                <input type="checkbox" name="id[]">
+                                <label></label>
+                            </div>
+                        </th>
+                        <th>企业logo</th>
+                        <th>企业名称</th>
+                        <th>标签</th>
+                        <th>
+                            营业状态<br>
+                            是否显示
+                        </th>
+                        <th>
+                            是否推荐
+                            是否置顶
+                        </th>
+                        <th width="80">
+                            销量<br>
+                            热度<br>
+                            排序
+                        </th>
+                        <th style="widows: 480px; text-align:right;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {loop $lists $item}
+                        <input type="hidden" name="ids[]" value="{$item['id']}">
+                        <tr>
+                            <td>
+                                <div class="checkbox checkbox-inline">
+                                    <input type="checkbox" name="id[]" value="{$item['id']}"/>
+                                    <label></label>
+                                </div>
+                            </td>
+                            <td><img src="{php echo tomedia($item['logo']);}" width="50"></td>
+                            <td>{$item['title']}</td>
+                            <td>
+                                <input type="checkbox" class="js-checkbox" data-on-text="营业" data-off-text="休息" data-href="{php echo iurl('merchant/store/is_in_business', array('id' => $item['id']));}" data-name="is_in_business" value="1" {if $item['is_in_business'] == 1}checked{/if}>
+                                <div style="margin-top: 10px;">
+                                    <input type="checkbox" class="js-checkbox" data-on-text="显示" data-off-text="隐藏" data-href="{php echo iurl('merchant/store/status', array('id' => $item['id']));}" data-name="status" value="1" {if $item['status'] == 1}checked{/if}>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="checkbox" class="js-checkbox" data-on-text="推荐" data-off-text="不推荐" data-href="{php echo iurl('merchant/store/is_recommend', array('id' => $item['id']));}" data-name="is_recommend" value="1" {if $item['is_recommend'] == 1}checked{/if}>
+                                <div style="margin-top: 10px;">
+                                    <input type="checkbox" class="js-checkbox" data-on-text="置顶" data-off-text="不置顶" data-href="{php echo iurl('merchant/store/is_stick', array('id' => $item['id']));}" data-name="is_stick" value="1" {if $item['is_stick'] == 1}checked{/if}>
+                                </div>
+                            </td>
+                            <td style="text-align: right;overflow: inherit">
+                                <a href="javascript:;" class="btn btn-default btn-sm js-clip hide" data-url="{$item['sys_url']}"><i class="fa fa-link"></i></a>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">标签 <span class="caret"></span></button>
+                                    <ul class="dropdown-menu" style="z-index: 10000">
+                                        <li role="presentation" class="divider"></li>
+                                        <li><a href="{php echo iurl('merchant/store/storage',array('id'=>$item['id']))}" class="js-remove" data-confirm="企业将放入回收站，确定删除吗？">删除企业</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+
+                        </tr>
+                    {/loop}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
 {itemplate 'public/footer'}

@@ -67,3 +67,31 @@ if ($ta == 'list') {
     imessage(error(0,$result),"","ajax");
     return 1;
 }
+if($ta == 'detail'){
+    $_W["page"]["title"] = "订单详情";
+    $id = intval($_GPC["id"]);
+    $order = carry_order_fetch($id);
+    if (empty($order)) {
+        imessage(error(-1, "订单不存在或已删除"), "", "ajax");
+    }
+    $log = pdo_fetch("select * from " . tablename("hello_banbanjia_carry_order_status_log") . " where uniacid = :uniacid and oid = :oid order by id desc", array(":uniacid" => $_W["uniacid"], ":oid" => $id));
+    $logs = carry_order_fetch_status_log($id);
+    if (!empty($logs)) {
+        $maxid = max(array_keys($logs));
+        $minid = min(array_keys($logs));
+        foreach ($logs as &$log) {
+            $log["addtime"] = date("H:i", $log["addtime"]);
+        }
+    }
+    $deliveryer = pdo_get("hello_banbanjia_deliveryer", array("uniacid" => $_W["uniacid"], "id" => $order["deliveryer_id"]));
+    $order_types = carry_order_types();
+    $pay_types = order_pay_types();
+    $order_status = carry_order_status();
+
+    $show_location = 0;
+    if ($order["status"] == 2 && in_array($order["carry_handle_type"], array("app", "wxapp"))) {
+        $show_location = 1;
+    }
+    $result = array("order" => $order, "deliveryer" => $deliveryer, "log" => $log, "logs" => $logs, "maxid" => $maxid, "minid" => $minid, "show_location" => $show_location, "config_mall" => array("mobile" => $_config_mall["mobile"]));
+    imessage(error(0,$result),'','ajax');
+}

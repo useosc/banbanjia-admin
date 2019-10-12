@@ -264,6 +264,24 @@
             KEY `title` (`title`)
         ) ENGINE=MyISAM AUTO_INCREMENT=1500 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_account` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+            `deposit` int(10) unsigned NOT NULL DEFAULT '0',
+            `fee_limit` int(10) unsigned NOT NULL DEFAULT '0',
+            `fee_rate` varchar(10) NOT NULL DEFAULT '0',
+            `fee_min` int(10) unsigned NOT NULL DEFAULT '0',
+            `fee_max` int(10) unsigned NOT NULL DEFAULT '0',
+            `wechat` varchar(1000) NOT NULL,
+            `bank` varchar(1000) NOT NULL,
+            `alipay` varchar(1000) NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `sid` (`sid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=1500 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_clerk` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -867,6 +885,7 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_permit_role`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_permit_user`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_account`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_clerk`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_clerk`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_system_log`;
