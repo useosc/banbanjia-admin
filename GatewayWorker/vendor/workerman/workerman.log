@@ -54,3 +54,6 @@ Stack trace:
 #4 /www/w in /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php on line 1772"
 2019-10-11 11:52:13 pid:17315 Worker process terminated
 2019-10-12 08:00:37 pid:9282 Worker process terminated
+2019-10-13 08:00:52 pid:14314 Worker process terminated
+2019-10-14 08:00:07 pid:22859 Worker process terminated
+2019-10-14 09:57:09 pid:27717 Worker process terminated

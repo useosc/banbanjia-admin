@@ -1,0 +1,239 @@
+{itemplate 'public/header'}
+{if $ta == 'list'}
+<form action="./business.php" class="form-horizontal form-filter">
+	{php echo tpl_form_filter_hidden('store/shop/clerk/list');}
+	<input name="status" type="hidden" value="{$status}">
+	<div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">状态</label>
+		<div class="col-sm-4 col-xs-4">
+			<div class="btn-group">
+				<a href="{php echo iurl('store/shop/clerk/list', array('status' => -1))}" class="btn {if $status == -1}btn-primary{else}btn-default{/if}">不限</a>
+				<a href="{php echo iurl('store/shop/clerk/list', array('status' => 1))}" class="btn {if $status == 1}btn-primary{else}btn-default{/if}">启用</a>
+				<a href="{php echo iurl('store/shop/clerk/list', array('status' => 0))}" class="btn {if $status == 0}btn-primary{else}btn-default{/if}">禁用</a>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">搜索</label>
+		<div class="col-sm-4 col-xs-4">
+			<input type="text" name="keyword" value="{$keyword}" class="form-control" placeholder="请输入员工名称">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+		<div class="col-sm-4 col-xs-4">
+			<input type="submit" value="筛选" class="btn btn-primary">
+		</div>
+	</div>
+</form>
+<form action="" class="form-table form" id="form-deliveryer" method="post">
+    <div class="panel panel-table">
+        <div class="panel-heading">
+			<a href="{php echo iurl('store/shop/clerk/post');}" class="btn btn-primary btn-sm btn-add">添加员工</a>
+        </div>
+        <div class="alert alert-warning">每个企业可设置一个管理员, 管理员可在电脑端登录商户后台。电脑端登录地址:<a href="{php echo iurl('store/oauth/login', array(), true);}" target="_blank">{php echo iurl('store/oauth/login', array(), true);}</a></div>
+        <div class="panel-body table-responsive js-table">
+			{if empty($data)}
+				<div class="no-result">
+					<p>还没有相关数据</p>
+				</div>
+			{else}
+				<table class="table table-hover">
+					<thead class="navbar-inner">
+					<tr>
+						<th width="40">
+							<div class="checkbox checkbox-inline">
+								<input type="checkbox">
+								<label></label>
+							</div>
+						</th>
+						<th width="85">头像</th>
+						<th>微信昵称</th>
+						<th>员工名称</th>
+						<th>手机号</th>
+						<th>
+							微信模板消息提醒 <br>
+							语音电话提醒
+						</th>
+						<th>身份</th>
+						<th>添加时间</th>
+						<th style="width:350px; text-align:right;">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					{loop $data $item}
+					<tr>
+						<td>
+							<div class="checkbox checkbox-inline">
+								<input type="checkbox" name="ids[]" value="{$item['aid']}">
+								<label></label>
+							</div>
+						</td>
+						<td>
+							<img src="{php echo tomedia($item['avatar']);}" width="48">
+						</td>
+						<td>{$item['nickname']}</td>
+						<td>{$item['title']}</td>
+						<td>{$item['mobile']}</td>
+						<td>
+							<div style="margin-bottom: 10px;">
+								<input type="checkbox" data-on-text="模板" data-off-text="关闭" class="js-checkbox" data-href="{php echo iurl('store/shop/clerk/extra', array('id' => $item['id'], 'type' => 'accept_wechat_notice', 'value' => $item['extra']['accept_wechat_notice']));}" value="1" {if $item['extra']['accept_wechat_notice'] == 1}checked{/if}>
+							</div>
+							<input type="checkbox" data-on-text="语音" data-off-text="关闭" class="js-checkbox" data-href="{php echo iurl('store/shop/clerk/extra', array('id' => $item['id'], 'type' => 'accept_voice_notice', 'value' => $item['extra']['accept_voice_notice']));}" value="1" {if $item['extra']['accept_voice_notice'] == 1}checked{/if}>
+						</td>
+						<td>
+							{if $item['role'] == 'manager'}
+							<span class="label label-danger">管理员</span>
+							{else}
+							<span class="label label-success">员工</span>
+							{/if}
+						</td>
+						<td>{php echo date('Y-m-d H:i', $item['addtime']);}</td>
+						<td style="text-align:right;">
+							{if $item['role'] != 'manager'}
+								<a href="{php echo iurl('store/shop/clerk/manager', array('id' => $item['aid']))}" class="btn btn-default btn-sm js-post" data-confirm="确定设置该员工为公司管理员吗?">设为管理员</a>
+							{/if}
+							<a href="{php echo iurl('store/shop/clerk/del', array('id' => $item['aid']))}" class="btn btn-default btn-sm js-remove" data-confirm="确定取消员工权限吗?">删除</a>
+						</td>
+					</tr>
+					{/loop}
+					</tbody>
+				</table>
+				<div class="btn-region clearfix">
+					<div class="pull-left">
+						<a href="{php echo iurl('store/shop/clerk/del')}" class="btn btn-primary btn-danger js-batch" data-batch="remove" data-confirm="确定取消员工权限吗?">删除</a>
+					</div>
+					<div class="pull-right">
+						{$pager}
+					</div>
+				</div>
+			{/if}
+		</div>
+    </div>
+</form>
+{/if}
+
+{if $op == 'post'}
+<div class="page clearfix system-perm">
+    <form class="form-horizontal form form-validate" id="form1" action="" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">员工用户名</label>
+			<div class="col-sm-9 col-xs-12">
+				<input type="text" name="username" value="{$user['username']}" {if $id > 0}readonly{/if} class="form-control" required="true"/>
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">员工密码</label>
+			<div class="col-sm-9 col-xs-12">
+				<input type="password" name="password" value="" class="form-control" {if empty($_GPC['id'])}required="true"{/if}/>
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">所属角色</label>
+			<div class="col-sm-9 col-xs-12">
+				<select name="roleid" id="roleid" class="form-control">
+					<option value="0">选择角色</option>
+					{loop $roles $role}
+						<option value="{$role['id']}" {if $role['id'] == $user['roleid']}selected{/if}>{$role['rolename']}</option>
+					{/loop}
+				</select>
+				<div class="help-block">如果您选择了角色，则此用户本身就继承了此角色的所有权限</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">姓名</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" class="form-control" name="realname" value="{$user['realname']}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">电话</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" class="form-control" name="mobile" value="{$user['mobile']}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">状态</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="radio radio-inline">
+							<input type="radio" value="1" name="status" id="status-1" {if $user['status'] == 1}checked{/if}>
+							<label for="status-1">启用</label>
+						</div>
+						<div class="radio radio-inline">
+							<input type="radio" value="0" name="status" id="status-0" {if $user['status'] == 0}checked{/if}>
+							<label for="status-0">禁用</label>
+						</div>
+						<div class="help-block">用户可以在此角色权限的基础上附加其他权限</div>
+					</div>
+                </div>
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">权限</label>
+			<div class="col-sm-9 col-xs-12 perm-container">
+				{loop $all_perms $group $all}
+					<div class="category-perm">
+						<div class="heading">
+							<div class="checkbox checkbox-inline">
+								<input type="checkbox" name="perms[]" value="{$group}" id="{$group}" class="perm-all-item" data-group="{$group}" {if in_array($group, $roles[$user['roleid']]['perms']) || in_array($group, $user['perms'])}checked{/if} {if in_array($group, $roles[$user['roleid']]['perms'])}disabled{/if}>
+								<label for="{$group}">{$all['title']}</label>
+							</div>
+						</div>
+						<div class="perm-list">
+							{loop $all['perms'] $key $perm}
+								<div class="checkbox checkbox-inline">
+									<input type="checkbox" name="perms[]" value="{$key}" id="{$key}" class="perm-item" data-group="{$group}" {if in_array($key, $roles[$user['roleid']]['perms']) || in_array($key, $user['perms'])}checked{/if} {if in_array($key, $roles[$user['roleid']]['perms'])}disabled{/if}>
+									<label for="{$key}">{$perm}</label>
+								</div>
+							{/loop}
+						</div>
+					</div>
+				{/loop}
+			</div>
+        </div>
+        <div class="form-group">
+			<div class="col-sm-9 col-xs-12">
+				<input type="hidden" name="token" value="{$_W['token']}">
+				<input type="submit" value="提交" class="btn btn-primary">
+			</div>
+		</div>
+    </form>
+</div>
+{/if}
+<script>
+	$(function() {
+		var roles = {php echo json_encode($roles)};
+		$('#roleid').change(function() {
+			var id = $(this).val();
+			var perm = '';
+			if(id > 0) {
+				perm = roles[id]['perms'];
+			}
+			$(':checkbox').removeAttr('disabled').removeAttr('checked').each(function() {
+				var key = $(this).val();
+				if(perm != '' && perm.indexOf(key) != -1) {
+					$(this).attr('disabled',true);
+					$(this).prop('checked', 'checked');
+				}
+			});
+		});
+
+		$(document).on('click', '.perm-all-item', function() {
+			var group = $(this).data('group');
+			if($(this).prop('checked')) {
+				$(".perm-item[data-group='" + group + "'],.perm-all-item[data-group='" + group + "']").prop('checked', 'checked');
+			} else {
+				$(".perm-item[data-group='" + group + "'],.perm-all-item[data-group='" + group + "']").removeProp('checked');
+			}
+		});
+
+		$(document).on('click', '.perm-item', function() {
+			var group = $(this).data('group');
+			var length = $(".perm-item[data-group='" + group + "']:checked").size();
+			if(length > 0) {
+				$(".perm-all-item[data-group='" + group + "']").prop('checked', 'checked');
+			} else {
+				$(".perm-all-item[data-group='" + group + "']").removeProp('checked');
+			}
+		});
+	})
+</script>
+{itemplate 'public/footer'}

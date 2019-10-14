@@ -1,0 +1,120 @@
+{itemplate 'public/header'}
+{if $op == 'list'}
+<form action="./index.php" class="form-horizontal form-filter">
+	{php echo tpl_form_filter_hidden('clerk/account/list');}
+	{if $_W['is_agent']}
+	<div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">选择代理区域</label>
+		<div class="col-sm-9 col-xs-12">
+			<select name="agentid" class="select2 js-select2 form-control width-130">
+				<option value="0">选择代理区域</option>
+				{loop $_W['agents'] $agent}
+					<option value="{$agent['id']}" {if $agentid == $agent['id']}selected{/if}>{$agent['area']}</option>
+				{/loop}
+			</select>
+		</div>
+	</div>
+	{/if}
+	<div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">搜索</label>
+		<div class="col-sm-4 col-xs-4">
+			<input type="text" name="keyword" value="{$keyword}" class="form-control" placeholder="搜索的姓名、昵称、手机号">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+		<div class="col-sm-4 col-xs-4">
+			<input type="submit" value="筛选" class="btn btn-primary">
+		</div>
+	</div>
+</form>
+
+<form action="" class="form-table form" method="post">
+	<div class="panel panel-table">
+		<div class="panel-heading">
+			<a href="{php echo iurl('clerk/account/post');}" class="btn btn-primary btn-sm">添加员工</a>
+		</div>
+		<div class="alert alert-warning">给某个企业新增员工时,请先添加一个员工账户,然后通过手机号把他添加进来。后台登录地址:<a href="{php echo iurl('store/oauth/login', array(), true);}" target="_blank">{php echo iurl('store/oauth/login', array(), true);}</a></div>
+		<div class="panel-body table-responsive js-table">
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+					<tr>
+						<th width="40">
+							<div class="checkbox checkbox-inline">
+								<input type="checkbox" name="ids[]" value="{$item['id']}"/>
+								<label></label>
+							</div>
+						</th>
+						<th width="65"></th>
+						<th>微信昵称</th>
+						{if $_W['is_agent']}
+							<th>所属城市</th>
+						{/if}
+						<th>姓名/手机号</th>
+						<th>所属企业</th>
+						<th>绑定	</th>
+						<th>添加时间</th>
+						<th style="width:150px; text-align:right;">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				{loop $data $item}
+					<tr>
+						<td>
+							<div class="checkbox checkbox-inline">
+								<input type="checkbox" name="ids[]" value="{$item['id']}"/>
+								<label></label>
+							</div>
+						</td>
+						<td><img src="{php echo tomedia($item['avatar']);}" width="48"></td>
+						<td>{$item['nickname']}</td>
+						{if $_W['is_agent']}
+						<td>{php echo toagent($item['agentid'])}</td>
+						{/if}
+						<td>{$item['title']}
+							</br>
+							{$item['mobile']}
+						</td>
+						<td>{$item['stores_title']}</td>
+						<td>
+							{if !empty($item['openid'])}
+								<span class="label label-success">
+									已绑定公众号
+								</span>
+								<br>
+							{/if}
+							{if !empty($item['openid_wxapp_manager'])}
+								<span class="label label-primary {if !empty($item['openid'])}label-br{/if}">
+									已绑定商户小程序
+								</span>
+								<br>
+							{/if}
+							{if !empty($item['openid_wxapp'])}
+								<span class="label label-primary {if !empty($item['openid_wxapp_manager'])}label-br{/if}">
+									已绑定顾客小程序
+								</span>
+							{/if}
+						</td>
+						<td>{php echo date('Y-m-d H:i', $item['addtime']);}</td>
+						<td style="text-align:right;">
+							<a href="{php echo iurl('clerk/account/post', array('id' => $item['id']))}" class="btn btn-default btn-sm">编辑</a>
+							<a href="{php echo iurl('clerk/account/del', array('id' => $item['id']))}" class="btn btn-default btn-sm js-remove" data-confirm="删除后将不可恢复，确定删除吗">删除</a>
+						</td>
+					</tr>
+				{/loop}
+				</tbody>
+			</table>
+			<div class="btn-region clearfix">
+				<div class="pull-left">
+					<a href="{php echo iurl('clerk/account/del')}" class="btn btn-primary btn-danger js-batch" data-batch="remove" data-confirm="删除后将不可恢复，确定删除吗">删除</a>
+				</div>
+				<div class="pull-right">
+					{$pager}
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+{/if}
+
+{itemplate 'public/footer'}

@@ -110,6 +110,14 @@
 						</a>
 					</li>
 					{/if}
+					{ifp 'clerk'}
+					<li class="{if $_W['_ctrl'] == 'clerk'}active{/if}">
+						<a href="{php echo iurl('clerk/account/list');}">
+							<i class="icon icon-person2"></i>
+							企业员工
+						</a>
+					</li>
+					{/if}
 					{ifp 'deliveryer'}
 					<li class="{if $_W['_ctrl'] == 'deliveryer'}active{/if}">
 						<a href="{php echo iurl('deliveryer/plateform/list');}">
@@ -126,14 +134,6 @@
 						</a>
 					</li>
 					{/if}
-					<!-- {ifp 'clerk'}
-					<li class="{if $_W['_ctrl'] == 'clerk'}active{/if}">
-						<a href="{php echo iurl('clerk/account/list');}">
-							<i class="icon icon-person2"></i>
-							店员
-						</a>
-					</li>
-					{/if} -->
 					{ifp 'notice'}
 					<li class="{if $_W['_ctrl'] == 'notice'}active{/if}">
 						<a href="{php echo iurl('notice/index');}">
@@ -249,42 +249,48 @@
 					</li>
 					<li class="{if $_W['_ac'] == 'order'}active{/if}">
 						<a href="{php echo iurl('store/order/takeout');}">
-							<i class="icon icon-waimai"></i>
-							外卖
-						</a>
-					</li>
-					<li class="{if $_W['_ac'] == 'tangshi'}active{/if}">
-						<a href="{php echo iurl('store/tangshi/order');}">
-							<i class="icon icon-store"></i>
-							店内
-						</a>
-					</li>
-					<li class="{if $_W['_ac'] == 'paycenter'}active{/if}">
-						<a href="{php echo iurl('store/paycenter/paybill');}">
 							<i class="icon icon-order"></i>
-							当面付
+							订单
 						</a>
 					</li>
-					<li class="{if $_W['_ac'] == 'goods'}active{/if}">
-						<a href="{php echo iurl('store/goods/index');}">
-							<i class="icon icon-goods"></i>
-							商品
+					<li class="{if $_W['_ac'] == 'member'}active{/if}">
+						<a href="{php echo iurl('store/member/index');}">
+							<i class="icon icon-peoplelist"></i>
+							客户
 						</a>
 					</li>
-					<li class="{if $_W['_ac'] == 'service'}active{/if}">
-						<a href="{php echo iurl('store/service/comment');}">
-							<i class="icon icon-refund"></i>
-							售后
+					<li class="{if $_W['_ac'] == 'contract'}active{/if}">
+						<a href="{php echo iurl('store/contract/list');}">
+							<i class="icon icon-edit"></i>
+							合同
+						</a>
+					</li>
+					<li class="{if $_W['_ac'] == 'stock'}active{/if}">
+						<a href="{php echo iurl('store/stock/index');}">
+							<i class="icon icon-box"></i>
+							仓库
 						</a>
 					</li>
 					<li class="{if $_W['_ac'] == 'finance'}active{/if}">
-						<a href="{php echo iurl('store/finance/order');}">
+						<a href="{php echo iurl('store/finance/index');}">
 							<i class="icon icon-recharge"></i>
 							财务
 						</a>
 					</li>
+					<li class="{if $_W['_ac'] == 'service'}active{/if}">
+						<a href="{php echo iurl('store/service/comment');}">
+							<i class="icon icon-wang light"></i>
+							售后
+						</a>
+					</li>
+					<li class="{if $_W['_ac'] == 'price'}active{/if}">
+						<a href="{php echo iurl('store/price/index');}">
+							<i class="icon icon-brand"></i>
+							价格
+						</a>
+					</li>
 					<li class="{if $_W['_ac'] == 'statistic'}active{/if}">
-						<a href="{php echo iurl('store/statistic/order');}">
+						<a href="{php echo iurl('store/statistic/index');}">
 							<i class="icon icon-data"></i>
 							分析
 						</a>
@@ -295,21 +301,15 @@
 							营销
 						</a>
 					</li>
-					<li class="hide {if $_W['_ac'] == 'member'}active{/if}">
-						<a href="{php echo iurl('store/member/index');}">
-							<i class="icon icon-peoplelist"></i>
-							顾客
-						</a>
-					</li>
 					<li class="{if $_W['_ac'] == 'shop'}active{/if}">
 						<a href="{php echo iurl('store/shop/setting');}">
-							<i class="icon icon-settings"></i>
-							门店
+							<i class="icon icon-shop"></i>
+							公司
 						</a>
 					</li>
 					<li class="{if $_W['_ac'] == 'wxapp'}active{/if}">
-						<a href="{php echo iurl('store/wxapp/index/index');}">
-							<i class="icon icon-settings"></i>
+						<a href="{php echo iurl('store/wxapp/index');}">
+							<i class="icon icon-weixin"></i>
 							小程序
 						</a>
 					</li>
@@ -322,6 +322,7 @@
 				</ul>
 			</div>
 		</div>
+		<div id="resize"></div>
 		<div id="app-second-sidebar">
 			{php build_menu();}
 		</div>

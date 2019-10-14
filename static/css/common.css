@@ -717,7 +717,7 @@ a:hover, a:focus {
 }
 
 #app-second-sidebar .nav {
-    width: 120px;
+    width: 125px;
     padding: 13px 10px;
     height: auto;
 }
@@ -768,7 +768,18 @@ a:hover, a:focus {
     margin-left: 240px;
     background: #f2f2f2;
 }
-
+#app-third-sidebar .user-section .wm-user-name{position: relative; height: 50px; margin-left: 1px; background: #fff; min-width: 80px; text-align: center;}
+#app-third-sidebar .user-section .drop-menu{display: none; padding: 0; text-align: center; width: 100%; position: absolute; top: 50px; left: 0; background: #fff; -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175); z-index: 1000;}
+#app-container .text{display: block; width: 100%; height: 100%; padding: 0 10px; line-height: 50px; color: #2289f0; text-decoration: none;}
+#app-third-sidebar .user-section .wm-user-name:hover .drop-menu{display: block}
+#app-third-sidebar .user-section .drop-menu li{padding: 5px;}
+#app-third-sidebar .user-section .drop-menu li:hover{background: #2289f0; color: #fff}
+#app-third-sidebar .user-section .drop-menu li:hover a{color: #fff;}
+#app-third-sidebar .user-section .drop-menu .page-jump a{color: #333}
+#app-third-sidebar .wm-notice{width: 50px;}
+#app-third-sidebar .wm-notice .notice-jump{position: relative; display: block; line-height: 50px; text-align: center; font-size: 18px;  color: #2289f0;}
+#app-third-sidebar .wm-notice .notice-jump #notice-total{position: absolute; left: 26px; top: 2px; background: #2289f0}
+#app-container .sys-message{height: 80px; line-height: 80px;background: #fcf8e3;}
 #app-third-sidebar {
     background: #fff;
     padding: 0 5px;

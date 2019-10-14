@@ -335,12 +335,37 @@
             KEY `status` (`status`)
         ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_clerk_role`(
+            `id` int(10) NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) NOT NULL DEFAULT '0',
+            `rolename` varchar(255) NOT NULL DEFAULT '',
+            `status` tinyint(3) NOT NULL DEFAULT '0',
+            `permits` text NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_clerk_permit` (
+            `id` int(10) NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) NOT NULL DEFAULT '0',
+            `cid` int(10) NOT NULL DEFAULT '0',
+            `roleid` int(10) NOT NULL DEFAULT '0',
+            `status` tinyint(3) NOT NULL DEFAULT '0',
+            `permits` text NOT NULL,
+            `realname` varchar(255) NOT NULL DEFAULT '',
+            `mobile` varchar(255) NOT NULL DEFAULT '',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `cid` (`cid`),
+            key `roleid` (`roleid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_clerk` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
             `sid` int(10) unsigned NOT NULL DEFAULT '0',
             `clerk_id` int(10) unsigned NOT NULL DEFAULT '0',
-            `role` varchar(20) NOT NULL,
+            `roleid` int(10),
             `extra` varchar(500) NOT NULL,
             `addtime` int(10) unsigned NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
@@ -362,6 +387,28 @@
             KEY `uniacid` (`uniacid`),
             KEY `status` (`status`)
         ) ENGINE=MyISAM AUTO_INCREMENT=150 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_members` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `openid` varchar(50) NOT NULL,
+            `success_num` int(10) unsigned DEFAULT '0',
+            `success_price` decimal(10,2) NOT NULL DEFAULT '0.00',
+            `cancel_num` int(10) unsigned NOT NULL DEFAULT '0',
+            `cancel_price` decimal(10,2) NOT NULL DEFAULT '0.00',
+            `is_sys` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `success_first_time` int(10) unsigned NOT NULL DEFAULT '0',
+            `success_last_time` int(10) unsigned NOT NULL DEFAULT '0',
+            `cancel_first_time` int(10) unsigned NOT NULL DEFAULT '0',
+            `cancel_last_time` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `sid` (`sid`),
+            KEY `first_order_time` (`success_first_time`),
+            KEY `last_order_time` (`success_last_time`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=3000 DEFAULT CHARSET=utf8;
 
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_system_log` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -934,8 +981,11 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_account`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_clerk`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_clerk_role`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_clerk_permit`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_clerk`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_category`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_members`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_system_log`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_room_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_goods`;

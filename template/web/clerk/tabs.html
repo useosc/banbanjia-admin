@@ -1,0 +1,20 @@
+<div class="second-sidebar-title">
+    员工
+</div>
+<div class="nav">
+    {ifp 'clerk.account'}
+    <div class="menu-header">账户</div>
+    <ul class="menu-item">
+        <li {if $_W['_ac']=='account' }class="active" {/if}> <a href="{php echo iurl('clerk/account/list');}">
+            员工列表</a>
+        </li>
+    </ul>
+    {/if}
+    {ifp 'clerk.cover'}
+    <div class="menu-header">入口</div>
+    <ul class="menu-item">
+        <li {if $_W['_ac']=='cover' }class="active" {/if}> <a href="{php echo iurl('clerk/cover');}">登录&注册</a>
+        </li>
+    </ul>
+    {/if}
+</div>

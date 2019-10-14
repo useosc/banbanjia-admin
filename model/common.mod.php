@@ -104,7 +104,7 @@ function get_config_text($name)
     }
     return $config["value"];
 }
-
+//检查权限
 function check_permit($permit, $redirct = false)
 {
     global $_W;
@@ -327,8 +327,8 @@ function get_available_payment($order_type = "", $sid = 0, $all = false, $orderT
     $payment = $_W["we7_hello_banbanjia"]["config"]["payment"];
     if (empty($order_type)) {
         $payment = $payment["weixin"];
-    }else{
-        if(is_wxapp()){
+    } else {
+        if (is_wxapp()) {
             $payment = $payment['wxapp'];
         }
     }
@@ -401,7 +401,42 @@ function check_cache_status($key, $timelimit = 300)
     return true;
 }
 
-//获取所有权限列表
+// 获取所有权限列表（商户）
+function get_all_store_permits($justkey = false)
+{
+    $all_permits = array(
+        'dashboard' => array(
+            'title' => '概况',
+            'permits' => array(
+                'dashboard.index' => '运营概况'
+            )
+        ),
+        'member' => array(
+            'title' => '客户',
+            'permits' => array(
+                'member.index' => '概况',
+                'member.list' => '列表',
+                'member.consult' => '咨询'
+            )
+        ),
+    );
+    if ($justkey) {
+        $permits = array();
+        foreach ($all_permits as $key => $item) {
+            $permits[] = $key;
+            if (!empty($item['permits'])) {
+                foreach ($item['permits'] as $key1 => $item1) {
+                    $permits[] = $key1;
+                }
+            }
+        }
+        return $permits;
+    } else {
+        return $all_permits;
+    }
+}
+
+//获取所有权限列表（平台）
 function get_all_permits($justkey = false)
 {
     $all_permits = array(

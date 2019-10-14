@@ -19,7 +19,10 @@ if (empty($_W["page"]["copyright"]["sitename"])) { //设置sitename
 }
 
 //判断权限
-$permissions = array("manager" => array("controller" => array("system")), "operator" => array("controller" => array("system", "permit")), "merchanter" => array("controller" => array("common", "store", "oauth")), "agenter" => array("controller" => array("common", "order", "paycenter", "merchant", "store", "dashboard", "deliveryer", "clerk", "member", "finance", "config", "service", "plugin", "statcenter", "oauth", "plugin", "errander", "bargain", "agent", "diypage", "zhunshibao", "permit")), "agent_operator" => array("controller" => array("common", "order", "paycenter", "merchant", "store", "dashboard", "deliveryer", "clerk", "member", "finance", "config", "service", "plugin", "statcenter", "oauth", "plugin", "errander", "bargain", "agent", "diypage", "zhunshibao", "permit")));
+$permissions = array("manager" => array("controller" => array("system")), 
+"operator" => array("controller" => array("system", "permit")), 
+"merchanter" => array("controller" => array("common", "store", "oauth")), 
+"agenter" => array("controller" => array("common", "order", "paycenter", "merchant", "store", "dashboard", "deliveryer", "clerk", "member", "finance", "config", "service", "plugin", "statcenter", "oauth", "plugin", "errander", "bargain", "agent", "diypage", "zhunshibao", "permit")), "agent_operator" => array("controller" => array("common", "order", "paycenter", "merchant", "store", "dashboard", "deliveryer", "clerk", "member", "finance", "config", "service", "plugin", "statcenter", "oauth", "plugin", "errander", "bargain", "agent", "diypage", "zhunshibao", "permit")));
 if (!empty($_W["isfounder"])) { //创始人
     $_W["role"] = "founder";
 }
@@ -78,7 +81,7 @@ if ($_W["role"] == "manager") {
         $_W["role_cn"] = "公众号操作员:" . $_W["user"]["username"];
     } else {
         if ($_W["role"] == "merchanter") {
-            $_W["role_cn"] = "店铺管理员:" . $_W["user"]["username"];
+            $_W["role_cn"] = "公司管理员:" . $_W["user"]["username"];
         } else {
             if ($_W["role"] == "agenter") {
                 $_W["role_cn"] = "代理商:" . $_W["agent"]["realname"];
