@@ -108,8 +108,12 @@ function get_config_text($name)
 function check_permit($permit, $redirct = false)
 {
     global $_W;
-    $redircts = array("common", "store");
-    if (in_array($_W["_ctrl"], $redircts)) {
+    // $redircts = array("common", "store");
+    // if (in_array($_W["_ctrl"], $redircts)) {
+    //     return true;
+    // }
+    $redircts_ac = array('oauth');
+    if(in_array($_W['_ac'],$redircts_ac)){
         return true;
     }
     if ($_W["isfounder"] == 1 || $_W["permits"] == "all") {
@@ -387,6 +391,27 @@ function get_user($uid = 0)
     $user['permits_role'] = explode(',', $user['permits_role']);
     $user['permits'] = explode(',', $user['permits']);
     $user["permits"] = array_merge($user["permits"], $user["permits_role"]);
+    return $user;
+}
+
+//获取公司员工
+function get_clerk($uid = 0)
+{
+    global $_W;
+    if (empty($uid)) {
+        $uid = $_W['uid'];
+    }
+    $user = pdo_fetch("select a.*,b.permits as permits_role from " . tablename("hello_banbanjia_store_clerk") . " as a left join " . tablename("hello_banbanjia_clerk_role") . " as b on a.roleid = b.id where a.uniacid = :uniacid and a.clerk_id = :uid", array(":uniacid" => $_W['uniacid'], ":uid" => $uid));
+    if (empty($user)) {
+        return false;
+    }
+    if ($user['roleid'] == 0) { //公司管理员
+        $user['permits'] = 'all';
+    } else {
+        $user['permits_role'] = explode(',', $user['permits_role']);
+        $user['permits'] = explode(',', $user['permits']);
+        $user["permits"] = array_merge($user["permits"], $user["permits_role"]);
+    }
     return $user;
 }
 

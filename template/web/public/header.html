@@ -241,12 +241,14 @@
 			</a>
 			<div class="nav slimscroll">
 				<ul class="clearfix">
+					{ifp 'dashboard'}
 					<li class="{if $_W['_ctrl'] == 'dashboard'}active{/if}">
 						<a href="{php echo iurl('store/dashboard/index');}">
 							<i class="icon icon-scan"></i>
 							概况
 						</a>
 					</li>
+					{/if}
 					<li class="{if $_W['_ac'] == 'order'}active{/if}">
 						<a href="{php echo iurl('store/order/takeout');}">
 							<i class="icon icon-order"></i>
@@ -336,7 +338,7 @@
 			<div class="pull-right user-section">
 				<div class="pull-left wm-user-name">
 					<a href="javascript:;" class="text">
-						<span class="names">{$_W['role_cn']}</span>
+						<span class="names">{$_W['clerk']['title']}</span>
 						<span><i class="fa fa-trans fa-angle-down"></i></span>
 					</a>
 					{if $_W['role'] == 'founder'}

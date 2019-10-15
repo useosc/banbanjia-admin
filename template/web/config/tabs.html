@@ -84,8 +84,11 @@
 		</ul>
 	{/if}
 	{ifp 'config.store'}
-		<div class="menu-header">商户</div>
+		<div class="menu-header">企业</div>
 		<ul class="menu-item">
+			<li {if $_W['_router'] == 'config/store/category'}class="active"{/if}>
+				<a href="{php echo iurl('config/store/category/list');}">企业分类</a>
+			</li>
 			<li {if $_W['_router'] == 'config/store/recommend'}class="active"{/if}>
 				<a href="{php echo iurl('config/store/recommend');}">为您优选</a>
 			</li>
@@ -96,10 +99,10 @@
 				<a href="{php echo iurl('config/store/serve_fee');}">服务费率</a>
 			</li>
 			<li {if $_W['_router'] == 'config/store/settle'}class="active"{/if}>
-				<a href="{php echo iurl('config/store/settle');}">商户入驻</a>
+				<a href="{php echo iurl('config/store/settle');}">企业入驻</a>
 			</li>
 			<li {if $_W['_router'] == 'config/store/activity'}class="active"{/if}>
-				<a href="{php echo iurl('config/store/activity');}">商户活动</a>
+				<a href="{php echo iurl('config/store/activity');}">企业活动</a>
 			</li>
 			<li {if $_W['_router'] == 'config/store/extra'}class="active"{/if}>
 				<a href="{php echo iurl('config/store/extra');}">其他批量操作</a>

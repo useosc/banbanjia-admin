@@ -9,8 +9,6 @@ if(defined("IN_WXAPP")){
 }
 
 if($ta == 'index'){
-    $config_app_customer = $_W['we7_hello_banbanjia']['config']['app']['customer'];
-    mload()->lmodel('plugin');
     $default_location = array();
     if (empty($_GPC["lat"]) || empty($_GPC["lng"])) {
         $config_carry = $_W["we7_hello_banbanjia"]["config"]["carry"]["range"];

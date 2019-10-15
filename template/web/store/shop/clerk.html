@@ -47,14 +47,13 @@
 								<label></label>
 							</div>
 						</th>
-						<th width="85">头像</th>
-						<th>微信昵称</th>
+						<!-- <th width="85">头像</th> -->
 						<th>员工名称</th>
 						<th>手机号</th>
-						<th>
+						<!-- <th>
 							微信模板消息提醒 <br>
 							语音电话提醒
-						</th>
+						</th> -->
 						<th>身份</th>
 						<th>添加时间</th>
 						<th style="width:350px; text-align:right;">操作</th>
@@ -69,31 +68,33 @@
 								<label></label>
 							</div>
 						</td>
-						<td>
+						<!-- <td>
 							<img src="{php echo tomedia($item['avatar']);}" width="48">
-						</td>
-						<td>{$item['nickname']}</td>
+						</td> -->
 						<td>{$item['title']}</td>
 						<td>{$item['mobile']}</td>
-						<td>
+						<!-- <td>
 							<div style="margin-bottom: 10px;">
 								<input type="checkbox" data-on-text="模板" data-off-text="关闭" class="js-checkbox" data-href="{php echo iurl('store/shop/clerk/extra', array('id' => $item['id'], 'type' => 'accept_wechat_notice', 'value' => $item['extra']['accept_wechat_notice']));}" value="1" {if $item['extra']['accept_wechat_notice'] == 1}checked{/if}>
 							</div>
 							<input type="checkbox" data-on-text="语音" data-off-text="关闭" class="js-checkbox" data-href="{php echo iurl('store/shop/clerk/extra', array('id' => $item['id'], 'type' => 'accept_voice_notice', 'value' => $item['extra']['accept_voice_notice']));}" value="1" {if $item['extra']['accept_voice_notice'] == 1}checked{/if}>
-						</td>
+						</td> -->
 						<td>
-							{if $item['role'] == 'manager'}
+							{if $item['roleid'] == 0}
 							<span class="label label-danger">管理员</span>
 							{else}
-							<span class="label label-success">员工</span>
+							<span class="label label-success">{$roles[$item['roleid']]['rolename']}</span>
 							{/if}
 						</td>
 						<td>{php echo date('Y-m-d H:i', $item['addtime']);}</td>
 						<td style="text-align:right;">
 							{if $item['role'] != 'manager'}
-								<a href="{php echo iurl('store/shop/clerk/manager', array('id' => $item['aid']))}" class="btn btn-default btn-sm js-post" data-confirm="确定设置该员工为公司管理员吗?">设为管理员</a>
+								<!-- <a href="{php echo iurl('store/shop/clerk/manager', array('id' => $item['aid']))}" class="btn btn-default btn-sm js-post" data-confirm="确定设置该员工为公司管理员吗?">设为管理员</a> -->
+								<a href="{php echo iurl('store/shop/clerk/post',array('id' => $item['aid']))}" class="btn btn-default btn-sm">编辑</a>
+								<a href="{php echo iurl('store/shop/clerk/del', array('id' => $item['aid']))}" class="btn btn-default btn-sm js-remove" data-confirm="确定取消员工权限吗?">删除</a>
+							{else}
+							<a href="{php echo iurl('store/shop/clerk/post',array('id' => $item['aid']))}" class="btn btn-default btn-sm">编辑</a>
 							{/if}
-							<a href="{php echo iurl('store/shop/clerk/del', array('id' => $item['aid']))}" class="btn btn-default btn-sm js-remove" data-confirm="确定取消员工权限吗?">删除</a>
 						</td>
 					</tr>
 					{/loop}
@@ -113,13 +114,13 @@
 </form>
 {/if}
 
-{if $op == 'post'}
+{if $ta == 'post'}
 <div class="page clearfix system-perm">
     <form class="form-horizontal form form-validate" id="form1" action="" method="post" enctype="multipart/form-data">
         <div class="form-group">
-			<label class="col-xs-12 col-sm-3 col-md-2 control-label">员工用户名</label>
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">员工用户名（手机号）</label>
 			<div class="col-sm-9 col-xs-12">
-				<input type="text" name="username" value="{$user['username']}" {if $id > 0}readonly{/if} class="form-control" required="true"/>
+				<input type="text" name="mobile" value="{$clerk['mobile']}" {if $id > 0}readonly{/if} class="form-control" required="true"/>
 			</div>
         </div>
         <div class="form-group">
@@ -134,31 +135,25 @@
 				<select name="roleid" id="roleid" class="form-control">
 					<option value="0">选择角色</option>
 					{loop $roles $role}
-						<option value="{$role['id']}" {if $role['id'] == $user['roleid']}selected{/if}>{$role['rolename']}</option>
+						<option value="{$role['id']}" {if $role['id'] == $clerk['roleid']}selected{/if}>{$role['rolename']}</option>
 					{/loop}
 				</select>
 				<div class="help-block">如果您选择了角色，则此用户本身就继承了此角色的所有权限</div>
 				<div class="form-group">
 					<label class="col-xs-12 col-sm-3 col-md-2 control-label">姓名</label>
 					<div class="col-sm-9 col-xs-12">
-						<input type="text" class="form-control" name="realname" value="{$user['realname']}">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-xs-12 col-sm-3 col-md-2 control-label">电话</label>
-					<div class="col-sm-9 col-xs-12">
-						<input type="text" class="form-control" name="mobile" value="{$user['mobile']}">
+						<input type="text" class="form-control" name="title" value="{$clerk['title']}">
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-xs-12 col-sm-3 col-md-2 control-label">状态</label>
 					<div class="col-sm-9 col-xs-12">
 						<div class="radio radio-inline">
-							<input type="radio" value="1" name="status" id="status-1" {if $user['status'] == 1}checked{/if}>
+							<input type="radio" value="1" name="status" id="status-1" {if $clerk['status'] == 1}checked{/if}>
 							<label for="status-1">启用</label>
 						</div>
 						<div class="radio radio-inline">
-							<input type="radio" value="0" name="status" id="status-0" {if $user['status'] == 0}checked{/if}>
+							<input type="radio" value="0" name="status" id="status-0" {if $clerk['status'] == 0}checked{/if}>
 							<label for="status-0">禁用</label>
 						</div>
 						<div class="help-block">用户可以在此角色权限的基础上附加其他权限</div>
@@ -166,29 +161,29 @@
                 </div>
 			</div>
         </div>
-        <div class="form-group">
-			<label class="col-xs-12 col-sm-3 col-md-2 control-label">权限</label>
-			<div class="col-sm-9 col-xs-12 perm-container">
-				{loop $all_perms $group $all}
-					<div class="category-perm">
-						<div class="heading">
-							<div class="checkbox checkbox-inline">
-								<input type="checkbox" name="perms[]" value="{$group}" id="{$group}" class="perm-all-item" data-group="{$group}" {if in_array($group, $roles[$user['roleid']]['perms']) || in_array($group, $user['perms'])}checked{/if} {if in_array($group, $roles[$user['roleid']]['perms'])}disabled{/if}>
-								<label for="{$group}">{$all['title']}</label>
+		<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">权限</label>
+				<div class="col-sm-9 col-xs-12 permit-container">
+					{loop $all_permits $group $all}
+						<div class="category-permit">
+							<div class="heading">
+								<div class="checkbox checkbox-inline">
+									<input type="checkbox" name="permits[]" value="{$group}" id="{$group}" class="permit-all-item" data-group="{$group}" {if in_array($group, $roles[$user['roleid']]['permits']) || in_array($group, $user['permits'])}checked{/if} {if in_array($group, $roles[$user['roleid']]['permits'])}disabled{/if}>
+									<label for="{$group}">{$all['title']}</label>
+								</div>
+							</div>
+							<div class="permit-list">
+								{loop $all['permits'] $key $permit}
+									<div class="checkbox checkbox-inline">
+										<input type="checkbox" name="permits[]" value="{$key}" id="{$key}" class="permit-item" data-group="{$group}" {if in_array($key, $roles[$user['roleid']]['permits']) || in_array($key, $user['permits'])}checked{/if} {if in_array($key, $roles[$user['roleid']]['permits'])}disabled{/if}>
+										<label for="{$key}">{$permit}</label>
+									</div>
+								{/loop}
 							</div>
 						</div>
-						<div class="perm-list">
-							{loop $all['perms'] $key $perm}
-								<div class="checkbox checkbox-inline">
-									<input type="checkbox" name="perms[]" value="{$key}" id="{$key}" class="perm-item" data-group="{$group}" {if in_array($key, $roles[$user['roleid']]['perms']) || in_array($key, $user['perms'])}checked{/if} {if in_array($key, $roles[$user['roleid']]['perms'])}disabled{/if}>
-									<label for="{$key}">{$perm}</label>
-								</div>
-							{/loop}
-						</div>
-					</div>
-				{/loop}
+					{/loop}
+				</div>
 			</div>
-        </div>
         <div class="form-group">
 			<div class="col-sm-9 col-xs-12">
 				<input type="hidden" name="token" value="{$_W['token']}">
@@ -199,41 +194,25 @@
 </div>
 {/if}
 <script>
-	$(function() {
-		var roles = {php echo json_encode($roles)};
-		$('#roleid').change(function() {
-			var id = $(this).val();
-			var perm = '';
-			if(id > 0) {
-				perm = roles[id]['perms'];
-			}
-			$(':checkbox').removeAttr('disabled').removeAttr('checked').each(function() {
-				var key = $(this).val();
-				if(perm != '' && perm.indexOf(key) != -1) {
-					$(this).attr('disabled',true);
-					$(this).prop('checked', 'checked');
+		$(function(){
+			$(document).on('click','.permit-all-item',function(){
+				var group = $(this).data('group');
+				if($(this).prop('checked')){
+					$(".permit-item[data-group='" + group + "'],.permit-all-item[data-group='" + group + "']").prop('checked','checked');
+				}else {
+					$(".permit-item[data-group='" + group + "'],.permit-all-item[data-group='" + group + "']").removeProp('checked');
+				}
+			});
+		
+			$(document).on('click','.permit-item',function(){
+				var group = $(this).data('group');
+				var length = $(".permit-item[data-group='" + group + "']:checked").size();
+				if(length > 0){
+					$(".permit-all-item[data-group='" + group + "']").prop('checked','checked');
+				}else{
+					$(".permit-all-item[data-group='" + group + "']").removeProp('checked');
 				}
 			});
 		});
-
-		$(document).on('click', '.perm-all-item', function() {
-			var group = $(this).data('group');
-			if($(this).prop('checked')) {
-				$(".perm-item[data-group='" + group + "'],.perm-all-item[data-group='" + group + "']").prop('checked', 'checked');
-			} else {
-				$(".perm-item[data-group='" + group + "'],.perm-all-item[data-group='" + group + "']").removeProp('checked');
-			}
-		});
-
-		$(document).on('click', '.perm-item', function() {
-			var group = $(this).data('group');
-			var length = $(".perm-item[data-group='" + group + "']:checked").size();
-			if(length > 0) {
-				$(".perm-all-item[data-group='" + group + "']").prop('checked', 'checked');
-			} else {
-				$(".perm-all-item[data-group='" + group + "']").removeProp('checked');
-			}
-		});
-	})
-</script>
+	</script>
 {itemplate 'public/footer'}
