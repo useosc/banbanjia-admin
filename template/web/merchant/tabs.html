@@ -39,5 +39,20 @@
             </li>
         {/if}
     </ul>
-{/if}
+    {/if}
+    {ifp 'merchant.notice' || 'merchant.report'}
+    <div class="menu-header">其他</div>
+    <ul class="menu-item">
+        {ifp 'merchant.notice'}
+            <li {if $_W['_ac'] == 'notice'}class="active"{/if}>
+                <a href="{php echo iurl('merchant/notice/list');}">公告列表</a>
+            </li>
+        {/if}
+        {ifp 'merchant.report'}
+            <li {if $_W['_ac'] == 'report'}class="active"{/if}>
+                <a href="{php echo iurl('merchant/report/list');}">投诉列表</a>
+            </li>
+        {/if}
+    </ul>
+    {/if}
 </div>

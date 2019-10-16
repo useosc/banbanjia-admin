@@ -37,10 +37,10 @@ function wxapp_urls($type = 'mall')
     global $_GPC;
     $data = array();
     if ($type == 'mall') {
-        $data['platform']['sys'] = array('title'=> '平台链接','items' => array(array('title'=>'平台首页','url'=>'pages/home/home')));
-        $data['deliveryer']['sys'] = array('title'=> '平台链接1','items' => array(array('title'=>'平台首页','url'=>'pages/home/home')));
+        $data['platform']['sys'] = array('title' => '平台链接', 'items' => array(array('title' => '平台首页', 'url' => 'pages/home/home')));
+        $data['deliveryer']['sys'] = array('title' => '平台链接1', 'items' => array(array('title' => '平台首页', 'url' => 'pages/home/home')));
     }
-     return $data;
+    return $data;
 }
 //隐藏表单
 function tpl_form_filter_hidden($ctrls, $do = "web")
@@ -61,4 +61,16 @@ function tpl_form_filter_hidden($ctrls, $do = "web")
         }
     }
     return $html;
+}
+//坐标
+function tpl_form_field_hello_coordinate($field, $value = array(), $required = false)
+{ 
+    global $_W;
+    $s = "";
+    if (!defined("TPL_INIT_HELLO_COORDINATE")) {
+        $s .= "<script type=\"text/javascript\">\r\n\t\t\t\tfunction showCoordinate(elm) {\r\n\t\t\t\t\tirequire([\"web/hello\"], function(hello){\r\n\t\t\t\t\t\tvar val = {};\r\n\t\t\t\t\t\tval.lng = parseFloat(\$(elm).parent().prev().prev().find(\":text\").val());\r\n\t\t\t\t\t\tval.lat = parseFloat(\$(elm).parent().prev().find(\":text\").val());\r\n\t\t\t\t\t\thello.map(val, function(r){\r\n\t\t\t\t\t\t\t\$(elm).parent().prev().prev().find(\":text\").val(r.lng);\r\n\t\t\t\t\t\t\t\$(elm).parent().prev().find(\":text\").val(r.lat);\r\n\t\t\t\t\t\t});\r\n\t\t\t\t\t});\r\n\t\t\t\t}\r\n\t\t\t</script>";
+        define("TPL_INIT_HELLO_COORDINATE", true);
+    }
+    $s .= "\r\n\t\t<div class=\"row row-fix\">\r\n\t\t\t<div class=\"col-xs-4 col-sm-4\">\r\n\t\t\t\t<input type=\"text\" name=\"" . $field . "[lng]\" value=\"" . $value["lng"] . "\" placeholder=\"地理经度\"  class=\"form-control\" " . ($required ? "required" : "") . "/>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"col-xs-4 col-sm-4\">\r\n\t\t\t\t<input type=\"text\" name=\"" . $field . "[lat]\" value=\"" . $value["lat"] . "\" placeholder=\"地理纬度\"  class=\"form-control\" " . ($required ? "required" : "") . "/>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"col-xs-4 col-sm-4\">\r\n\t\t\t\t<button onclick=\"showCoordinate(this);\" class=\"btn btn-default\" type=\"button\">选择坐标</button>\r\n\t\t\t</div>\r\n\t\t</div>";
+    return $s;
 }

@@ -1,6 +1,62 @@
 <?php
 defined('IN_IA') or exit('Access Denied');
 
+function store_set_data($sid, $key, $value)
+{
+    global $_W;
+    $data = store_get_data($sid);
+    $keys = explode(".", $key);
+    $counts = count($keys);
+    if ($counts == 1) {
+        $data[$keys[0]] = $value;
+    } else {
+        if ($counts == 2) {
+            if (!is_array($data[$keys[0]])) {
+                $data[$keys[0]] = array();
+            }
+            $data[$keys[0]][$keys[1]] = $value;
+        } else {
+            if ($counts == 3) {
+                if (!is_array($data[$keys[0]])) {
+                    $data[$keys[0]] = array();
+                } else {
+                    if (!is_array($data[$keys[0]][$keys[1]])) {
+                        $data[$keys[0]][$keys[1]] = array();
+                    }
+                }
+                $data[$keys[0]][$keys[1]][$keys[2]] = $value;
+            }
+        }
+    }
+    pdo_update("hello_banbanjia_store", array("data" => iserializer($data)), array("uniacid" => $_W["uniacid"], "id" => $sid));
+    return true;
+}
+
+function store_get_data($sid, $key = "")
+{
+    global $_W;
+    $store = pdo_get("hello_banbanjia_store", array("uniacid" => $_W["uniacid"], "id" => $sid), array("data"));
+    $data = iunserializer($store["data"]);
+    if (!is_array($data)) {
+        $data = array();
+    }
+    if (empty($key)) {
+        return $data;
+    }
+    $keys = explode(".", $key);
+    $counts = count($keys);
+    if ($counts == 1) {
+        return $data[$key];
+    }
+    if ($counts == 2) {
+        return $data[$keys[0]][$keys[1]];
+    }
+    if ($counts == 3) {
+        return $data[$keys[0]][$keys[1]][$keys[2]];
+    }
+    return true;
+}
+
 function clerk_manage($id)
 {
     global $_W;
@@ -31,11 +87,43 @@ function store_fetch($id, $field = array())
     }
     $data["origin_logo"] = $data["logo"];
     $data["logo"] = tomedia($data["logo"]);
+    // $cid = array_filter(explode("|", $data['cid']));
+    // $data['category_arr'] = array_values($cid);
+    // $cid = implode(",", $cid);
+    // if (!empty($data["cid"]) && !empty($cid)) {
+    //     $category = pdo_fetchall("select id,title from " . tablename("hello_banbanjia_store_category") . " where uniacid = :uniacid and id in (" . $cid . ")", array(":uniacid" => $_W['uniacid']));
+    //     $data["category"] = array();
+    //     if (!empty($category)) {
+    //         $category_cn1 = $category_cn2 = "";
+    //     }
+    // }
+    $se_fileds = array("thumbs", "sns", "payment", "qualification", "comment_reply", "data");
+    foreach ($se_fileds as $se_filed) {
+        if (isset($data[$se_filed])) {
+            if (!in_array($se_filed, array("thumbs", "qualification"))) {
+                $data[$se_filed] = iunserializer($data[$se_filed]);
+            } else {
+                $data[$se_filed] = iunserializer($data[$se_filed]);
+                if ($se_filed == "thumbs") {
+                    foreach ($data[$se_filed] as &$thumb) {
+                        $thumb["image"] = tomedia($thumb["image"]);
+                    }
+                } else {
+                    if ($se_filed == "qualification") {
+                        foreach ($data[$se_filed] as &$thumb) {
+                            $thumb["thumb"] = tomedia($thumb["thumb"]);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     $data["address_type"] = 0;
 
     return $data;
 }
+
 function store_status()
 {
     $data = array(

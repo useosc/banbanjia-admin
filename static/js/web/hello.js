@@ -467,7 +467,7 @@ define(["bootstrap"], function ($) {
             a.popover("hide"), a.next().remove(), "function" == typeof c && c()
         }), !1
     }, hello.map = function (a, b) {
-        $.getScript("//webapi.amap.com/maps?v=1.4.1&key=550a3bf0cb6d96c3b43d330fb7d86950&plugin=AMap.Geocoder,AMap.Scale,AMap.OverView,AMap.ToolBar", function () {
+        $.getScript("//webapi.amap.com/maps?v=1.4.1&key=fceeb4f0418e80182e1dad169a6a424c&plugin=AMap.Geocoder,AMap.Scale,AMap.OverView,AMap.ToolBar", function () {
             function c(a) {
                 d.getLocation(a, function (a, b) {
                     if ("complete" === a && "OK" === b.info) {

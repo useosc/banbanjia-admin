@@ -322,3 +322,38 @@ function category_store_label()
     $data = pdo_fetchall("select id, title, alias,  color, is_system, displayorder from" . tablename("hello_banbanjia_category") . " where uniacid = :uniacid and type = :type order by is_system desc, displayorder desc", array(":uniacid" => $_W["uniacid"], ":type" => "QY_store_label"), "id");
     return $data;
 }
+/**
+ * 计算两个坐标之间的距离(米)
+ * @param float $fP1Lat 起点(纬度)
+ * @param float $fP1Lon 起点(经度)
+ * @param float $fP2Lat 终点(纬度)
+ * @param float $fP2Lon 终点(经度)
+ * @return int
+ */
+function distanceBetween($longitude1, $latitude1, $longitude2, $latitude2)
+{
+    $radLat1 = radian($latitude1);
+    $radLat2 = radian($latitude2);
+    $a = radian($latitude1) - radian($latitude2);
+    $b = radian($longitude1) - radian($longitude2);
+    $s = 2 * asin(sqrt(pow(sin($a / 2), 2) + cos($radLat1) * cos($radLat2) * pow(sin($b / 2), 2)));
+    $s = $s * 6378.137;
+    $s = round($s * 10000) / 10000;
+    return $s * 1000;
+}
+function radian($d)
+{
+    return $d * 3.1415926535898 / 180;
+}
+function array_sort($array, $sort_key, $sort_order = SORT_ASC)
+{
+    if (is_array($array)) {
+        foreach ($array as $row_array) {
+            $key_array[] = $row_array[$sort_key];
+        }
+        array_multisort($key_array, $sort_order, $array);
+        return $array;
+    } else {
+        return false;
+    }
+}
