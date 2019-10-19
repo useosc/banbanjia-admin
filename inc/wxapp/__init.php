@@ -8,6 +8,7 @@ global $_GPC;
 mload()->lmodel("common");
 mload()->lfunc("wxapp"); //返回数据格式(api格式)
 mload()->lmodel("member");
+mload()->lmodel('store');
 $_W["we7_hello_banbanjia"]["global"] = get_global_config(); //获取全局配置、鉴权
 if ($_W["we7_hello_banbanjia"]["global"]["development"] == 1) { //开发模式
     ini_set("display_errors", "1");

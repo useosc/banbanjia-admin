@@ -424,6 +424,19 @@
             KEY `uid_sid` (`uid`,`sid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=700 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_chat_log` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `from_id` varchar(55) NOT NULL COMMENT '网页用户随机编号(仅为记录参考记录)',
+            `from_name` varchar(255) COMMENT '发送者名称',
+            `from_avatar` varchar(255) COMMENT '发送者头像',
+            `to_id` varchar(55) NOT NULL DEFAULT '0' COMMENT '接收方',
+            `to_name` varchar(255) NOT NULL DEFAULT '客服' COMMENT '接受者名称',
+            `content` text COMMENT '发送的内容',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '记录时间',
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_notice` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1022,6 +1035,7 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_members`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_favorite`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_chat_log`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_notice`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_system_log`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_room_category`;

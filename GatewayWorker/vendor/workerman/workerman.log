@@ -59,3 +59,75 @@ Stack trace:
 2019-10-14 09:57:09 pid:27717 Worker process terminated
 2019-10-15 08:00:23 pid:9737 Worker process terminated
 2019-10-16 08:00:39 pid:2106 Worker process terminated
+2019-10-17 08:00:54 pid:9648 Worker process terminated
+2019-10-17 16:26:13 pid:17239 Worker process terminated
+2019-10-18 08:00:08 pid:14085 Worker process terminated
+2019-10-18 09:08:31 pid:15304 Worker process terminated
+2019-10-18 09:08:53 pid:17261 Worker process terminated
+2019-10-19 08:00:23 pid:19041 Worker process terminated
+2019-10-19 09:19:33 pid:26311 Worker process terminated
+2019-10-19 09:19:33 pid:8297 exception 'PDOException' with message 'SQLSTATE[HY000] [2002] Connection refused' in /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php:1712
+Stack trace:
+#0 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php(1712): PDO->__construct('mysql:dbname=ba...', 'root', 'WDELI1995', Array)
+#1 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php(1698): Workerman\MySQL\Connection->connect()
+#2 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/Applications/helloService/Events.php(43): Workerman\MySQL\Connection->__construct('127.0.0.1', '3306', 'root', 'WDELI1995', 'banbanjia')
+#3 [internal function]: Events::onWorkerStart(Object(GatewayWorker\BusinessWorker))
+#4 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/gateway-worker/src/BusinessWorker.php(211): call_user_func('Events::onWorke...', Object(GatewayWorker\BusinessWorker))
+#5 [internal function]: GatewayWorker\BusinessWorker->onWorkerStart(Object(GatewayWorker\BusinessWorker))
+#6 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(2081): call_user_func(Array, Object(GatewayWorker\BusinessWorker))
+#7 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/gateway-worker/src/BusinessWorker.php(190): Workerman\Worker->run()
+#8 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(1294): GatewayWorker\BusinessWorker->run()
+#9 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(1127): Workerman\Worker::forkOneWorkerForLinux(Object(GatewayWorker\BusinessWorker))
+#10 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(1100): Workerman\Worker::forkWorkersForLinux()
+#11 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(1426): Workerman\Worker::forkWorkers()
+#12 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(1375): Workerman\Worker::monitorWorkersForLinux()
+#13 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(461): Workerman\Worker::monitorWorkers()
+#14 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/start.php(43): Workerman\Worker::runAll()
+#15 {main}
+2019-10-19 09:19:34 pid:8297 Worker process terminated
+2019-10-19 09:19:34 pid:10014 worker[WhisperBusinessWorker:8297] exit with status 64000
+2019-10-19 09:19:34 pid:8298 exception 'PDOException' with message 'SQLSTATE[HY000] [2002] Connection refused' in /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php:1712
+Stack trace:
+#0 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php(1712): PDO->__construct('mysql:dbname=ba...', 'root', 'WDELI1995', Array)
+#1 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php(1698): Workerman\MySQL\Connection->connect()
+#2 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/Applications/helloService/Events.php(43): Workerman\MySQL\Connection->__construct('127.0.0.1', '3306', 'root', 'WDELI1995', 'banbanjia')
+#3 [internal function]: Events::onWorkerStart(Object(GatewayWorker\BusinessWorker))
+#4 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/gateway-worker/src/BusinessWorker.php(211): call_user_func('Events::onWorke...', Object(GatewayWorker\BusinessWorker))
+#5 [internal function]: GatewayWorker\BusinessWorker->onWorkerStart(Object(GatewayWorker\BusinessWorker))
+#6 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(2081): call_user_func(Array, Object(GatewayWorker\BusinessWorker))
+#7 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/gateway-worker/src/BusinessWorker.php(190): Workerman\Worker->run()
+#8 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(1294): GatewayWorker\BusinessWorker->run()
+#9 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(1127): Workerman\Worker::forkOneWorkerForLinux(Object(GatewayWorker\BusinessWorker))
+#10 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(1100): Workerman\Worker::forkWorkersForLinux()
+#11 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(1426): Workerman\Worker::forkWorkers()
+#12 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(1375): Workerman\Worker::monitorWorkersForLinux()
+#13 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(461): Workerman\Worker::monitorWorkers()
+#14 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/start.php(43): Workerman\Worker::runAll()
+#15 {main}
+2019-10-19 09:19:35 pid:8298 Worker process terminated
+2019-10-19 09:19:35 pid:10014 worker[WhisperBusinessWorker:8298] exit with status 64000
+2019-10-19 09:19:35 pid:8303 exception 'PDOException' with message 'SQLSTATE[HY000] [2002] Connection refused' in /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php:1712
+Stack trace:
+#0 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php(1712): PDO->__construct('mysql:dbname=ba...', 'root', 'WDELI1995', Array)
+#1 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/mysql/src/Connection.php(1698): Workerman\MySQL\Connection->connect()
+#2 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/Applications/helloService/Events.php(43): Workerman\MySQL\Connection->__construct('127.0.0.1', '3306', 'root', 'WDELI1995', 'banbanjia')
+#3 [internal function]: Events::onWorkerStart(Object(GatewayWorker\BusinessWorker))
+#4 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/gateway-worker/src/BusinessWorker.php(211): call_user_func('Events::onWorke...', Object(GatewayWorker\BusinessWorker))
+#5 [internal function]: GatewayWorker\BusinessWorker->onWorkerStart(Object(GatewayWorker\BusinessWorker))
+#6 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(2081): call_user_func(Array, Object(GatewayWorker\BusinessWorker))
+#7 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/gateway-worker/src/BusinessWorker.php(190): Workerman\Worker->run()
+#8 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(1294): GatewayWorker\BusinessWorker->run()
+#9 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(1127): Workerman\Worker::forkOneWorkerForLinux(Object(GatewayWorker\BusinessWorker))
+#10 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(1100): Workerman\Worker::forkWorkersForLinux()
+#11 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(1426): Workerman\Worker::forkWorkers()
+#12 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(1375): Workerman\Worker::monitorWorkersForLinux()
+#13 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/vendor/workerman/workerman/Worker.php(461): Workerman\Worker::monitorWorkers()
+#14 /www/wwwroot/banbanjia.useosc.com/addons/hello_banbanjia/GatewayWorker/start.php(43): Workerman\Worker::runAll()
+#15 {main}
+2019-10-19 09:19:36 pid:8303 Worker process terminated
+2019-10-19 09:19:36 pid:10014 worker[WhisperBusinessWorker:8303] exit with status 64000
+2019-10-19 09:19:43 pid:10023 Register auth timeout (127.0.0.1). See http://wiki.workerman.net/Error4 for detail
+2019-10-19 09:19:44 pid:10023 Register auth timeout (127.0.0.1). See http://wiki.workerman.net/Error4 for detail
+2019-10-19 09:19:45 pid:10023 Register auth timeout (127.0.0.1). See http://wiki.workerman.net/Error4 for detail
+2019-10-19 09:19:46 pid:10023 Register auth timeout (127.0.0.1). See http://wiki.workerman.net/Error4 for detail
+2019-10-19 10:59:51 pid:8323 Worker process terminated

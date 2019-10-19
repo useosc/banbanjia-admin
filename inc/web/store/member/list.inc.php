@@ -36,6 +36,10 @@ if ($ta == "list") {
     }
     $pager = pagination($total, $pindex, $psize);
     $stat = member_amount_stat($sid);
-}
 
-include itemplate("store/member/list");
+    include itemplate("store/member/list");
+}
+if($ta == 'post'){
+    
+    include itemplate("store/member/post");
+}

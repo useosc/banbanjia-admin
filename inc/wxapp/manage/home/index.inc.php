@@ -1,0 +1,16 @@
+<?php
+defined("IN_IA") or exit("Access Denied");
+global $_W;
+global $_GPC;
+$ta = trim($_GPC["ta"]) ? trim($_GPC["ta"]) : "index";
+if ($ta == "index") {
+    $sid_str = implode(", ", array_unique(array_keys($sids)));
+    $stores = pdo_fetchall("select id,title,logo from " . tablename("hello_banbanjia_store") . " where uniacid = :uniacid and id in (" . $sid_str . ")", array(":uniacid" => $_W['uniacid']));
+    if(!empty($stores)){
+        foreach($stores as &$store){
+            $store['logo'] = tomedia($store['logo']);
+        }
+    }
+    $result = array("stores" => $stores);
+    imessage(error(0,$result),"",'ajax');
+}

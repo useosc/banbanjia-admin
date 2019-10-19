@@ -20,6 +20,12 @@ if ($ta == 'list') {
     $lng = trim($_GPC["lng"]);
     $condition = " where uniacid = :uniacid and status = 1";
     $params = array(":uniacid" => $_W["uniacid"]);
+    $sid = intval($_GPC['sid']);
+    if(0 < $sid){
+        $sid = intval($_GPC['sid']);
+        $condition .= " and id = :sid ";
+        $params[':sid'] = $sid;
+    }
     $cid = intval($_GPC["cid"]);
     if (0 < $cid) {
         $condition .= " and cid like :cid";
