@@ -413,7 +413,20 @@
             KEY `last_order_time` (`success_last_time`)
         ) ENGINE=MyISAM AUTO_INCREMENT=3000 DEFAULT CHARSET=utf8;
 
-        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_clerk_friend` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `clerk_id` int(10) unsigned NOT NULL DEFAULT '0',
+            `uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `relation` tinyint(3) NOT NULL DEFAULT '1' COMMENT '1互为好友 2我删除了对方 3临时对话',
+            `mute` tinyint(2),
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `clerk_id` (`clerk_id`),
+            KEY `uid` (`uid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=500 DEFAULT CHARSET=utf8;
 
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_favorite` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -1052,6 +1065,7 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_clerk`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_members`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_clerk_friend`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_favorite`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_chat_log`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_notice`;
