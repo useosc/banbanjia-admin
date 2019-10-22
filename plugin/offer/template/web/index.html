@@ -1,0 +1,100 @@
+{itemplate 'public/header'}
+{if $op == 'index'}
+<form action="./index.php" class="form-horizontal form-filter">
+	{php echo tpl_form_filter_hidden('offer/index/index');}
+	<div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">搜索</label>
+		<div class="col-sm-4 col-xs-4">
+			<input type="text" name="keyword" value="{$keyword}" class="form-control" placeholder="请输入价格模板标题或关键字进行搜索">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+		<div class="col-sm-4 col-xs-4">
+			<input type="submit" value="筛选" class="btn btn-primary">
+		</div>
+	</div>
+</form>
+<form action="" class="form-table form" method="post">
+	<div class="panel panel-table">
+		<div class="panel-heading">
+			<a href="{php echo iurl('offer/index/post');}" class="btn btn-primary btn-sm">新建价格模板</a>
+		</div>
+		<div class="panel-body table-responsive js-table">
+			{if empty($offers)}
+				<div class="no-result">
+					<p>还没有相关数据</p>
+				</div>
+			{else}
+				<table class="table table-hover">
+					<thead class="navbar-inner">
+					<tr>
+						<th width="40">
+							<div class="checkbox checkbox-inline">
+								<input type="checkbox" name="ids[]"/>
+								<label></label>
+							</div>
+						</th>
+						<th>红包名称</th>
+						<th>总共发送人数</th>
+						<th>发放成功人数</th>
+						<th>未发放人数</th>
+						<th>创建时间</th>
+						<th style="width:300px; text-align:right;">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+						{loop $offers $offer}
+							<tr>  
+								<td>
+									<div class="checkbox checkbox-inline">
+										<input type="checkbox" name="ids[]" value="{$offer['id']}"/>
+										<label></label>
+									</div>
+								</td>
+								<td>{$offer['name']}</td>
+								<td>{$offer['grant_object']['total']}</td>
+								<td>{$offer['grant_object']['grant_success']}</td>
+								<td>{php echo count($offer['grant_object']['unissued_uid'])}</td>
+								<td>{php echo date('Y-m-d H:i:s', $offer['addtime'])}</td>
+								<td style="text-align:right;">
+									{if !empty($offer['grant_object']['unissued_uid'])}
+										<a href="{php echo iurl('offer/grant/send', array('id' => $offer['id']))}" class="btn btn-default btn-sm">继续发送</a>
+									{/if}
+									<a href="{php echo iurl('offer/grant/post', array('id' => $offer['id']))}" class="btn btn-default btn-sm">查看</a>
+									<a href="{php echo iurl('offer/grant/del', array('id' => $offer['id']))}" class="btn btn-default btn-sm js-remove" data-confirm="删除后将不可恢复，确定删除吗">删除</a>
+								</td>
+							</tr>
+						{/loop}
+					</tbody>
+				</table>
+				<div class="btn-region clearfix">
+					<div class="pull-left">
+						<a href="{php echo iurl('offer/grant/del')}" class="btn btn-primary btn-danger js-batch" data-batch="remove" data-confirm="删除后将不可恢复，确定删除吗">删除</a>
+					</div>
+					<div class="pull-right">
+						{$pager}
+					</div>
+				</div>
+			{/if}
+		</div>
+	</div>
+</form>
+{/if}
+
+{if $op == 'post'}
+<script type="text/javascript" src="../addons/hello_banbanjia/plugin/offer/static/js/ckeditor/ckeditor.js"></script>
+<div>
+	<form>
+		<textarea name="editor1" id="editor1" rows="10" cols="80">
+		</textarea>
+		<script>
+			CKEDITOR.replace( 'editor1' );
+		</script>
+	</form>
+	<div>
+		
+	</div>
+</div>
+{/if}
+{itemplate 'public/footer'}

@@ -413,6 +413,8 @@
             KEY `last_order_time` (`success_last_time`)
         ) ENGINE=MyISAM AUTO_INCREMENT=3000 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_favorite` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -457,6 +459,17 @@
             KEY `agentid` (`agentid`),
             KEY `status` (`status`)
         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_notice_read_log` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `notice_id` int(10) unsigned NOT NULL DEFAULT '0',
+            `uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `is_new` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            PRIMARY KEY (`id`),
+            KEY `uid` (`uid`),
+            KEY `notice_id` (`notice_id`),
+            KEY `is_new` (`is_new`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=90 DEFAULT CHARSET=utf8;
 
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_system_log` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -1004,10 +1017,15 @@
         ('41','diypage','biz','平台装修','../addons/hello_banbanjia/static/img/plugin/diypage.jpg','','可自定义底部菜单，自定义页面等','1','0','1');
         INSERT INTO ims_hello_banbanjia_plugin VALUES 
         ('42','superRedpacket','biz','超级红包','../addons/hello_banbanjia/static/img/plugin/superRedpacket.jpg','','超级红包可实现主动发送和分享红包功能！！！！！！','1','0','1');
-        INSERT INTO ims_hello_banbanjia_service_config VALUES
-        ('1','1','5','1');
         INSERT INTO ims_hello_banbanjia_plugin VALUES 
         ('43','spread','biz','分销推广','../addons/hello_banbanjia/static/img/plugin/spread.jpg','','分销推广','1','0','1');
+        INSERT INTO ims_hello_banbanjia_plugin VALUES 
+        ('44','offer','biz','报价模板','../addons/hello_banbanjia/static/img/plugin/offer.jpg','','给商家设置报价模板','1','0','1');
+        INSERT INTO ims_hello_banbanjia_plugin VALUES 
+        ('45','im','biz','WEB-IM','../addons/hello_banbanjia/static/img/plugin/im.jpg','','提供给商家的在线聊天工具','1','0','1');
+
+        INSERT INTO ims_hello_banbanjia_service_config VALUES
+        ('1','1','5','1');
         INSERT INTO `ims_hello_banbanjia_service_now_data` VALUES 
         ('1', '1', '0', '1', '10', '10', '2019-08-01');
         INSERT INTO `ims_hello_banbanjia_service_words` VALUES ('1', '1','有什么需要咨询的吗？', '2019-08-01 12:00:00', '1');
@@ -1037,6 +1055,7 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_favorite`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_chat_log`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_notice`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_notice_read_log`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_system_log`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_room_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_goods`;

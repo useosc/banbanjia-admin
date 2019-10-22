@@ -7,5 +7,8 @@
         </div>
     </div>
 </div>
+{if $_W['_ctrl'] == 'store' || $ctrl == 'store'}
+<div style="position:fixed;z-index:999999;right:20px;bottom:50px;padding:0;margin:0;width:100px;height:40px;background:#1E9FFF;border-radius:100px;line-height:40px;text-align:center;color:#fff;font-size:13px;cursor:pointer;" id="show-chat">WEB-IM</div>
+{/if}
 {itemplate 'public/hello'}
 {itemplate 'public/footer-base'}

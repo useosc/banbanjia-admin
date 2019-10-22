@@ -9,7 +9,7 @@
             var action = $(this).attr('action');
             var method = $(this).attr('method');
             if((action == './index.php?' || action == './index.php' || action == '' || action == "undefined") && (method != 'post')) {
-                $(this).attr('action', './wmerchant.php?');
+                $(this).attr('action', './business.php?');
             }
         });
     {/if}
@@ -45,7 +45,9 @@
                 });
             }, 7000);
         {/if}
+
         $.post("{php echo iurl('common/cron/task');}", function(){});
+
         setInterval(function(){
             $.post("{php echo iurl('common/cron/order_notice', array('_ctrl' => $_GPC['ctrl'], '_ac' => $_GPC['ac']));}", function(data){
                 if(data == 'success') {
@@ -53,6 +55,7 @@
                 }
             });
             $.post("{php echo iurl('common/cron/task');}", function(){});
+
             {if $_W['clerk']}
                 $.post("{php echo iurl('common/notice');}", function(data){
                     if(data > 0) {
@@ -63,6 +66,7 @@
                     }
                 });
             {/if}
+            
         }, 30000);
     });
 </script>
