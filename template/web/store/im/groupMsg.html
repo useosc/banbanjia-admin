@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>WEB-IM</title>
+    <link rel="stylesheet" href="{php echo WE7_BANBANJIA_LOCAL}static/css/im_msg.css">
+    <link rel="stylesheet" href="{php echo WE7_BANBANJIA_LOCAL}static/css/hint.min.css">
+    <link rel="stylesheet" href="{php echo WE7_BANBANJIA_LOCAL}static/css/im_apply_friend_list.css">
+    <link rel="stylesheet" href="{php echo WE7_BANBANJIA_LOCAL}static/css/im_contact.css">
+    <link rel="stylesheet" href="{php echo WE7_BANBANJIA_LOCAL}static/css/im-action-row.css">
+    <link rel="stylesheet" href="{php echo WE7_BANBANJIA_LOCAL}static/css/im_home.css">
+    <link rel="stylesheet" href="{php echo WE7_BANBANJIA_LOCAL}static/css/im_media.css">
+
+    <script src="{$_W['siteroot']}web/resource/js/lib/jquery-1.11.1.min.js"></script>
+    <script src="{php echo WE7_BANBANJIA_LOCAL}static/js/template-web.js"></script>
+    <script src="{php echo WE7_BANBANJIA_LOCAL}static/js/jquery.i18n.properties.min.js"></script>
+    <script src="{php echo WE7_BANBANJIA_LOCAL}static/js/im/zalyKey.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+</head>
+<!-- <input type="hidden" value='<?php echo $siteAddress;?>' class="siteAddress"> -->
+
+<body>
+    <!--左列， 以及会话帧-->
+    <div style="background-color: red;height: 5rem;display: none" class="site-warning"></div>
+    {itemplate 'store/im/base/baseView'}
+    <!-- 右边聊天窗口，包括消息帧 -->
+    <div class="layout-right msg-chat-dialog" >
+        <div class="chat-dialog" style="display: none">
+            {itemplate 'store/im/base/chatDialog'}
+        </div>
+        <!-- <div  class="no-chat-dialog-div" style="display: none"> -->
+            <div  class="no-chat-dialog-div">
+            <img src="{php echo WE7_BANBANJIA_LOCAL}static/img/msg/no_chat_dialog.png" style=" " class="no-chat-dialog">
+        </div>
+    </div>
+
+    <div class="layout-right friend-apply-dialog" style="display: none;">
+        {itemplate 'store/im/base/friendApplyList'}
+    </div>
+
+
+    <div class="layout-right plugin-list-dialog" style="display: none;">
+        {itemplate 'store/im/base/pluginList'}
+    </div>
+
+</div>
+
+
+    <audio id="msg_sound_tip" style="display: none" muted="muted">
+        <source src="{php echo WE7_BANBANJIA_LOCAL}static/voice/definite.mp3" type="audio/mpeg">
+    </audio>
+
+
+{itemplate 'store/im/base/template'}
+{itemplate 'store/im/base/template_msg'}
+
+<script src="./public/js/im/zalyAction.js"></script>
+<script src="./public/js/im/zalyClient.js"></script>
+<script src="./public/js/im/zalyBaseWs.js"></script>
+<script src="./public/js/im/zalyIm.js"></script>
+<script src="./public/js/im/zalyMsg.js"></script>
+<script src="./public/js/im/zalyGroupMsg.js"></script>
+<script src="./public/js/home/zalyMiniProgram.js"></script>
+<script src="./public/sdk/zalyjsNative.js"></script>
+<script src="./public/js/qrcode.js" ></script>
+<script src="./public/js/utf.js" ></script>
+<script src="./public/js/jquery.qrcode.js"></script>
+    <script src="./public/js/zalyjsHelper.js"></script>
+    <script src="./public/js/watermark.js"></script>
+
+<script type="text/javascript">
+
+
+    requestSiteConfig(ZalyIm);
+
+    $(window).resize(function () {
+        setFontSize();
+        try{
+            var friendsDivHeight = $(".left-body-friends")[0].clientHeight;
+            var friendToolsHeight = $(".friend-tools")[0].clientHeight;
+            $(".friend-list-contact-row")[0].style.height = Number(friendsDivHeight-friendToolsHeight)+"px";
+        }catch (error) {
+
+        }
+
+        try{
+            var groupsDivHeight = $(".left-body-groups")[0].clientHeight;
+            var groupToolsHeight = $(".group-tools")[0].clientHeight;
+            $(".group-list-contact-row")[0].style.height = Number(groupsDivHeight-groupToolsHeight)+"px";
+        }catch (error) {
+
+        }
+    });
+    setFontSize();
+    function setFontSize()
+    {
+        var rem = getRemPx();
+        $('html').css('font-size', rem + "px");
+    }
+
+    function getRemPx()
+    {
+        var whdef = 10.66/1440;// 1440,使用10.66PX的默认值
+        var wW = window.innerWidth;// 当前窗口的宽度
+        var rem = wW * whdef;// 以默认比例值乘以当前窗口宽度,得到该宽度下的相应FONT-SIZE值
+        if(rem < 8) {
+            rem = 8;
+        }
+        if(rem > 10.66) {
+            rem = 10.66;
+        }
+        return rem;
+    }
+
+    localStorage.setItem(chatTypeKey, DefaultChat);
+
+
+    history.pushState(null, null, document.URL);
+    window.addEventListener('popstate', function () {
+        history.pushState(null, null, document.URL);
+    });
+
+
+    jQuery.i18n.properties({
+        name: "lang",
+        path: siteAddress + '/public/js/config/',
+        mode: 'map',
+        language: languageName,
+        callback: function () {
+            try {
+                //初始化页面元素
+                $('[data-local]').each(function () {
+                    var changeData = $(this).attr("data-local");
+                    var changeDatas = changeData.split(":");
+                    var changeDataName = changeDatas[0];
+                    var changeDataValue = changeDatas[1];
+                    $(this).attr(changeDataName, $.i18n.map[changeDataValue]);
+                });
+                $('[data-local-value]').each(function () {
+                    var changeHtmlValue = $(this).attr("data-local-value");
+                    $(this).html($.i18n.map[changeHtmlValue]);
+                });
+                $('[data-local-placeholder]').each(function () {
+                    var placeholderValue = $(this).attr("data-local-placeholder");
+                    $(this).attr("placeholder", $.i18n.map[placeholderValue]);
+                });
+            }
+            catch(ex){
+                console.log(ex.message);
+            }
+        }
+    });
+        $(document).on("click", ".preemptiveVersionDiv", function(){
+            var qqUrl = "https://jq.qq.com/?_wv=1027&k=5GBN4lJ";
+            window.open(qqUrl);
+        });
+
+    if (window.Notification && Notification.permission !== "granted") {
+        Notification.requestPermission().then(function(result) {
+            if (result === 'denied') {
+                console.log('Permission wasn\'t granted. Allow a retry.');
+                return;
+            }
+            if (result === 'default') {
+                console.log('The permission request was dismissed.');
+                return;
+            }
+        });
+    }
+
+</script>
+
+
+</body>
+</html>
