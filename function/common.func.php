@@ -5,7 +5,6 @@ function itemplate($filename, $flag = TEMPLATE_DISPLAY)
     global $_W;
     global $_GPC;
     $module = "hello_banbanjia";
-
     if (defined("IN_SYS")) {
         if (!defined('IN_PLUGIN')) {
             $source = WE7_BANBANJIA_PATH . "template/web/" . $filename . ".html";
@@ -17,7 +16,9 @@ function itemplate($filename, $flag = TEMPLATE_DISPLAY)
                 $source = WE7_BANBANJIA_PATH . 'template/web/' . $filename_old . '.html';
             }
         }
-        $compile = IA_ROOT . "/data/tpl/web" . $_W["template"] . "/" . $module . "/" . $filename . ".tpl.php";
+        $compile = IA_ROOT . "/data/tpl/web/" . $_W["template"] . "/" . $module . "/" . $filename . ".tpl.php";
+    }else{ //公众号
+
     }
 
     //开始编译

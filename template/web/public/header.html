@@ -267,6 +267,12 @@
 							访客
 						</a>
 					</li>
+					<li class="{if $_W['_ac'] == 'price'}active{/if}">
+						<a href="{php echo iurl('store/price/list');}">
+							<i class="icon icon-brand"></i>
+							报价
+						</a>
+					</li>
 					<li class="{if $_W['_ac'] == 'contract'}active{/if}">
 						<a href="{php echo iurl('store/contract/list');}">
 							<i class="icon icon-edit"></i>
@@ -289,12 +295,6 @@
 						<a href="{php echo iurl('store/service/comment');}">
 							<i class="icon icon-wang light"></i>
 							售后
-						</a>
-					</li>
-					<li class="{if $_W['_ac'] == 'price'}active{/if}">
-						<a href="{php echo iurl('store/price/index');}">
-							<i class="icon icon-brand"></i>
-							价格
 						</a>
 					</li>
 					<li class="{if $_W['_ac'] == 'statistic'}active{/if}">

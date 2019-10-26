@@ -295,15 +295,24 @@ a:hover, a:focus {
 }
 
 /* 表单 */
+.form .control-label {
+    text-align: right;
+    font-weight: 500;
+}
 
 /* 改变水平表单的样式 */
 #js-modal .form-horizontal{max-width: 100%;}
-.form-horizontal {
+/* .form-horizontal {
     max-width: 950px;
-}
+} */
 
 .form-horizontal .control-label {
     text-align: left;
+    font-weight: 500;
+}
+
+.form-horizontal .control-label .text-right{
+    text-align: right;
     font-weight: 500;
 }
 
