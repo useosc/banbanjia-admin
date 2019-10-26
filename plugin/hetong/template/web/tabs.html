@@ -2,11 +2,14 @@
 <div class="nav slimscroll">
     <div class="menu-header">模板管理</div>
     <ul class="menu-item">
-      <li class="{if $_W['_op'] == 'index' || $_W['_op'] == 'post'}active{/if}">
-        <a href="{php echo iurl('hetong/index/index');}">模板列表</a>
+      <li class="{if $_W['_ac'] == 'index'}active{/if}">
+        <a href="{php echo iurl('hetong/index/index');}">合同列表</a>
       </li>
       <li class="{if $_W['_op'] == 'params' || $_W['_op'] == 'params'}active{/if}">
         <a href="{php echo iurl('hetong/index/params');}">模板字段</a>
+      </li>
+      <li class="{if $_W['_ac'] == 'cate'}active{/if}">
+        <a href="{php echo iurl('hetong/cate/list');}">合同分类</a>
       </li>
     </ul>
 </div>

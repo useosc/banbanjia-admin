@@ -1,0 +1,99 @@
+{itemplate 'public/header'}
+{if $ta == 'list'}
+<form action="./index.php" class="form-horizontal form-filter">
+    <input name="status" type="hidden" value="{$status}">
+</form>
+
+<form action="" class="form-table form" method="post">
+    <div class="panel panel-table">
+		<div class="panel-heading">
+			<a href="{php echo iurl('store/contract/cate/post');}" class="btn btn-primary btn-sm">添加新分类</a>
+		</div>
+		<div class="panel-body table-responsive js-table">
+			{if empty($cates)}
+				<div class="no-result">还没有相关数据</div>
+			{else}
+				<table class="table table-hover">
+					<thead class="navbar-inner">
+					<tr>
+						<th width="40">
+							<div class="checkbox checkbox-inline">
+								<input type="checkbox" name="ids[]" />
+								<label></label>
+							</div>
+						</th>
+						<th>分类名称</th>
+						<th>所属合同模板数量</th>
+						<!-- <th>状态</th> -->
+						<th style="width:150px; text-align:right;">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+						{loop $cates $cate}
+							<tr>
+								<td>
+									<div class="checkbox checkbox-inline">
+										<input type="checkbox" name="ids[]" value="{$cate['id']}"/>
+										<label></label>
+									</div>
+								</td>
+								<td>{$cate['catename']}</td>
+								<td>{php echo intval($hetong_nums[$cate['id']]['total'])}</td>
+								<!-- <td>
+									<input type="checkbox" class="js-checkbox" data-href="{php echo iurl('hetong/cate/status', array('id' => $cate['id']));}" data-name="status" value="1" {if $cate['status'] == 1}checked{/if}>
+								</td> -->
+								<td style="text-align:right;">
+									<a href="{php echo iurl('store/contract/cate/post', array('id' => $cate['id']))}" class="btn btn-default btn-sm">编辑</a>
+									<a href="{php echo iurl('store/contract/cate/del', array('id' => $cate['id']))}" class="btn btn-default btn-sm js-remove" data-confirm="删除后将不可恢复，确定删除吗">删除</a>
+								</td>
+							</tr>
+						{/loop}
+					</tbody>
+				</table>
+				<div class="btn-region clearfix">
+					<div class="pull-left">
+						<a href="{php echo iurl('store/contract/cate/del')}" class="btn btn-primary btn-danger js-batch" data-batch="remove" data-confirm="删除后将不可恢复，确定删除吗?">删除</a>
+					</div>
+					<div class="pull-right">
+						{$pager}
+					</div>
+				</div>
+			{/if}
+		</div>
+	</div>
+</form>
+{/if}
+
+{if $ta == 'post'}
+<div class="page clearfix system-permit">
+    <form class="form-horizontal form form-validate" action="" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">分类名称</label>
+			<div class="col-sm-9 col-xs-12">
+				<input type="text" name="catename" value="{$cate['catename']}" class="form-control" required="true"/>
+			</div>
+        </div>
+        <!-- <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">状态</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="radio radio-inline">
+					<input type="radio" value="1" name="status" id="status-1" {if $cate['status'] == 1}checked{/if}>
+					<label for="status-1">启用</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" value="0" name="status" id="status-0" {if $cate['status'] == 0}checked{/if}>
+					<label for="status-0">禁用</label>
+				</div>
+				<div class="help-block">如果禁用，则当前分类的合同全部会禁止使用</div>
+			</div>
+        </div> -->
+        <div class="form-group">
+			<div class="col-sm-9 col-xs-12">
+				<input type="hidden" name="token" value="{$_W['token']}">
+				<input type="submit" value="提交" class="btn btn-primary">
+			</div>
+		</div>
+    </form>
+</div>
+{/if}
+{itemplate 'public/footer'}

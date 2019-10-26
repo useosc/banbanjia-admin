@@ -3,10 +3,19 @@
 	<div class="menu-header">管理</div>
 	<ul class="menu-item">
 		<li {if $_W['_op'] == 'index'}class="active"{/if}>
-		<a href="{php echo iurl('store/contract/index');}">合同概况</a>
+			<a href="{php echo iurl('store/contract/index');}">合同概况</a>
 		</li>
 		<li {if $_W['_op'] == 'list'}class="active"{/if}>
-		<a href="{php echo iurl('store/contract/list');}">合同列表</a>
+			<a href="{php echo iurl('store/contract/list');}">合同列表</a>
+		</li>
+		<li {if $_W['_op'] == 'template'}class="active"{/if}>
+			<a href="{php echo iurl('store/contract/template');}">合同模板</a>
+		</li>
+		<li {if $_W['_op'] == 'cate'}class="active"{/if}>
+			<a href="{php echo iurl('store/contract/cate');}">模板分类</a>
+		</li>
+		<li {if $_W['_op'] == 'sysTemplate'}class="active"{/if}>
+			<a href="{php echo iurl('store/contract/sysTemplate');}">系统模板</a>
         </li>
 	</ul>
 </div>

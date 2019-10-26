@@ -977,7 +977,7 @@
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_hetong_category` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
-            `title` varchar(30) NOT NULL,
+            `catename` varchar(30) NOT NULL,
             `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
             KEY `uniacid` (`uniacid`)
@@ -986,6 +986,32 @@
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_hetong` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `displayorder` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(100) NOT NULL,
+            `data` text,
+            `cateid` int(10) NOT NULL DEFAULT '0',
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_hetong_category` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `catename` varchar(30) NOT NULL,
+            `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_hetong` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `displayorder` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(100) NOT NULL,
             `data` text,
             `cateid` int(10) NOT NULL DEFAULT '0',
             `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
@@ -1071,6 +1097,8 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_paylog`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_hetong;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_hetong_category`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_hetong;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia__store_hetong_category`;
         ]]>
     </upgrade>
 </manifest>

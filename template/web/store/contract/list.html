@@ -1,3 +1,22 @@
 {itemplate 'public/header'}
+<form action="./index.php?" class="form-horizontal form-filter" id="form-contract">
+    {php echo tpl_form_filter_hidden('store/contract/list');}
+    <input type="hidden" name="filter_type" value="{$filter_type}"/>
+    <input type="hidden" name="status" value="{$status}"/>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">合同状态</label>
+        <div class="col-sm-7 col-xs-12">
+            <div class="btn-group">
+                <div class="btn-group">
+                    <a href="{php echo ifilter_url('status:0');}" class="btn {if $status == 0}btn-primary{else}btn-default{/if}">所有合同</a>
+                    <a href="{php echo ifilter_url('status:1');}" class="btn {if $status == 1}btn-primary{else}btn-default{/if}">待我签</a>
+                    <a href="{php echo ifilter_url('status:2');}" class="btn {if $status == 2}btn-primary{else}btn-default{/if}">待他签</a>
+                    <a href="{php echo ifilter_url('status:3');}" class="btn {if $status == 3}btn-primary{else}btn-default{/if}">已完成</a>
+                    <a href="{php echo ifilter_url('status:4');}" class="btn {if $status == 4}btn-primary{else}btn-default{/if}">已撤回</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 {itemplate 'public/footer'}

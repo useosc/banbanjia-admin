@@ -1,5 +1,5 @@
 {itemplate 'public/header'}
-{if $op == 'index'}
+{if $ta == 'list'}
 <form action="./index.php" class="form-horizontal form-filter">
 	<input name="status" type="hidden" value="{$status}">
 </form>
@@ -7,7 +7,7 @@
 <form action="" class="form-table form" method="post">
 	<div class="panel panel-table">
 		<div class="panel-heading">
-			<a href="{php echo iurl('hetong/index/post');}" class="btn btn-primary btn-sm">添加新的合同模板</a>
+			<a href="{php echo iurl('store/contract/template/post');}" class="btn btn-primary btn-sm">添加新的合同模板</a>
 		</div>
 		<div class="panel-body table-responsive js-table">
 			{if empty($hetongs)}
@@ -45,8 +45,8 @@
 									<input type="checkbox" class="js-checkbox" data-href="{php echo iurl('hetong/index/status', array('id' => $hetong['id']));}" data-name="status" value="1" {if $hetong['status'] == 1}checked{/if}>
 								</td>
 								<td style="text-align:right;">
-									<a href="{php echo iurl('hetong/index/post', array('id' => $hetong['id']))}" class="btn btn-default btn-sm">编辑</a>
-									<a href="{php echo iurl('hetong/index/del', array('id' => $hetong['id']))}" class="btn btn-default btn-sm js-remove" data-confirm="删除后将不可恢复，确定删除吗">删除</a>
+									<a href="{php echo iurl('store/contract/template/post', array('id' => $hetong['id']))}" class="btn btn-default btn-sm">编辑</a>
+									<a href="{php echo iurl('store/contract/template/del', array('id' => $hetong['id']))}" class="btn btn-default btn-sm js-remove" data-confirm="删除后将不可恢复，确定删除吗">删除</a>
 								</td>
 							</tr>
 						{/loop}
@@ -54,7 +54,7 @@
 				</table>
 				<div class="btn-region clearfix">
 					<div class="pull-left">
-						<a href="{php echo iurl('hetong/index/del')}" class="btn btn-primary btn-danger js-batch" data-batch="remove" data-confirm="删除后将不可恢复，确定删除吗?">删除</a>
+						<a href="{php echo iurl('store/contract/template/del')}" class="btn btn-primary btn-danger js-batch" data-batch="remove" data-confirm="删除后将不可恢复，确定删除吗?">删除</a>
 					</div>
 					<div class="pull-right">
 						{$pager}
@@ -66,7 +66,7 @@
 </form>
 {/if}
 
-{if $op == 'post'}
+{if $ta == 'post'}
 <div class="page clearfix system-permit">
 	<form class="form-horizontal form form-validate" id="form1" action="" method="post" enctype="multipart/form-data">
 		<div class="form-group">
