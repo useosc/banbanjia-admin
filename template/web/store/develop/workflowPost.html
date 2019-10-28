@@ -1,0 +1,27 @@
+{itemplate 'public/header'}
+<div class="page clearfix">
+    <h2>编辑工作流</h2>
+    <form class="form-horizontal form form-validate" id="form1" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">流程名称</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" class="form-control" name="name" value="{$workflow['name']}" required="true">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">流程内容</label>
+            <div class="col-sm-9 col-xs-12">
+                <!-- {php echo tpl_ueditor('filename', $workflow['filename']);} -->
+                <textarea style="min-height:600px;width:100%" name="filename">{$workflow['filename']}</textarea>	
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-9 col-xs-9 col-md-9">
+                <input type="hidden" name="token" value="{$_W['token']}">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
+
+{itemplate 'public/footer'}

@@ -1,0 +1,11 @@
+<div class="second-sidebar-title">
+    二次开发
+</div>
+<div class="nav slimscroll">
+    <div class="menu-header">流程管理</div>
+    <ul class="menu-item">
+        <li {if $_W['_op'] == 'workflow' && $_W['_ta'] == 'list'}class="active"{/if}>
+            <a href="{php echo iurl('store/develop/workflow/list');}">流程列表</a>
+        </li>
+    </ul>
+</div>

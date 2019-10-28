@@ -1,0 +1,34 @@
+{itemplate 'public/header'}
+<script src="https://cdn.bootcss.com/gojs/2.0.17/go-debug.js"></script>
+<div id="sample">
+    <div id="myDiagram" style="border: solid 1px gray;height:720px"></div>
+</div>
+
+<script>
+$(function(){
+    function init(){
+        var $go = go.GraphObject.make;
+
+        myDiagram = $go(go.Diagram,"myDiagram",{
+            initialContentAlignment: go.Spot.Center,
+            allowDrop: true,  // must be true to accept drops from the Palette
+            "LinkDrawn": showLinkLabel,  // this DiagramEvent listener is defined below
+            "LinkRelinked": showLinkLabel,
+            "animationManager.duration": 800, // slightly longer than default (600ms) animation
+            "undoManager.isEnabled": true  // enable undo & redo
+        });
+
+        function nodeStyle(){
+            return [
+                
+            ]
+        }
+
+        myDiagram.nodeTemplateMap.add("",
+            $go(go.Node,"Spot",modeStyle(),
+            )
+        );
+    }
+});
+</script>
+{itemplate 'public/footer'}

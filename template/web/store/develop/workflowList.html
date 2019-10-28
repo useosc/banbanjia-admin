@@ -1,0 +1,51 @@
+{itemplate 'public/header'}
+{if $ta == 'list'}
+<form action="" class="form-table form" id="form-workflow" method="post">
+    <div class="panel panel-table">
+        <div class="panel-heading">
+            <a href="{php echo iurl('store/develop/workflow/post');}" class="btn btn-primary btn-sm">新建</a>
+        </div>
+        <div class="panel-body table-reponsive js-table">
+            {if empty($data)}
+                <div class="no-result">
+                    <p>还没有相关数据</p>
+                </div>
+            {else}
+                <table class="table table-hover">
+                    <thead class="navbar-inner">
+                    <tr>
+                        <th>名称</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {loop $data $item}
+                        <tr>
+                            <td>{$item['name']}</td>
+                            <td>{php echo date('Y-m-d H:i', $item['createtime']);}</td>
+                            <td>
+                                <a href="{php echo iurl('store/develop/workflow/post', array('id' => $item['id']))}" class="btn btn-primary btn-sm" >编辑</a>
+                                <a href="{php echo iurl('store/develop/workflow/flow', array('id' => $item['id']))}" class="btn btn-default btn-sm" >流程图</a>
+                            </td>
+                        </tr>
+                        {/loop}
+                    </tbody>
+                </table>
+                <div class="btn-region clearfix">
+                    <div class="pull-right">
+                        {$pager}
+                    </div>
+                </div>
+            {/if}
+        </div>
+    </div>
+</form>
+{/if}
+
+{if $ta == 'detail'}
+
+{/if}
+
+
+{itemplate 'public/footer'}

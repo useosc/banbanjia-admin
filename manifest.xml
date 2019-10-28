@@ -1020,6 +1020,33 @@
             KEY `uniacid` (`uniacid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_order_test` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `openid` varchar(50),
+            `order_sn` varchar(20) NOT NULL,
+            `order_channel` varchar(20) NOT NULL DEFAULT 'wxapp' COMMENT 'wxapp,wap,pc',
+            `order_type` varchar(20) NOT NULL DEFAULT 'free' COMMENT 'free,share',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `uid` (`uid`),
+        )  ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_workflow` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `wf_uid` varchar(50) NOT NULL DEFAULT '0',
+            `name` varchar(50) NOT NULL DEFAULT '0',
+            `createtime` varchar(15) NOT NULL DEFAULT '0',
+            `filename` text COMMENT 'XML流程描述',
+            `layout` text COMMENT 'Json位置描述',
+            `version` varchar(50) COMMENT '版本',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
         INSERT INTO ims_hello_banbanjia_plugin VALUES
         ('40','wxapp','biz','搬搬家','../addons/hello_banbanjia/static/img/plugin/wxapp.jpg','','搬搬家，国内一流搬家平台','1','0','1');
         INSERT INTO ims_hello_banbanjia_plugin VALUES 
@@ -1099,6 +1126,7 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_hetong_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_hetong;
         DROP TABLE IF EXISTS `ims_hello_banbanjia__store_hetong_category`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_workflow`;
         ]]>
     </upgrade>
 </manifest>
