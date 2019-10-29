@@ -1,34 +1,284 @@
 {itemplate 'public/header'}
 <script src="https://cdn.bootcss.com/gojs/2.0.17/go-debug.js"></script>
 <div id="sample">
-    <div id="myDiagram" style="border: solid 1px gray;height:720px"></div>
+    <div style="width:100%; white-space:nowrap;">
+        <span style="display: inline-block; vertical-align: top; padding: 5px; width:100px">
+            <div id="myPalette" style="border: solid 1px gray; height: 720px"></div>
+        </span>
+        <span style="display: inline-block; vertical-align: top; padding: 5px; width:90%">
+            <div style="margin-bottom: 10px;">
+                <button id="SaveButton" onclick="save()">保存流程图</button>
+            </div>
+            <div id="myDiagram" style="border: solid 1px gray; height: 720px"></div>
+        </span>
+    </div>
+    <form action="#" id="theForm" name="theForm" method="post">
+        <div style="display:none">
+            <input type="hidden" id="id" name="id" value="{$id}">
+            <textarea name="mySavedModel" id="mySavedModel" style="width:100%;height:300px"></textarea>
+        </div>
+    </form>
 </div>
 
 <script>
-$(function(){
-    function init(){
-        var $go = go.GraphObject.make;
+    $(function () {
+        function init() {
+            var $go = go.GraphObject.make;
 
-        myDiagram = $go(go.Diagram,"myDiagram",{
-            initialContentAlignment: go.Spot.Center,
-            allowDrop: true,  // must be true to accept drops from the Palette
-            "LinkDrawn": showLinkLabel,  // this DiagramEvent listener is defined below
-            "LinkRelinked": showLinkLabel,
-            "animationManager.duration": 800, // slightly longer than default (600ms) animation
-            "undoManager.isEnabled": true  // enable undo & redo
-        });
+            myDiagram = $go(go.Diagram, "myDiagram", {
+                initialContentAlignment: go.Spot.Center,
+                allowDrop: true,  // must be true to accept drops from the Palette
+                "LinkDrawn": showLinkLabel,  // this DiagramEvent listener is defined below
+                "LinkRelinked": showLinkLabel,
+                "animationManager.duration": 800, // slightly longer than default (600ms) animation
+                "undoManager.isEnabled": true  // enable undo & redo
+            });
 
-        function nodeStyle(){
-            return [
-                
-            ]
+            function nodeStyle() {
+                return [
+                    new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+                    {
+                        locationSpot: go.Spot.Center,
+                        mouseEnter: function (e, obj) { showPorts(obj.part, true); },
+                        mouseLeave: function (e, obj) { showPorts(obj.part, false); }
+                    }
+                ];
+            }
+
+            function showPorts(node, show) {
+                var diagram = node.diagram;
+                if (!diagram || diagram.isReadOnly || !diagram.allowLink) return;
+                node.ports.each(function (port) {
+                    port.stroke = (show ? "white" : null);
+                });
+            }
+
+            function makePort(name, spot, output, input) {
+                // the port is basically just a small circle that has a white stroke when it is made visible
+                return $go(go.Shape, "Circle",
+                    {
+                        fill: "transparent",
+                        stroke: null,  // this is changed to "white" in the showPorts function
+                        desiredSize: new go.Size(8, 8),
+                        alignment: spot, alignmentFocus: spot,  // align the port on the main Shape
+                        portId: name,  // declare this object to be a "port"
+                        fromSpot: spot, toSpot: spot,  // declare where links may connect at this port
+                        fromLinkable: output, toLinkable: input,  // declare whether the user may draw links to/from here
+                        cursor: "pointer"  // show a different cursor to indicate potential link point
+                    });
+            }
+
+            function linkDoubleClick(e, obj) {
+                var clicked = obj.part;
+                if (clicked !== null) {
+                    var thisemp = clicked.data;
+                    //console.log(thisemp);
+                    link_edit($("#wfuid").val(), thisemp.from, thisemp.to, thisemp.condition_type, thisemp.condition_value);
+                }
+            }
+
+            //定义图表节点
+
+            var lightText = 'whitesmoke';
+
+            myDiagram.nodeTemplateMap.add("",
+                $go(go.Node, "Spot", nodeStyle(),
+                    { doubleClick: nodeDoubleClick },
+                    $go(go.Panel, "Auto",
+                        $go(go.Shape, "Rectangle", { fill: "#00A9C9", stroke: null },
+                            new go.Binding("figure", "figure")),
+                        $go(go.TextBlock, {
+                            font: "bold 11pt Helvetica, Arial, sans-serif",
+                            stroke: lightText,
+                            margin: 8,
+                            maxSize: new go.Size(160, NaN),
+                            wrap: go.TextBlock.WrapFit,
+                            editable: false
+                        }, new go.Binding("text").makeTwoWay())
+                    ),
+                    makePort("T", go.Spot.Top, false, true),
+                    makePort("L", go.Spot.Left, true, true),
+                    makePort("R", go.Spot.Right, true, true),
+                    makePort("B", go.Spot.Bottom, true, false)
+                )
+            );
+
+            myDiagram.nodeTemplateMap.add("split",  // the default category
+                $go(go.Node, "Spot", nodeStyle(),
+                    { doubleClick: nodeDoubleClick },
+                    // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
+                    $go(go.Panel, "Auto",
+                        $go(go.Shape, "Rectangle",
+                            { fill: "#008A00", stroke: null },
+                            new go.Binding("figure", "figure")),
+                        $go(go.TextBlock,
+                            {
+                                font: "bold 11pt Helvetica, Arial, sans-serif",
+                                stroke: lightText,
+                                margin: 8,
+                                maxSize: new go.Size(160, NaN),
+                                wrap: go.TextBlock.WrapFit,
+                                editable: false
+                            },
+                            new go.Binding("text").makeTwoWay())
+                    ),
+                    // four named ports, one on each side:
+                    makePort("T", go.Spot.Top, false, true),
+                    makePort("L", go.Spot.Left, true, true),
+                    makePort("R", go.Spot.Right, true, true),
+                    makePort("B", go.Spot.Bottom, true, false)
+                ));
+
+            myDiagram.nodeTemplateMap.add("join",  // the default category
+                $go(go.Node, "Spot", nodeStyle(),
+                    { doubleClick: nodeDoubleClick },
+                    // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
+                    $go(go.Panel, "Auto",
+                        $go(go.Shape, "Rectangle",
+                            { fill: "#AC193D", stroke: null },
+                            new go.Binding("figure", "figure")),
+                        $go(go.TextBlock,
+                            {
+                                font: "bold 11pt Helvetica, Arial, sans-serif",
+                                stroke: lightText,
+                                margin: 8,
+                                maxSize: new go.Size(160, NaN),
+                                wrap: go.TextBlock.WrapFit,
+                                editable: false
+                            },
+                            new go.Binding("text").makeTwoWay())
+                    ),
+                    // four named ports, one on each side:
+                    makePort("T", go.Spot.Top, false, true),
+                    makePort("L", go.Spot.Left, true, true),
+                    makePort("R", go.Spot.Right, true, true),
+                    makePort("B", go.Spot.Bottom, true, false)
+                ));
+
+            myDiagram.nodeTemplateMap.add("Start",
+                $go(go.Node, "Spot", nodeStyle(),
+                    $go(go.Panel, "Auto",
+                        $go(go.Shape, "Circle",
+                            { minSize: new go.Size(40, 40), fill: "#79C900", stroke: null }),
+                        $go(go.TextBlock, "Start",
+                            { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText },
+                            new go.Binding("text"))
+                    ),
+                    // three named ports, one on each side except the top, all output only:
+                    makePort("L", go.Spot.Left, true, false),
+                    makePort("R", go.Spot.Right, true, false),
+                    makePort("B", go.Spot.Bottom, true, false)
+                ));
+
+            myDiagram.nodeTemplateMap.add("End",
+                $go(go.Node, "Spot", nodeStyle(),
+                    $go(go.Panel, "Auto",
+                        $go(go.Shape, "Circle",
+                            { minSize: new go.Size(40, 40), fill: "#DC3C00", stroke: null }),
+                        $go(go.TextBlock, "End",
+                            { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText },
+                            new go.Binding("text"))
+                    ),
+                    // three named ports, one on each side except the bottom, all input only:
+                    makePort("T", go.Spot.Top, false, true),
+                    makePort("L", go.Spot.Left, false, true),
+                    makePort("R", go.Spot.Right, false, true)
+                ));
+
+            // myDiagram.nodeTemplateMap.add("Comment",
+            //     $go(go.Node, "Auto", nodeStyle(),
+            //         $go(go.Shape, "File",
+            //             { fill: "#EFFAB4", stroke: null }),
+            //         $go(go.TextBlock,
+            //             {
+            //                 margin: 5,
+            //                 maxSize: new go.Size(200, NaN),
+            //                 wrap: go.TextBlock.WrapFit,
+            //                 textAlign: "center",
+            //                 editable: true,
+            //                 font: "bold 12pt Helvetica, Arial, sans-serif",
+            //                 stroke: '#454545'
+            //             },
+            //             new go.Binding("text").makeTwoWay())
+            //         // no ports, because no links are allowed to connect with a comment
+            //     ));
+
+            myDiagram.linkTemplate =
+                $go(go.Link,  // the whole link panel
+                    {
+                        routing: go.Link.AvoidsNodes,
+                        curve: go.Link.JumpOver,
+                        corner: 5, toShortLength: 4,
+                        relinkableFrom: true,
+                        relinkableTo: true,
+                        reshapable: true,
+                        resegmentable: true,
+                        // mouse-overs subtly highlight links:
+                        mouseEnter: function (e, link) { link.findObject("HIGHLIGHT").stroke = "rgba(30,144,255,0.2)"; },
+                        mouseLeave: function (e, link) { link.findObject("HIGHLIGHT").stroke = "transparent"; }
+                    },
+                    { doubleClick: linkDoubleClick },
+                    new go.Binding("points").makeTwoWay(),
+                    $go(go.Shape,  // the highlight shape, normally transparent
+                        { isPanelMain: true, strokeWidth: 8, stroke: "transparent", name: "HIGHLIGHT" }),
+                    $go(go.Shape,  // the link path shape
+                        { isPanelMain: true, stroke: "gray", strokeWidth: 2 }),
+                    $go(go.Shape,  // the arrowhead
+                        { toArrow: "standard", stroke: null, fill: "gray" }),
+                    $go(go.Panel, "Auto",  // the link label, normally not visible
+                        { visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5 },
+                        new go.Binding("visible", "visible").makeTwoWay(),
+                        $go(go.Shape, "RoundedRectangle",  // the label shape
+                            { fill: "#F8F8F8", stroke: null }),
+                        $go(go.TextBlock, "Yes",  // the label
+                            {
+                                textAlign: "center",
+                                font: "10pt helvetica, arial, sans-serif",
+                                stroke: "#333333",
+                                editable: true
+                            },
+                            new go.Binding("text", "text").makeTwoWay())
+                    )
+                );
+
+            myDiagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
+            myDiagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
+
+            myPalette =
+                $go(go.Palette, "myPalette",
+                    {
+                        "animationManager.duration": 800, // slightly longer than default (600ms) animation
+                        nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
+                        model: new go.GraphLinksModel([  // specify the contents of the Palette
+                            { category: "Start", text: "开始" },
+                            { text: "审批节点" },
+                            { category: "split", text: "拆分节点" },
+                            { category: "join", text: "合并节点" },
+                            { text: "条件", figure: "Diamond" },
+                            { category: "End", text: "结束" },
+                            { category: "Comment", text: "注释" }
+
+                        ])
+                    });
+
+            function nodeDoubleClick(e, obj) {
+                var clicked = obj.part;
+                if (clicked !== null) {
+                    var thisemp = clicked.data;
+                    //console.log(thisemp);
+                    node_edit($("#wfuid").val(), thisemp.id, thisemp.text);
+                }
+            }
+
+            function showLinkLabel(e) {
+                var label = e.subject.findObject("LABEL");
+                if (label !== null) label.visible = (e.subject.fromNode.data.figure === "Diamond");
+            }
         }
 
-        myDiagram.nodeTemplateMap.add("",
-            $go(go.Node,"Spot",modeStyle(),
-            )
-        );
-    }
-});
+        init();
+
+
+    });
 </script>
 {itemplate 'public/footer'}
