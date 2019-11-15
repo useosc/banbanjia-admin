@@ -131,3 +131,6 @@ if(!function_exists('uuid'))
     return $prefix . $uuid;   
   }  
 }
+
+//请求bpm系统
+// if(!)

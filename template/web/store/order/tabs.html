@@ -1,0 +1,15 @@
+<div class="second-sidebar-title">订单</div>
+<div class="nav slimscroll">
+	<div class="menu-header">概况</div>
+	<ul class="menu-item">
+		<li {if $_W['_op'] == 'index'}class="active"{/if}>
+		<a href="{php echo iurl('store/order/index');}">订单概况</a>
+		</li>
+		<li {if $_W['_op'] == 'list'}class="active"{/if}>
+		<a href="{php echo iurl('store/order/list');}">订单列表</a>
+        </li>
+        <li {if $_W['_op'] == 'consult'}class="active"{/if}>
+            <a href="{php echo iurl('store/order/consult');}">客户咨询</a>
+        </li>
+	</ul>
+</div>

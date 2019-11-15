@@ -241,6 +241,7 @@
             KEY `uniacid` (`uniacid`),
             KEY `type` (`type`)
         ) ENGINE=MyISAM AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+        
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -279,7 +280,9 @@
             `cate_parentid1` int(10) unsigned NOT NULL,
             `cate_childid1` int(10) unsigned NOT NULL,
             `cate_parentid2` int(10) unsigned NOT NULL,
-            `cate_childid2` int(10) unsigned NOT NULL
+            `cate_childid2` int(10) unsigned NOT NULL,
+            `bpm_client_id` varchar(255),
+            `bpm_client_secret` varchar(255),
             PRIMARY KEY (`id`),
             KEY `uniacid` (`uniacid`),
             KEY `title` (`title`)
@@ -355,6 +358,8 @@
             `permits` text NOT NULL,
             `realname` varchar(255) NOT NULL DEFAULT '',
             `extra` varchar(500) NOT NULL,
+            `bpm_username` varchar(255) NOT NULL,
+            `bpm_password` varchar(255) NOT NULL,
             `addtime` int(10) unsigned NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
             KEY `uniacid` (`uniacid`),
