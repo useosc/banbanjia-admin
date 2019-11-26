@@ -38,3 +38,22 @@ function getBpmCases($params = array())
     $cases = ihttp_get($url);
     return $cases;
 }
+
+//admin
+
+/**
+ * 创建新用户
+ * POST /api/1.0/{workspace}/user
+ */
+function createBpmUsers($params = array())
+{
+    $bpm = new Bpm();
+    $accessToken = $bpm->userAccessToken();
+    $url = "{$bpm->apiBaseUrl}/user";
+    $params = array_filter($params,function($v){
+        return !empty($v);
+    });
+    $params['access_token'] = $accessToken;
+    $users = ihttp_post($url,$params);
+    return $users;
+}

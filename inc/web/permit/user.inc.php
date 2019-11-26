@@ -46,7 +46,7 @@ if($op == 'post'){
         $member["username"] = trim($_GPC["username"]) ? trim($_GPC["username"]) : imessage(error(-1, "操作员用户名不能为空"), referer(), "ajax");
         if (empty($id)) {
             if (!preg_match(REGULAR_USERNAME, $member["username"])) {
-                imessage(error(-1, "必须输入用户名，格式为 3-15 位字符，可以包括汉字、字母（不区分大小写）、数字、下划线和句点。"), referer(), "ajax");
+                imessage(error(-1, "必须输入用户名，格式为Create equal-wi 3-15 位字符，可以包括汉字、字母（不区分大小写）、数字、下划线和句点。"), referer(), "ajax");
             }
             if (user_check(array("username" => $member["username"]))) {
                 imessage(error(-1, "非常抱歉，此用户名已经被注册，你需要更换注册名称！"), referer(), "ajax");

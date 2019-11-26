@@ -1,6 +1,40 @@
 {itemplate 'public/header'}
 <form action="" class="form-table form" method="post">
-    <div class="panel-heading clearfix">
+    <div class="panel panel-table">
+        <div class="panel-heading clearfix">
+        </div>
+        <div class="panel-body table-responsive js-table">
+            <table class="table table-hover">
+                <thead class="navbar-inner">
+                    <tr>
+                        <th>#</th>
+                        <th>流程</th>
+                        <th>任务</th>
+                        <th>上一人</th>
+                        <th>过期日期</th>
+                        <th>上次修改</th>
+                        <th>优先级</th>
+                        <th style="width:150px;text-align: right;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {loop $cases $dca}
+                    <tr>
+                        <td>{php echo $dca->app_number}</td>
+                        <td>{php echo $dca->app_pro_title}</td>
+                        <td>{php echo $dca->app_tas_title}</td>
+                        <td>{php echo $dca->app_del_previous_user}</td>
+                        <td>{php echo $dca->del_task_due_date}</td>
+                        <td>{php echo $dca->app_update_date}</td>
+                        <td>{php echo $dca->del_priority}</td>
+                        <td style="text-align: right">
+                            <a href="{php echo iurl('store/order/edit');}" class="btn btn-default btn-sm">打开</a>
+                        </td>
+                    </tr>
+                    {/loop}
+                </tbody>
+            </table>
+        </div>
     </div>
 </form>
 {itemplate 'public/footer'}

@@ -18,6 +18,17 @@
     <script>var require = {urlArgs: 'v={php echo date('YmdH');}' };</script>
     <script src="{$_W['siteroot']}web/resource/js/lib/jquery-1.11.1.min.js"></script>
     <script src="{php echo WE7_BANBANJIA_LOCAL}static/js/components/jquery/jquery.extend.js"></script>
+
+    <!-- Load required Bootstrap and BootstrapVue CSS -->
+    <!-- <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" /> -->
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+    <!-- Load polyfills to support older browsers -->
+    <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
+    <!-- Load Vue followed by BootstrapVue -->
+    <!-- <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script> -->
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+
     <script type="text/javascript">
         if (navigator.appName == 'Microsoft Internet Explorer') {
             if (navigator.userAgent.indexOf("MSIE 5.0") > 0 || navigator.userAgent.indexOf("MSIE 6.0") > 0 || navigator.userAgent.indexOf("MSIE 7.0") > 0) {

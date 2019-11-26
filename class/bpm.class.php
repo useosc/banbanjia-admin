@@ -6,13 +6,15 @@ class Bpm
 {
     public $account; //软件appid
     public $userAccount;
-    public $workspace = 'banbanjia';
+    // public $workspace = 'banbanjia';
+    public $workspace = 'test1';
     public $api_version = '1.0'; //rest api version
     public $bpm_url = 'https://bpm.useosc.com';
 
     public $apiBaseUrl; //rest api base url
 
-    public function __construct($account = array('key' => 'NSRRYUIDVVPMTHXDKTHMPFQCMLCMPOHC', 'secret' => '2899097065dc6398dcc9200095664917'))
+    // public function __construct($account = array('key' => 'NSRRYUIDVVPMTHXDKTHMPFQCMLCMPOHC', 'secret' => '2899097065dc6398dcc9200095664917'))
+    public function __construct($account = array('key' => 'KPTYOAEFSTPPDJRXJZXUWYFZNWPXFOIP', 'secret' => '1366580955dd8e9f1872d01028461614'))
     {
         global $_W;
         if (!is_array($account)) {
@@ -20,7 +22,8 @@ class Bpm
         }
         $this->account = $account;
 
-        $this->userAccount = array('username' => 'gendan01', 'password' => '123456'); //用户信息
+        // $this->userAccount = array('username' => 'gendan01', 'password' => '123456'); //用户信息
+        $this->userAccount = array('username' => 'admin', 'password' => '123456'); //用户信息
 
         $this->apiBaseUrl = $this->bpm_url . '/' . 'api' . '/' . $this->api_version . '/' . $this->workspace;
     }
