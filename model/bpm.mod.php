@@ -26,10 +26,58 @@ function getBpmUsers($params = array())
  * url: /api/1.0/{workspace}/cases
  */
 function getBpmCases($params = array())
-{ 
+{
     $bpm = new Bpm();
     $accessToken = $bpm->userAccessToken();
     $url = "{$bpm->apiBaseUrl}/cases?access_token={$accessToken}&";
+    $params = array_filter($params, function ($v) {
+        return !empty($v);
+    });
+    $params = http_build_query($params);
+    $url .= $params;
+    $cases = ihttp_get($url);
+    return $cases;
+}
+
+/**
+ * 获取当前用户可新建的订单
+ * url: GET /api/1.0/{workspace}/case/start-cases
+ */
+function getBpmStartCases()
+{
+    $bpm = new Bpm();
+    $accessToken = $bpm->userAccessToken();
+    $url = "{$bpm->apiBaseUrl}/case/start-cases?access_token={$accessToken}";
+    $cases = ihttp_get($url);
+    return $cases;
+}
+
+/**
+ * 流转到下一路由
+ * url: PUT /api/1.0/{workspace}/cases/{app_uid}/route-case
+ */
+function routeBpmCase($params = array())
+{
+    $bpm = new Bpm();
+    $accessToken = $bpm->userAccessToken();
+    $url = "{$bpm->apiBaseUrl}/cases/{$params['app_uid']}/route-case";
+    $params = array_filter($params, function ($v) {
+        return !empty($v);
+    });
+    $params['access_token'] = $accessToken;
+    $status = ihttp_put($url, $params);
+    return $status;
+}
+
+/**
+ * 获取任务内容
+ * url: GET /api/1.0/{workspace}/cases/dyform
+ */
+function getBpmCaseContent($params = array())
+{
+    $bpm = new Bpm();
+    $accessToken = $bpm->userAccessToken();
+    $url = "{$bpm->apiBaseUrl}/cases/content?access_token={$accessToken}&";
     $params = array_filter($params, function ($v) {
         return !empty($v);
     });
@@ -50,10 +98,19 @@ function createBpmUsers($params = array())
     $bpm = new Bpm();
     $accessToken = $bpm->userAccessToken();
     $url = "{$bpm->apiBaseUrl}/user";
-    $params = array_filter($params,function($v){
+    $params = array_filter($params, function ($v) {
         return !empty($v);
     });
     $params['access_token'] = $accessToken;
-    $users = ihttp_post($url,$params);
+    $users = ihttp_post($url, $params);
     return $users;
+}
+
+/**
+ * 创建新空间
+ * url:  
+ */
+function createBpmWorkspace($params = array())
+{
+
 }

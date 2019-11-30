@@ -8,6 +8,7 @@
     <title>{php if(isset($title)) $_W['page']['title'] = $title}{if !empty($_W['page']['title'])}{$_W['page']['title']}- {/if}{$_W['page']['copyright']['sitename']}</title>
     <meta name="keywords" content="{$_W['page']['copyright']['keywords']}" />
     <meta name="description" content="{$_W['page']['copyright']['description']}" />
+
     <link rel="shortcut icon" href="{$_W['siteroot']}{$_W['config']['upload']['attachdir']}/{if !empty($_W['setting']['copyright']['icon'])}{$_W['setting']['copyright']['icon']}{else}images/global/wechat.jpg{/if}" />
     <link rel="stylesheet" href="{php echo WE7_BANBANJIA_LOCAL}static/css/bootstrap.min.css">
     <link rel="stylesheet" href="{php echo WE7_BANBANJIA_LOCAL}static/css/fontawesome.min.css">
@@ -19,15 +20,17 @@
     <script src="{$_W['siteroot']}web/resource/js/lib/jquery-1.11.1.min.js"></script>
     <script src="{php echo WE7_BANBANJIA_LOCAL}static/js/components/jquery/jquery.extend.js"></script>
 
+    
     <!-- Load required Bootstrap and BootstrapVue CSS -->
     <!-- <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" /> -->
-    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+    <!-- <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" /> -->
     <!-- Load polyfills to support older browsers -->
-    <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.bootcss.com/js-polyfills/0.1.42/polyfill.min.js"></script> -->
+    <!-- <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script> -->
     <!-- Load Vue followed by BootstrapVue -->
     <!-- <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script> -->
-    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
-    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+    <!-- <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script> -->
+    <!-- <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script> -->
 
     <script type="text/javascript">
         if (navigator.appName == 'Microsoft Internet Explorer') {
@@ -63,6 +66,7 @@
             'merchant' : {php echo defined('IN_MERCHANT') ? 1 : 0},
         }
     </script>
+        
     <script src="{$_W['siteroot']}web/resource/js/app/util.js"></script>
     <script src="{$_W['siteroot']}web/resource/js/app/common.min.js"></script>
     <script src="{$_W['siteroot']}web/resource/js/require.js"></script>

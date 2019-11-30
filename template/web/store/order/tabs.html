@@ -3,10 +3,13 @@
 	<div class="menu-header">概况</div>
 	<ul class="menu-item">
 		<li {if $_W['_op'] == 'index'}class="active"{/if}>
-		<a href="{php echo iurl('store/order/index');}">订单概况</a>
+			<a href="{php echo iurl('store/order/index');}">订单概况</a>
 		</li>
-		<li {if $_W['_op'] == 'list'}class="active"{/if}>
-		<a href="{php echo iurl('store/order/list');}">订单列表</a>
+		<li {if $_W['_ta'] == 'new'}class="active"{/if}>
+			<a href="{php echo iurl('store/order/list/new');}">新建订单</a>
+		</li>
+		<li {if $_W['_ta'] == 'list'}class="active"{/if}>
+			<a href="{php echo iurl('store/order/list/list');}">订单列表</a>
         </li>
         <li {if $_W['_op'] == 'consult'}class="active"{/if}>
             <a href="{php echo iurl('store/order/consult');}">客户咨询</a>

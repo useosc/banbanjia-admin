@@ -23,6 +23,18 @@ if ($ta == 'list') {
 
     include itemplate("store/order/list");
 }
+
+//可新建订单列表
+if ($ta == 'new') {
+    $startCases = getBpmStartCases();
+    if (is_error($startCases)) {
+        imessage("获取订单信息出错", referer(), "error");
+    }
+    $startCases = json_decode($startCases['content']);
+    // var_dump($startCases);exit;
+    include itemplate("store/order/list");
+}
+
 if ($ta == 'test') {
     $user = createBpmUsers(array(
         'usr_username' => 'kefu01',

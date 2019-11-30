@@ -22,8 +22,8 @@ class Bpm
         }
         $this->account = $account;
 
-        // $this->userAccount = array('username' => 'gendan01', 'password' => '123456'); //用户信息
-        $this->userAccount = array('username' => 'admin', 'password' => '123456'); //用户信息
+        $this->userAccount = array('username' => 'gendan01', 'password' => '123456'); //用户信息
+        // $this->userAccount = array('username' => 'admin', 'password' => '123456'); //用户信息
 
         $this->apiBaseUrl = $this->bpm_url . '/' . 'api' . '/' . $this->api_version . '/' . $this->workspace;
     }
@@ -78,6 +78,7 @@ class Bpm
         $cache = cache_load($cachekey);
         if (!empty($cache) && !empty($cache['token']) && TIMESTAMP < $cache['expire']) {
             $this->userAccount['access_token'] = $cache;
+            // echo $cache['token'];exit;
             return $cache['token'];
         }
         if (empty($this->userAccount['username']) || empty($this->userAccount['password'])) {

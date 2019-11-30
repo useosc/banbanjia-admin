@@ -779,7 +779,7 @@ a:hover, a:focus {
 }
 #app-third-sidebar .user-section .wm-user-name{position: relative; height: 50px; margin-left: 1px; background: #fff; min-width: 80px; text-align: center;}
 #app-third-sidebar .user-section .drop-menu{display: none; padding: 0; text-align: center; width: 100%; position: absolute; top: 50px; left: 0; background: #fff; -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175); z-index: 1000;}
-#app-container .text{display: block; width: 100%; height: 100%; padding: 0 10px; line-height: 50px; color: #2289f0; text-decoration: none;}
+#app-container .text{font-size: x-small;display: block; width: 100%; height: 100%; padding: 0 10px; line-height: 50px; color: #2289f0; text-decoration: none;}
 #app-third-sidebar .user-section .wm-user-name:hover .drop-menu{display: block}
 #app-third-sidebar .user-section .drop-menu li{padding: 5px;}
 #app-third-sidebar .user-section .drop-menu li:hover{background: #2289f0; color: #fff}

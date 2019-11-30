@@ -28,7 +28,11 @@ var version = +new Date,
             hello: "web/hello",
             filestyle: "components/bootstrap/bootstrap-filestyle.min",
             tagsinput: "components/tagsinput/bootstrap-tagsinput.min",
-            clipboard: "components/clipboard.min"
+            clipboard: "components/clipboard.min",
+            moment: "bpm/libs/moment/moment.min",
+            "bootstrap.datetimepicker": "bpm/libs/datepicker/bootstrap-datetimepicker",
+            underscore: "bpm/libs/underscore/underscore-1.8.3",
+            backbone: "bpm/libs/backbone/backbone-min"
         },
         map: {
             js: ".js?v=" + version,
@@ -59,5 +63,5 @@ var version = +new Date,
             }
             var e = this;
             iconfig.alias[b] && (e = iconfig.alias[b]), "map" == b && (a = ""), c.push(a + e + iconfig.map.js)
-        }), require(c, b)
+        }),require(c, b)
     };

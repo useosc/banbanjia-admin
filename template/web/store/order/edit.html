@@ -1,225 +1,27 @@
 {itemplate 'public/header'}
-<div class="page clearfix" id="app">
-    <h2>客户基本资料</h2>
-    <form action="" class="form-horizontal form form-validate" id="form1" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><strong>发货人</strong></label>
-            <div class="col-sm-9 col-xs-12">
-                <div class="form-group">
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">发货人姓名</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">联系方式</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">邮箱</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">出生日期</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">城市</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">地址/楼层</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><strong>收货人</strong></label>
-            <div class="col-sm-9 col-xs-12">
-                <div class="form-group">
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">姓名</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">联系方式</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">邮箱</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">邮编</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">城市</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">地址</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">订单类型</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <b-form-select v-model="select" @change="dd">
-                            <option value="1">国内搬家</option>
-                            <option value="2">办公室搬迁</option>
-                            <option value="3">市内搬家</option>
-                        </b-form-select>
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">服务类型</label>
-                    <div class="col-sm-4 col-xs-12 col-md-4">
-                        <b-form-select v-model="select" @change="dd">
-                            <option value="1">上门包装</option>
-                            <option value="2">送箱上门</option>
-                            <option value="3">上门收箱</option>
-                            <option value="3">自送仓库</option>
-                        </b-form-select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">运输方式</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <b-form-select v-model="select" @change="dd">
-                            <option value="1">整车运输</option>
-                            <option value="2">物流运输</option>
-                        </b-form-select>
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">服务方式</label>
-                    <div class="col-sm-4 col-xs-12 col-md-4">
-                        <b-form-select v-model="select" @change="dd">
-                            <option value="1">门到门</option>
-                            <option value="2">门到楼下</option>
-                        </b-form-select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-xs-12 col-sm-2 col-md-1 control-label">立方数</label>
-                    <div class="col-sm-2 col-xs-12 col-md-2">
-                        <input type="text" class="form-control">
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-1 control-label">件数</label>
-                    <div class="col-sm-2 col-xs-12 col-md-2">
-                        <input type="text" class="form-control">
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-1 control-label">备注</label>
-                    <div class="col-sm-2 col-xs-12 col-md-2">
-                        <input type="text" class="form-control">
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-1 control-label">备注</label>
-                    <div class="col-sm-2 col-xs-12 col-md-2">
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-xs-12 col-sm-2 col-md-2 control-label">出运方式</label>
-            <div class="col-sm-9 col-xs-12">
-                <div class="form-group">
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">发货人姓名</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">服务方式</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-xs-12 col-sm-2 col-md-2 control-label">物品详情</label>
-            <div class="col-sm-9 col-xs-12">
-                <div class="form-group">
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">纸箱数量</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">家具大概</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-xs-12 col-sm-2 col-md-2 control-label">出运时间</label>
-            <div class="col-sm-9 col-xs-12">
-                <div class="form-group">
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">出运时间</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">提醒功能备注</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-xs-12 col-sm-2 col-md-2 control-label">跟进记录</label>
-            <div class="col-sm-9 col-xs-12">
-                <div class="form-group">
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">对话内容</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">报价日期</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-xs-12 col-sm-2 col-md-2 control-label">回访记录</label>
-            <div class="col-sm-9 col-xs-12">
-                <div class="form-group">
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">序号</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">回访内容</label>
-                    <div class="col-sm-4 col-xs-12">
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-9 col-xs-12">
-                <input type="hidden" name="token" value="{$_W['token']}">
-                <input type="submit" value="提交" class="btn btn-primary">
-            </div>
-        </div>
-    </form>
-</div>
 
-<script>
-    var app = new Vue({
-        el: '#app',
-        data: {
-            select: '',
-        },
-        methods:{
-            dd: function(event){
-                console.log(event)
-            }
-        }
-    })
-</script>
+{itemplate 'pmdynaform/build/pmdynaform'}
+
+<!-- <script>
+	var jsondata = { "name": "\u6d4b\u8bd52\u8868\u53552", "description": "\u6d4b\u8bd52\u8868\u53552", "items": [{ "type": "form", "variable": "", "var_uid": "", "dataType": "", "id": "5977476135ddded62adfb64050461604", "name": "\u6d4b\u8bd52\u8868\u53552", "description": "\u6d4b\u8bd52\u8868\u53552", "mode": "edit", "script": "", "language": "en", "externalLibs": "", "printable": false, "items": [[{ "type": "title", "id": "title0000000001", "label": "\u6d4b\u8bd52\u8868\u53552", "colSpan": 12 }], [{ "type": "text", "variable": "name", "var_uid": "2981234765ddde62ad637b4098028802", "dataType": "string", "protectedValue": false, "id": "name", "name": "name", "label": "\u540d\u5b57\uff1a", "defaultValue": "", "placeholder": "", "hint": "", "required": false, "requiredFieldErrorMessage": "", "textTransform": "none", "validate": "", "validateMessage": "", "maxLength": 1000, "formula": "", "mode": "parent", "operation": "", "dbConnection": "workflow", "dbConnectionLabel": "PM Database", "sql": "", "var_name": "name", "colSpan": 12, "datasource": "database", "optionsSql": [], "data": { "value": "kefu01evfdsvf", "label": "kefu01evfdsvf" } }], [{ "type": "submit", "id": "submit0000000001", "name": "submit0000000001", "label": "\u63d0\u4ea4", "colSpan": 12 }]], "variables": [{ "var_uid": "2981234765ddde62ad637b4098028802", "prj_uid": "6471566025ddddf0e7684c0079435861", "var_name": "name", "var_field_type": "string", "var_field_size": 10, "var_label": "string", "var_dbconnection": "workflow", "var_dbconnection_label": "PM Database", "var_sql": "", "var_null": 0, "var_default": "", "var_accepted_values": "[]", "inp_doc_uid": "" }] }] };
+	var httpServerHostname = "https://bpm.useosc.com";
+	var pm_run_outside_main_app = 'true';
+	var dyn_uid = '5977476135ddded62adfb64050461604';
+	var __DynaformName__ = '6471566025ddddf0e7684c0079435861_5977476135ddded62adfb64050461604';
+	var app_uid = '4007830545dde446f4b4909082913881';
+	var prj_uid = '6471566025ddddf0e7684c0079435861';
+	var step_mode = 'EDIT';
+	var workspace = 'test1';
+	var credentials = { "accessToken": "92a0b09f15cc7ada36bc79ac805e9a49e4e367a2", "expiresIn": 86400, "tokenType": "bearer", "scope": "view_processes edit_processes *", "refreshToken": "b1ccad17ba66d1f4a8291517dbecfe4f902d8df9", "clientId": "x-pm-local-client", "clientSecret": "179ad45c6ce2cb97cf1029e212046e81" };
+	var filePost = null;
+	var fieldsRequired = null;
+	var triggerDebug = false;
+	var sysLang = 'en';
+	var isRTL = false;
+	var pathRTLCss = '/lib/pmdynaform/build/css/PMDynaform-rtl.css';
+	var delIndex = 2;
+	var leaveCaseWarning = 0;
+	var googleMaps = { "key": "", "signature": "" };
+</script> -->
 {itemplate 'public/footer'}
+{php echo $javascriptContent;}

@@ -1,4 +1,5 @@
 {itemplate 'public/header'}
+{if $ta == 'list'}
 <form action="" class="form-table form" method="post">
     <div class="panel panel-table">
         <div class="panel-heading clearfix">
@@ -28,7 +29,7 @@
                         <td>{php echo $dca->app_update_date}</td>
                         <td>{php echo $dca->del_priority}</td>
                         <td style="text-align: right">
-                            <a href="{php echo iurl('store/order/edit');}" class="btn btn-default btn-sm">打开</a>
+                            <a href="{php echo iurl('store/order/edit',array('app_uid'=>$dca->app_uid,'del_index'=>$dca->del_index,'action'=>$dca->app_status));}" class="btn btn-default btn-sm">打开</a>
                         </td>
                     </tr>
                     {/loop}
@@ -37,4 +38,34 @@
         </div>
     </div>
 </form>
+{/if}
+
+{if $ta == 'new'}
+<form action="" class="form-table form" method="post">
+    <div class="panel panel-table">
+        <div class="panel-heading clearfix">
+        </div>
+        <div class="panel-body table-responsive js-table">
+            <table class="table table-hover">
+                <thead class="navbar-inner">
+                    <tr>
+                        <th>任务</th>
+                        <th style="width:150px;text-align: right;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {loop $startCases $dca}
+                    <tr>
+                        <td>{php echo $dca->pro_title}</td>
+                        <td style="text-align: right">
+                            <a href="{php echo iurl('store/order/new',array('tas_uid' =>$dca->tas_uid,'pro_uid'=>$dca->pro_uid));}" class="btn btn-default btn-sm">新建</a>
+                        </td>
+                    </tr>
+                    {/loop}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+{/if}
 {itemplate 'public/footer'}

@@ -1,0 +1,225 @@
+{itemplate 'public/header'}
+<div class="page clearfix" id="app">
+    <h2>客户基本资料</h2>
+    <form action="" class="form-horizontal form form-validate" id="form1" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><strong>发货人</strong></label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">发货人姓名</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">联系方式</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">邮箱</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">出生日期</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">城市</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">地址/楼层</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><strong>收货人</strong></label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">姓名</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">联系方式</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">邮箱</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">邮编</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">城市</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">地址</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">订单类型</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <b-form-select v-model="select" @change="dd">
+                            <option value="1">国内搬家</option>
+                            <option value="2">办公室搬迁</option>
+                            <option value="3">市内搬家</option>
+                        </b-form-select>
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">服务类型</label>
+                    <div class="col-sm-4 col-xs-12 col-md-4">
+                        <b-form-select v-model="select" @change="dd">
+                            <option value="1">上门包装</option>
+                            <option value="2">送箱上门</option>
+                            <option value="3">上门收箱</option>
+                            <option value="3">自送仓库</option>
+                        </b-form-select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">运输方式</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <b-form-select v-model="select" @change="dd">
+                            <option value="1">整车运输</option>
+                            <option value="2">物流运输</option>
+                        </b-form-select>
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">服务方式</label>
+                    <div class="col-sm-4 col-xs-12 col-md-4">
+                        <b-form-select v-model="select" @change="dd">
+                            <option value="1">门到门</option>
+                            <option value="2">门到楼下</option>
+                        </b-form-select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-1 control-label">立方数</label>
+                    <div class="col-sm-2 col-xs-12 col-md-2">
+                        <input type="text" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-1 control-label">件数</label>
+                    <div class="col-sm-2 col-xs-12 col-md-2">
+                        <input type="text" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-1 control-label">备注</label>
+                    <div class="col-sm-2 col-xs-12 col-md-2">
+                        <input type="text" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-1 control-label">备注</label>
+                    <div class="col-sm-2 col-xs-12 col-md-2">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-2 col-md-2 control-label">出运方式</label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">发货人姓名</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">服务方式</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-2 col-md-2 control-label">物品详情</label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">纸箱数量</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">家具大概</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-2 col-md-2 control-label">出运时间</label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">出运时间</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">提醒功能备注</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-2 col-md-2 control-label">跟进记录</label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">对话内容</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">报价日期</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-2 col-md-2 control-label">回访记录</label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">序号</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">回访内容</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-9 col-xs-12">
+                <input type="hidden" name="token" value="{$_W['token']}">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            select: '',
+        },
+        methods:{
+            dd: function(event){
+                console.log(event)
+            }
+        }
+    })
+</script>
+{itemplate 'public/footer'}
