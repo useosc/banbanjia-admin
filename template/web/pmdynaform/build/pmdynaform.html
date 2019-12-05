@@ -1,49 +1,52 @@
-{php $pmbaseurl = '../addons/hello_banbanjia/template/web/pmdynaform/';}
-<link rel="stylesheet" href="{php echo $pmbaseurl;}libs/datepicker/bootstrap-datetimepicker.css">
-<link rel="stylesheet" href="{php echo $pmbaseurl;}build/css/PMDynaform.css">
-<!-- <link rel="stylesheet" href="{php echo $pmbaseurl;}libs/font-awesome-4.6.3/css/font-awesome.min.css"> -->
+<link rel="stylesheet"
+    href="../addons/hello_banbanjia/template/web/pmdynaform/libs/datepicker/bootstrap-datetimepicker.css">
+<link rel="stylesheet" href="../addons/hello_banbanjia/template/web/pmdynaform/build/css/PMDynaform.css">
+<!-- <link rel="stylesheet" href="../addons/hello_banbanjia/template/web/pmdynaform/libs/font-awesome-4.6.3/css/font-awesome.min.css"> -->
 
-<script type="text/javascript" src="{php echo $pmbaseurl;}build/js/translationsMafe.js"></script>
-<!-- <script type="text/javascript" src="{php echo $pmbaseurl;}libs/moment/moment.min.js"></script> -->
+<script type="text/javascript"
+    src="../addons/hello_banbanjia/template/web/pmdynaform/build/js/translationsMafe.js"></script>
+<!-- <script type="text/javascript" src="../addons/hello_banbanjia/template/web/pmdynaform/libs/moment/moment.js"></script> -->
 
-<!-- <script type="text/javascript" src="{php echo $pmbaseurl;}libs/jquery/jquery-1.11.js"></script> -->
-<!-- <script type="text/javascript" src="{php echo $pmbaseurl;}libs/bootstrap-3.1.1/js/bootstrap.min.js"></script> -->
-<!-- <script type="text/javascript" src="{php echo $pmbaseurl;}libs/datepicker/bootstrap-datetimepicker.js"></script> -->
+<!-- <script type="text/javascript" src="../addons/hello_banbanjia/template/web/pmdynaform/libs/jquery/jquery-1.11.js"></script> -->
+<!-- <script type="text/javascript" src="../addons/hello_banbanjia/template/web/pmdynaform/libs/bootstrap-3.1.1/js/bootstrap.min.js"></script> -->
+<!-- <script type="text/javascript" src="../addons/hello_banbanjia/template/web/pmdynaform/libs/datepicker/bootstrap-datetimepicker.js"></script> -->
 <!-- <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script> -->
-<!-- <script type="text/javascript" src="{php echo $pmbaseurl;}libs/underscore/underscore-1.8.3.js"></script> -->
+<!-- <script type="text/javascript" src="../addons/hello_banbanjia/template/web/pmdynaform/libs/underscore/underscore-1.8.3.js"></script> -->
 
 <!-- <script src="https://cdn.bootcss.com/backbone.js/1.2.2/backbone-min.js"></script> -->
-<!-- <script type="text/javascript" src="{php echo $pmbaseurl;}libs/backbone/backbone-min.js"></script> -->
-<script type="text/javascript" src="{php echo $pmbaseurl;}libs/html5/html5.js"></script>
-<script type="text/javascript" src="{php echo $pmbaseurl;}libs/respondjs/respond.min.js"></script>
+<!-- <script type="text/javascript" src="../addons/hello_banbanjia/template/web/pmdynaform/libs/backbone/backbone-min.js"></script> -->
+<script type="text/javascript" src="../addons/hello_banbanjia/template/web/pmdynaform/libs/html5/html5.js"></script>
+<script type="text/javascript"
+    src="../addons/hello_banbanjia/template/web/pmdynaform/libs/respondjs/respond.min.js"></script>
 
 
 <script>
-	function loadJs(url, callback) {
-		var script = document.createElement('script');
-		script.type = "text/javascript";
-		if (typeof (callback) != "undefined") {
-			if (script.readyState) {
-				script.onreadystatechange = function () {
-					if (script.readyState == "loaded" || script.readyState == "complete") {
-						script.onreadystatechange = null;
-						callback();
-					}
-				}
-			} else {
-				script.onload = function () {
-					callback();
-				}
-			}
-		}
-		script.src = url;
-		document.body.appendChild(script);
-	}
-	irequire(['bootstrap', 'moment', 'jquery', 'underscore', 'backbone'], function () {
-		loadJs("{php echo $pmbaseurl;}build/js/PMDynaform.js", function () {
-			loadJs("{php echo $pmbaseurl;}core/pmDynaform.js")
-		})
-	})
+    function loadJs(url, callback) {
+        var script = document.createElement('script');
+        script.type = "text/javascript";
+        if (typeof (callback) != "undefined") {
+            if (script.readyState) {
+                script.onreadystatechange = function () {
+                    if (script.readyState == "loaded" || script.readyState == "complete") {
+                        script.onreadystatechange = null;
+                        callback();
+                    }
+                }
+            } else {
+                script.onload = function () {
+                    callback();
+                }
+            }
+        }
+        script.src = url;
+        document.body.appendChild(script);
+    }
+	// irequire(['moment'])
+    irequire(['jquery','bootstrap','bootstrap.datetimepicker','underscore', 'backbone'], function () {
+        loadJs("../addons/hello_banbanjia/template/web/pmdynaform/build/js/PMDynaform.js", function () {
+            loadJs("../addons/hello_banbanjia/template/web/pmdynaform/core/pmDynaform.js")
+        })
+    })
 </script>
 
 <div id="bpmcontainer" style="height:100%;"></div>

@@ -16,5 +16,6 @@ if (is_error($javascript)) {
 }
 
 $javascriptContent = $javascript['content'];
+// var_dump($javascriptContent);exit;
 
 include itemplate('store/order/edit');

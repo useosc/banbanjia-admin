@@ -29,10 +29,10 @@ var version = +new Date,
             filestyle: "components/bootstrap/bootstrap-filestyle.min",
             tagsinput: "components/tagsinput/bootstrap-tagsinput.min",
             clipboard: "components/clipboard.min",
-            moment: "bpm/libs/moment/moment.min",
             "bootstrap.datetimepicker": "bpm/libs/datepicker/bootstrap-datetimepicker",
             underscore: "bpm/libs/underscore/underscore-1.8.3",
-            backbone: "bpm/libs/backbone/backbone-min"
+            backbone: "bpm/libs/backbone/backbone-min",
+            moment: "bpm/libs/moment/moment-2.10.6"
         },
         map: {
             js: ".js?v=" + version,

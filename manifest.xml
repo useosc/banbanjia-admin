@@ -283,6 +283,7 @@
             `cate_childid2` int(10) unsigned NOT NULL,
             `bpm_client_id` varchar(255),
             `bpm_client_secret` varchar(255),
+            `bpm_name` varchar(50)
             PRIMARY KEY (`id`),
             KEY `uniacid` (`uniacid`),
             KEY `title` (`title`)
@@ -308,6 +309,7 @@
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_clerk` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `mid` int(10) unsigned NOT NULL,
             `title` varchar(15) NOT NULL,
             `nickname` varchar(15) NOT NULL,
             `openid` varchar(60) NOT NULL,

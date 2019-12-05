@@ -108,9 +108,26 @@ function createBpmUsers($params = array())
 
 /**
  * 创建新空间
- * url:  
+ * url: POST /api/1.0/{workspace}/system/site
  */
 function createBpmWorkspace($params = array())
 {
+    $bpm = new Bpm();
+    $accessToken = $bpm->userAccessToken();
+    $url = "{$bpm->apiBaseUrl}/system/site";
+    $params = array_filter($params, function ($v) {
+        return !empty($v);
+    });
+    $params['access_token'] = $accessToken;
+    $site = ihttp_post($url, $params);
+    return $site;
+}
 
+/**
+ * 初始化空间
+ * url: POST
+ */
+function initBpmWorkspace($params = array())
+{
+    
 }

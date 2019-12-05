@@ -10,8 +10,13 @@ $config_store = $_W['we7_hello_banbanjia']['config']['store'];
 if ($config_store["settle"]["status"] != 1) {
     imessage(error(-1, "暂时不支持商户入驻"), "", "ajax");
 }
-// $clerk = pdo_get("hello_banbanjia_clerk", array("uniacid" => $_W['uniacid'], 'openid_wxapp' => $_W['openid']));
-$clerk = pdo_get("hello_banbanjia_clerk", array("uniacid" => $_W['uniacid'], 'id' => '100'));
+
+// var_dump($_W);exit;
+$clerk = pdo_get("hello_banbanjia_clerk", array("uniacid" => $_W['uniacid'], 'openid_wxapp' => $_W['openid']));
+if (empty($clerk)) {
+    $clerk = pdo_get("hello_banbanjia_clerk", array("uniacid" => $_W['uniacid'], 'mid' => $_W['member']['id']));
+}
+// $clerk = pdo_get("hello_banbanjia_clerk", array("uniacid" => $_W['uniacid'], 'id' => '100'));
 if (empty($clerk) && !empty($_W["openid_wechat"])) { //微信公众号
     $clerk = pdo_get("hello_banbanjia_clerk", array("uniacid" => $_W["uniacid"], "openid" => $_W["openid_wechat"]));
 }
@@ -35,10 +40,14 @@ if ($ta == 'account') {
         if (!empty($is_exist)) {
             imessage(error(-1, "该手机号已绑定其他员工, 请更换手机号"), "", "ajax");
         }
-        $is_exist = pdo_fetchcolumn("select id from " . tablename("hello_banbanjia_clerk") . " where uniacid = :uniacid and openid_wxapp = :openid_wxapp", array(":uniacid" => $_W["uniacid"], ":openid_wxapp" => $_W["openid"]));
+        $is_exist = pdo_fetchcolumn("select id from " . tablename("hello_banbanjia_clerk") . " where uniacid = :uniacid and mid = :mid", array(":uniacid" => $_W["uniacid"], ":mid" => $_W["member"]['id']));
         if (!empty($is_exist)) {
-            imessage(error(-1, "该微信信息已绑定其他员工, 请更换微信信息"), "", "ajax");
+            imessage(error(-1, "该会员信息已绑定其他员工, 请更换会员信息"), "", "ajax");
         }
+        // $is_exist = pdo_fetchcolumn("select id from " . tablename("hello_banbanjia_clerk") . " where uniacid = :uniacid and openid_wxapp = :openid_wxapp", array(":uniacid" => $_W["uniacid"], ":openid_wxapp" => $_W["openid"]));
+        // if (!empty($is_exist)) {
+        //     imessage(error(-1, "该微信信息已绑定其他员工, 请更换微信信息"), "", "ajax");
+        // }
         if (!empty($_W["openid_wechat"])) {
             $is_exist = pdo_fetchcolumn("select id from " . tablename("hello_banbanjia_clerk") . " where uniacid = :uniacid and openid = :openid_wechat", array(":uniacid" => $_W["uniacid"], ":openid_wechat" => $_W["openid_wechat"]));
             if (!empty($is_exist)) {
@@ -53,7 +62,7 @@ if ($ta == 'account') {
         // if (!preg_match(IREGULAR_PASSWORD, $password)) {
         //     imessage(error(-1, "密码必须由数字和字母组合"), "", "ajax");
         // }
-        $data = array("uniacid" => $_W["uniacid"], "mobile" => $mobile, "title" => trim($_GPC["title"]), "openid" => $_W["openid_wechat"], "openid_wxapp" => $_W["openid"], "nickname" => $_W["member"]["nickname"], "avatar" => $_W["member"]["avatar"], "salt" => random(6), "token" => random(32), "addtime" => TIMESTAMP);
+        $data = array("uniacid" => $_W["uniacid"], "mid" => $_W['member']['id'], "mobile" => $mobile, "title" => trim($_GPC["title"]), "openid" => $_W["openid_wechat"], "openid_wxapp" => $_W["openid"], "nickname" => $_W["member"]["nickname"], "avatar" => $_W["member"]["avatar"], "salt" => random(6), "token" => random(32), "addtime" => TIMESTAMP);
         $data["password"] = md5(md5($data["salt"] . $password) . $data["salt"]);
         pdo_insert("hello_banbanjia_clerk", $data);
         $id = pdo_insertid();

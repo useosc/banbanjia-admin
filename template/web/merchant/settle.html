@@ -104,12 +104,16 @@ $(function(){
 		}
 		$('#store-audit-container').modal('show');
 		$('.js-reply-submit').click(function(){
+			$(this).text('稍等。');
+			$(this).attr('disabled',true);
 			var status = $('#store-audit-container :radio[name="status"]:checked').val();
 			var remark = $('#store-audit-container textarea[name="remark"]').val();
 			$.post("{php echo iurl('merchant/settle/audit');}", {id: id, status: status, remark: remark}, function(data){
 				var result = $.parseJSON(data);
 				if(result.message.errno != 0) {
 					Notify.error(result.message.message);
+					$('.js-reply-submit').attr('disabled',false);
+					$('.js-reply-submit').text('确定');
 					return;
 				} else {
 					Notify.success(result.message.message, location.href);
