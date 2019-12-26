@@ -17,6 +17,18 @@ $_W["_plugins"] = $_plugins;
 // var_dump($_plugins);exit;
 //检测是否是插件
 in_array($_W["_ctrl"], array_keys($_plugins)) and define("IN_PLUGIN", 1);
+if (in_array($_W['_ctrl'], array('seckill', 'kanjia', 'pintuan', 'article', 'haodian'))) {
+    define('IN_GOHOME_WPLUGIN', 1);
+    if (!defined('IN_PLUGIN')) {
+        define('IN_PLUGIN', 1);
+    }
+}
+if (in_array($_W['_ac'], array('seckill', 'kanjia', 'pintuan', 'article', 'haodian'))) {
+    define('IN_GOHOME_APLUGIN', 1);
+}
+if ($_W['_ctrl'] == 'gohome' || defined('IN_GOHOME_WPLUGIN')) {
+    define('IN_GOHOME', 1);
+}
 if (strexists($_W["siteurl"], "web/index.php")) { //判断是否是后台管理页面
     define("IN_MANAGE", 1);
 }
@@ -35,9 +47,11 @@ if (defined("IN_SYS")) { //web/index 后台入口文件进入
     require WE7_BANBANJIA_PATH . "inc/web/__init.php"; //后台初始化
     $file_init = WE7_BANBANJIA_PATH . "inc/web/" . $_W["_ctrl"] . "/__init.php";
     $file_path = WE7_BANBANJIA_PATH . "inc/web/" . $_W["_ctrl"] . "/" . $_W["_ac"] . ".inc.php";
-
     if (defined('IN_MERCHANT')) {
         $file_path = WE7_BANBANJIA_PATH . 'inc/web/' . $_W['_ctrl'] . '/' . $_W['_ac'] . '/' . $_W['_op'] . '.inc.php';
+        if(defined("IN_GOHOME_APLUGIN")){
+            $file_path = WE7_BANBANJIA_PATH . 'inc/web/' . $_W['_ctrl'] . '/gohome/' . $_W['_ac'] . '/' . $_W['_op'] . '.inc.php';
+        }
         if (!is_file($file_path)) {
             imessage("控制器 " . $_W["_ctrl"] . " 方法 " . $_W["_ac"] . "/" . $_W["_op"] . " 未找到!", "", "info");
         }
@@ -47,6 +61,11 @@ if (defined("IN_SYS")) { //web/index 后台入口文件进入
             require $plugin_init;
             $file_init = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W['_ctrl'] . '/inc/web/__init.php';
             $file_path = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W["_ctrl"] . "/inc/web/" . $_W["_ac"] . ".inc.php";
+            if(defined("IN_AGENT")){
+
+            }else{
+                
+            }
         }
     }
 
@@ -57,7 +76,7 @@ if (defined("IN_SYS")) { //web/index 后台入口文件进入
         imessage("控制器 " . $_W["_ctrl"] . " 方法 " . $_W["_ac"] . " 未找到!", "", "info");
     }
 } else { //api接口路由
-    // if (!in_array($_GPC['from'], array('wxapp','web))) { //公众号
+    // if (!in_array($_GPC['from'], array('wxapp','wap))) { //公众号
     //     $_W['ochannel'] = "wechat";
     //     $_W['channel'] = $_W['ochannel'];
     //     require WE7_BANBANJIA_PATH . 'inc/mobile/__init.php';
@@ -99,16 +118,39 @@ if (defined("IN_SYS")) { //web/index 后台入口文件进入
             $_W['ochannel'] = 'wap';
             define('IN_WAP', 1);
         }
-        if($_GPC['from'] == 'pc') { //pc前端
+        if ($_GPC['from'] == 'pc') { //pc前端
             $_W['ochannel'] = 'pc';
             define('IN_PC', 1);
         }
     }
     $_W["channel"] = $_W["ochannel"];
-    
+
     require WE7_BANBANJIA_PATH . "inc/wxapp/__init.php";
     $file_init = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W["_ctrl"] . "/__init.php";
     $file_path = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W["_ctrl"] . "/" . $_W["_ac"] . "/" . $_W["_op"] . ".inc.php";
+    if ($_W['_ctrl'] == 'plateform') {
+        define('IN_PLATEFORM', 1);
+        $file_init = "";
+        require WE7_BANBANJIA_PATH . "inc/wxapp/plateform/__init.php";
+        if (in_array($_W['_ac'], array_keys($_plugins))) {
+            $file_init = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W['_ctrl'] . "/plugin/" . $_W['_ac'] . "/__init.php";
+            $file_init = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W['_ctrl'] . "/plugin/" . $_W['_ac'] . '/' . $_W['_op'] . ".inc.php";
+        }
+    } else {
+        if ($_W['_ctrl'] == 'manage') {
+            if (defined('IN_GOHOME_APLUGIN')) {
+                $file_path = WE7_BANBANJIA_PATH . "inc/wxapp/" . $_W['_ctrl'] . "/gohome/" . $_W['_ac'] . '/' . $_W['_op'] . '.inc.php';
+            }
+        } else {
+            if (defined("IN_PLUGIN")) {
+                $plugin_init = WE7_BANBANJIA_PLUGIN_PATH . "__init.php";
+                require $plugin_init;
+                $file_init = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W['_ctrl'] . '/inc/wxapp/__init.php';
+                $file_path = $file_init = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W['_ctrl'] . '/inc/wxapp/' . $_W['_ac'] . '.inc.php';
+            }
+        }
+    }
+
     if (is_file($file_init)) {
         require $file_init;
     }

@@ -1,0 +1,30 @@
+<div class="second-sidebar-title">{$_W['_plugin']['title']}</div>
+<div class="nav slimscroll">
+{ifp 'article.category' || 'article.slide' || 'article.information' || 'article.comment'}
+<div class="menu-header"></div>文章</div> 
+<ul class="menu-item">
+    {ifp 'article.category'}
+    <li {if $_W['_router'] == 'article/category/list'}class="active"{/if}>
+        <a href="{php echo iurl('article/category/list');}">分类列表</a>
+    </li>
+    {ifp 'article.slide'}
+    <li {if $_W['_router'] == 'article/slide/list'}class="active"{/if}>
+        <a href="{php echo iurl('article/slide/list');}">幻灯片</a>
+    </li>
+    {/if}
+    {ifp 'article.information'}
+    <li {if $_W['_router'] == 'article/information/list'}class="active"{/if}>
+        <a href="{php echo iurl('article/information/list');}">文章列表</a>
+    </li>
+    {/if}
+    {ifp 'article.comment'}
+    <li {if $_W['_router'] == 'article/comment/list'}class="active"{/if}>
+        <a href="{php echo iurl('article/comment/list');}">评论列表</a>
+    </li>
+    {/if}
+    <li {if $_W['_router'] == 'article/statcenter/list'}class="active"{/if}>
+        <a href="{php echo iurl('article/statcenter/list');}">文章统计</a>
+    </li>
+</ul>
+{/if}
+</div>

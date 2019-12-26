@@ -1055,6 +1055,8 @@
         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
         INSERT INTO ims_hello_banbanjia_plugin VALUES
+        ('47','gohome','biz','搬家社区','../addons/hello_banbanjia/static/img/plugin/gohome.jpg','','搬家社区','1','0','1');
+        INSERT INTO ims_hello_banbanjia_plugin VALUES
         ('40','wxapp','biz','搬搬家','../addons/hello_banbanjia/static/img/plugin/wxapp.jpg','','搬搬家，国内一流搬家平台','1','0','1');
         INSERT INTO ims_hello_banbanjia_plugin VALUES 
         ('41','diypage','biz','平台装修','../addons/hello_banbanjia/static/img/plugin/diypage.jpg','','可自定义底部菜单，自定义页面等','1','0','1');

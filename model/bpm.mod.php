@@ -129,5 +129,9 @@ function createBpmWorkspace($params = array())
  */
 function initBpmWorkspace($params = array())
 {
-    
+    //1. 创建用户组（客服、跟单、操作、财务）
+    //2. 创建工作流
+    //3. 创建pmtable（咨询订单）
+
+
 }
