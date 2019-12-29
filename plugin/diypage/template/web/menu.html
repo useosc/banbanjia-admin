@@ -1,0 +1,86 @@
+{itemplate 'public/header'}
+{itemplate 'common'}
+{if $op == 'list'}
+<form action="./index.php" class="form-horizontal form-filter">
+    {php echo tpl_form_filter_hidden('diypage/menu/list');}
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">搜索</label>
+        <div class="col-sm-4 col-xs-4">
+            <input type="text" name="keyword" value="{$keyword}" class="form-control" placeholder="请输入菜单标题或关键字进行搜索">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+        <div class="col-sm-4 col-xs-4">
+            <input type="submit" value="筛选" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+<form action="" class="form-table form" method="POST">
+    <div class="panel panel-table">
+        <div class="panel-heading">
+            <a href="{php echo iurl('diypage/menu/post');}" class="btn btn-primary btn-sm">新建菜单</a>
+        </div>
+        <div class="panel-body table-responsive js-table">
+            {if empty($menus)}
+            <div class="no-result">
+                <p>还没有数据</p>
+            </div>
+            {else}
+            <table class="table table-hover">
+                <thead class="navbar-inner">
+                    <tr>
+                        <th width="40">
+                            <div class="checkbox checkbox-inline">
+                                <input type="checkbox" name="ids[]" />
+                                <label></label>
+                            </div>
+                        </th>
+                        <th>菜单名称</th>
+                        <th>创建时间</th>
+                        <th>最后修改时间</th>
+                        <th style="width: 250px;text-align: right;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {loop $menus $menu}
+                    <tr>
+                        <td>
+                            <div class="checkbox checkbox-inline">
+                                <input type="checkbox" name="ids[]" value="{$menu['id']}" />
+                                <label></label>
+                            </div>
+                        </td>
+                        <td>{$menu['name']}</td>
+                        <td>{php echo date('Y-m-d H:i:s',$menu['addtime'])}</td>
+                        <td>{php echo date('Y-m-d H:i:s',$menu['updatetime'])}</td>
+                        <td style="text-align: right">
+                            <a href="{php echo iurl('diypage/menu/post',array('id'=>$menu['id']))}"
+                                class="btn btn-default btn-sm">编辑</a>
+                            <a href="{php echo iurl('diypage/menu/copy',array('id'=>$menu['id']))}"
+                                class="btn btn-default btn-sm js-post" data-confirm="确定复制该菜单吗？">复制</a>
+                            <a href="{php echo iurl('diypage/menu/del', array('id' => $menu['id']))}"
+                                class="btn btn-default btn-sm js-remove" data-confirm="删除后将不可恢复，确定删除吗">删除</a>
+                        </td>
+                    </tr>
+                    {/loop}
+                </tbody>
+            </table>
+            <div class="btn-region clearfix">
+                <div class="pull-left">
+                    <a href="{php echo iurl('diypage/menu/del')}" class="btn btn-primary btn-danger js-batch"
+                        data-batch="remove" data-confirm="删除后将不可恢复，确定删除吗">删除</a>
+                </div>
+                <div class="pull-right">
+                    {$pager}
+                </div>
+            </div>
+            {/if}
+        </div>
+    </div>
+</form>
+{/if}
+
+{if $op == 'post'}
+post
+{/if}

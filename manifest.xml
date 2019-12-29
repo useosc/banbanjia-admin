@@ -227,6 +227,53 @@
             KEY `uid` (`uid`),
             key `roleid` (`roleid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_diypage_menu` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) NOT NULL DEFAULT '0',
+            `name` varchar(255) NOT NULL DEFAULT '0',
+            `data` text NOT NULL,
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `updatetime` int(10) unsigned NOT NULL DEFAULT '0',
+            `version` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `addtime` (`addtime`),
+            KEY `updatetime` (`updatetime`),
+            KEY `version` (`version`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_agent` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(50) NOT NULL,
+            `realname` varchar(50) NOT NULL,
+            `mobile` varchar(20) NOT NULL,
+            `area` varchar(30) NOT NULL,
+            `initial` varchar(10) NOT NULL,
+            `salt` varchar(10) NOT NULL,
+            `password` varchar(32) NOT NULL,
+            `status` tinyint(3) unsigned DEFAULT '0',
+            `sysset` text NOT NULL,
+            `pluginset` text NOT NULL,
+            `account` varchar(1000) NOT NULL,
+            `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+            `fee` varchar(5000) NOT NULL,
+            `geofence` text NOT NULL,
+            `data` text NOT NULL,
+            `displayorder` int(10) unsigned NOT NULL DEFAULT '0',
+            `token` varchar(50) NOT NULL,
+            `amount_min` decimal(10,2) NOT NULL DEFAULT '0.00',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `status` (`status`),
+            KEY `uniacid_token` (`uniacid`,`token`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_agent_users` (
+
+        ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_category` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1054,6 +1101,41 @@
             KEY `uniacid` (`uniacid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_gohome_slide` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `agentid` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(30) NOT NULL,
+            `thumb` varchar(255) NOT NULL,
+            `wxapp_link` varchar(255) NOT NULL,
+            `type` varchar(20) NOT NULL DEFAULT 'gohome',
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `agentid` (`agentid`),
+            KEY `type` (`type`),
+            KEY `status` (`status`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_article_category` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `agentid` int(10) unsigned NOT NULL DEFAULT '0',
+            `parentid` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(20) NOT NULL,
+            `thumb` varchar(255) NOT NULL,
+            `link` varchar(255) NOT NULL,
+            `price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+            `tags` varchar(500) NOT NULL DEFAULT '',
+            `config` text NOT NULL,
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `is_hot` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `content` varchar(255) NOT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+
         INSERT INTO ims_hello_banbanjia_plugin VALUES
         ('47','gohome','biz','搬家社区','../addons/hello_banbanjia/static/img/plugin/gohome.jpg','','搬家社区','1','0','1');
         INSERT INTO ims_hello_banbanjia_plugin VALUES
@@ -1070,6 +1152,8 @@
         ('45','im','biz','WEB-IM','../addons/hello_banbanjia/static/img/plugin/im.jpg','','提供给商家的在线聊天工具','1','0','1');
         INSERT INTO ims_hello_banbanjia_plugin VALUES 
         ('46','hetong','biz','合同模板','../addons/hello_banbanjia/static/img/plugin/hetong.jpg','','给商家设置合同模板','1','0','1');
+        INSERT INTO ims_hello_banbanjia_plugin VALUES 
+        ('48','agent','biz','区域代理','../addons/hello_banbanjia/static/img/plugin/agent.jpg','','区域代理,平台可发展其他区域进行代理,建议有发展代理能力的平台购买 ! ','1','0','1');
 
         INSERT INTO ims_hello_banbanjia_service_config VALUES
         ('1','1','5','1');
@@ -1136,6 +1220,10 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_hetong;
         DROP TABLE IF EXISTS `ims_hello_banbanjia__store_hetong_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_workflow`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_gohome_slide`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_article_category`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_agent`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_diypage_menu`;
         ]]>
     </upgrade>
 </manifest>

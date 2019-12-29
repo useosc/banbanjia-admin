@@ -1,5 +1,5 @@
 <?php
-
+// error_reporting(E_ALL);
 defined('IN_IA') or exit('Access Denied');
 mload()->lmodel('plugin');
 global $_W;

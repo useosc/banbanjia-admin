@@ -1,12 +1,13 @@
 <div class="second-sidebar-title">{$_W['_plugin']['title']}</div>
 <div class="nav slimscroll">
 {ifp 'article.category' || 'article.slide' || 'article.information' || 'article.comment'}
-<div class="menu-header"></div>文章</div> 
+<div class="menu-header">文章</div>
 <ul class="menu-item">
     {ifp 'article.category'}
     <li {if $_W['_router'] == 'article/category/list'}class="active"{/if}>
         <a href="{php echo iurl('article/category/list');}">分类列表</a>
     </li>
+    {/if}
     {ifp 'article.slide'}
     <li {if $_W['_router'] == 'article/slide/list'}class="active"{/if}>
         <a href="{php echo iurl('article/slide/list');}">幻灯片</a>

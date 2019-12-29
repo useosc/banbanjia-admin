@@ -1,0 +1,178 @@
+{itemplate 'public/header'}
+{if $op == 'list'}
+<form action="./index.php" class="form-horizontal form-filter">
+    {php echo tpl_form_filter_hidden('agent/agent/list');}
+    <div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label">搜索</label>
+		<div class="col-sm-4 col-xs-4">
+			<input type="text" name="keyword" value="{$keyword}" class="form-control" placeholder="搜索代理名称或者代理区域">
+		</div>
+    </div>
+    <div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+		<div class="col-sm-4 col-xs-4">
+			<input type="submit" value="筛选" class="btn btn-primary">
+		</div>
+	</div>
+</form>
+<form action="" class="form-table form" method="POST">
+    <div class="panel panel-table">
+        <div class="panel-heading">
+            <a href="{php echo iurl('agent/agent/post');}" class="btn btn-primary btn-sm">添加代理</a>
+        </div>
+        <div class="panel-body table-responsive js-table">
+            {if empty($agents)}
+                <div class="no-result">
+                    <p>还没有相关数据</p>
+                </div>
+            {else}
+                <table class="table table-hover">
+                    <thead class="navbar-inner">
+                        <tr>
+                            <th width="40">
+                                <div class="checkbox checkbox-inline">
+                                    <input type="checkbox" name="ids[]"/>
+                                    <label></label>
+                                </div>
+                            </th>
+                            <th>代理名称</th>
+    						<th>账户余额</th>
+                            <th>账户最低余额限制</th>
+                            <th>
+                                真实姓名
+                                <br>
+                                手机号
+                            </th>
+                            <th>代理区域</th>
+                            <th>是否启用</th>
+                            <th style="width:350px; text-align:right;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						{loop $agents $agent}
+							<tr>
+								<td>
+									<div class="checkbox checkbox-inline">
+										<input type="checkbox" name="ids[]" value="{$agent['id']}"/>
+										<label></label>
+									</div>
+								</td>
+								<td>{$agent['title']}</td>
+								<td>
+									<span class="label label-success">{$agent['amount']}</span>
+								</td>
+								<td>
+									{if $agent['amount_min'] == 0}
+										<span class="label label-danger">不限制</span>
+									{else}
+										<span class="label label-danger">{$agent['amount_min']}</span>
+									{/if}
+								</td>
+								<td>
+									{$agent['realname']}
+									<br/>
+									{$agent['mobile']}
+								</td>
+								<td>{$agent['area']}</td>
+								<td>
+									<input type="checkbox" class="js-checkbox" data-href="{php echo iurl('agent/agent/status', array('id' => $agent['id']));}" data-name="status" value="1" {if $agent['status'] == 1}checked{/if}>
+								</td>
+								<td style="text-align:right;">
+									<a href="{php echo iurl('agent/agent/changes', array('id' => $agent['id']))}" class="btn btn-default btn-sm js-modal">账户变动</a>
+									<a href="{php echo iurl('agent/agent/set', array('id' => $agent['id']))}" class="btn btn-default btn-sm">账户设置</a>
+									<a href="{php echo iurl('agent/agent/post', array('id' => $agent['id']))}" class="btn btn-default btn-sm">编辑</a>
+									<a href="{php echo iurl('agent/agent/del', array('id' => $agent['id']))}" class="btn btn-default btn-sm js-remove" data-confirm="删除后将不可恢复，确定删除吗">删除</a>
+									{if 0}
+									<a href="{php echo iurl('dashboard/index', array('_agentid' => $agent['id'], 'agent' => 1))}" target="_blank" class="btn btn-default btn-sm" style="color:#D9534F;"><i class="fa fa-cog fa-spin"> </i> 管理</a>
+									{/if}
+								</td>
+							</tr>
+						{/loop}
+					</tbody>
+                </table>
+                <div class="btn-region clearfix">
+					<div class="pull-left">
+						<a href="{php echo iurl('agent/agent/del')}" class="btn btn-sm btn-primary btn-danger js-batch" data-batch="remove" data-confirm="删除后将不可恢复，确定删除吗">删除</a>
+					</div>
+					<div class="pull-right">
+						{$pager}
+					</div>
+                </div>
+            {/if}
+        </div>
+    </div>
+</form>
+{/if}
+
+{if $op == 'post'}
+<div class="page clearfix">
+    <form class="form-horizontal form form-validate" id="form1" style="max-width: 1500px;" action="" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">代理名称</label>
+			<div class="col-sm-9 col-xs-12">
+				<input type="text" name="title" value="{$agent['title']}" class="form-control" required="true">
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">真实姓名</label>
+			<div class="col-sm-9 col-xs-12">
+				<input type="text" name="realname" value="{$agent['realname']}" class="form-control" required="true">
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">手机号</label>
+			<div class="col-sm-9 col-xs-12">
+				<input type="text" name="mobile" value="{$agent['mobile']}" class="form-control" required="true">
+				<div class="help-block">手机号将作为后台登录账号</div>
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">密码</label>
+			<div class="col-sm-9 col-xs-12">
+				<input type="password" name="password" class="form-control" minlength="6" {if !$id}required="true"{/if}>
+				<div class="help-block">请填写密码，最小长度为 6 个字符.{if $id > 0}如果不更改密码此处请留空{/if}</div>
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">代理区域</label>
+			<div class="col-sm-9 col-xs-12">
+				<input type="text" name="area" value="{$agent['area']}" class="form-control" required="true">
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">是否启用</label>
+			<div class="col-sm-9 col-xs-12">
+				<div class="radio radio-inline">
+					<input type="radio" value="1" name="status" id="status-1" {if $agent['status'] == '1' || empty($agent['status'])}checked{/if}>
+					<label for="status-1">是</label>
+				</div>
+				<div class="radio radio-inline">
+					<input type="radio" value="0" name="status" id="status-0" {if $agent['status'] == '0'}checked{/if}>
+					<label for="status-0">否</label>
+				</div>
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">代理服务中心点</label>
+			<div class="col-sm-9 col-xs-12">
+				{php echo tpl_form_field_hello_coordinate('map', $agent['geofence']['map'], true);}
+				<div class="help-block">设置代理服务中心点</div>
+			</div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">服务区域</label>
+			<div class="col-sm-9 col-xs-12">
+				{itemplate 'store/shop/geofence'}
+			</div>
+        </div>
+        <div class="form-group">
+			<div class="col-sm-9 col-xs-9 col-md-9">
+				<input type="hidden" name="token" value="{$_W['token']}">
+				<input type="submit" value="提交" class="btn btn-primary">
+			</div>
+		</div>
+    </form>
+</div>
+{/if}
+
+{itemplate 'public/footer'}

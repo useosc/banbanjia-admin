@@ -4,7 +4,8 @@ defined('IN_IA') or exit('Access Denied');
 class Ploader
 {
     private $cache = array();
-    public function func($name){
+    public function func($name)
+    {
         global $_W;
         if (isset($this->cache["func"][$name])) {
             return true;
@@ -18,14 +19,18 @@ class Ploader
         trigger_error("Invalid Helper Function /addons/hello_banbanjia/" . $_W["_plugin"]["name"] . "/function/" . $name . ".func.php", 256);
         return false;
     }
-    public function model($name){
+    public function model($name)
+    {
         global $_W;
-        if(isset($this->cache['model'][$name])){
-           return true;
+        if (isset($this->cache['model'][$name])) {
+            return true;
         }
         $file = WE7_BANBANJIA_PLUGIN_PATH . (string) $name . "/model.php";
         if (!is_file($file)) {
             $file = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W["_plugin"]["name"] . "/model/" . $name . ".mod.php";
+        }
+        if (!is_file($file) && in_array($name, array("seckill", "kanjia", "pintuan", "article", "haodian"))) {
+            $file = WE7_BANBANJIA_PLUGIN_PATH . "gohome/" . $name . "/model.php";
         }
         if (file_exists($file)) {
             include $file;
@@ -54,6 +59,10 @@ class Ploader
 
 function plugin_fetch($name) //获取插件信息
 {
+    $routers = array('pintuan' => array('name' => 'pintuan', 'title' => '拼团', 'status' => 1), 'kanjia' => array('name' => 'kanjia', 'title' => '砍价', 'status' => 1), 'seckill' => array('name' => 'seckill', 'title' => '抢购', 'status' => 1), 'article' => array('name' => 'article', 'title' => '文章', 'status' => 1), 'haodian' => array('name' => 'haodian', 'title' => '好店', 'status' => 1));
+    if(in_array($name,array_keys($routers))){
+        return $routers[$name];
+    }
     $condition = " where name = :name";
     $params = array(":name" => $name);
     $plugin = pdo_fetch("select * from " . tablename('hello_banbanjia_plugin') . $condition, $params);

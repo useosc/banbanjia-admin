@@ -1,9 +1,29 @@
-<div class="second-sidebar-title">自定义设置</div>
+<div class="second-sidebar-title">{$_W['_plugin']['title']}</div>
 <div class="nav slimscroll">
     <div class="menu-header">自定义设置</div>
     <ul class="menu-item">
+        <li {if $_GPC['ac'] == 'menu'}class="active"{/if}>
+            <a href="{php echo iurl('diypage/menu')}">菜单列表</a>
+        </li>
+        <li {if $_GPC['ac'] == 'mall'}class="active"{/if}>
+			<a href="{php echo iurl('diypage/mall')}">菜单设置</a>
+			</li>
         <li {if $_GPC['ac'] == 'diyPage'}class="active"{/if}>
             <a href="{php echo iurl('diypage/diyPage');}">自定义页面</a>
         </li>
+        <li {if $_GPC['ac'] == 'diyShop'}class="active"{/if}>
+			<a href="{php echo iurl('diypage/diyShop')}">页面设置</a>
+        </li>
+        <li {if $_GPC['ac'] == 'diyColor'}class="active"{/if}>
+			<a href="{php echo iurl('diypage/diyColor')}">页面配色</a>
+		</li>
     </ul>
+    {ifp 'diypage.template'}
+        <div class="menu-header">模板管理</div>
+        <ul class="menu-item">
+            <li {if $_GPC['ac'] == 'template'}class="active"{/if}>
+            <a href="{php echo iurl('diypage/template')}">全部模板</a>
+            </li>
+        </ul>
+    {/if}
 </div>

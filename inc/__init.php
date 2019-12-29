@@ -1,4 +1,5 @@
 <?php
+// error_reporting(E_ALL);
 defined("IN_IA") or exit("Access Denied");
 global $_W;
 global $_GPC;
@@ -14,7 +15,6 @@ $_W["_ta"] = trim($_GPC["ta"]);
 $_W["_router"] = implode("/", array($_W["_ctrl"], $_W["_ac"], $_W["_op"])); //路由
 $_plugins = pdo_getall("hello_banbanjia_plugin", array(), array("name", "title"), "name"); //插件
 $_W["_plugins"] = $_plugins;
-// var_dump($_plugins);exit;
 //检测是否是插件
 in_array($_W["_ctrl"], array_keys($_plugins)) and define("IN_PLUGIN", 1);
 if (in_array($_W['_ctrl'], array('seckill', 'kanjia', 'pintuan', 'article', 'haodian'))) {
@@ -49,7 +49,7 @@ if (defined("IN_SYS")) { //web/index 后台入口文件进入
     $file_path = WE7_BANBANJIA_PATH . "inc/web/" . $_W["_ctrl"] . "/" . $_W["_ac"] . ".inc.php";
     if (defined('IN_MERCHANT')) {
         $file_path = WE7_BANBANJIA_PATH . 'inc/web/' . $_W['_ctrl'] . '/' . $_W['_ac'] . '/' . $_W['_op'] . '.inc.php';
-        if(defined("IN_GOHOME_APLUGIN")){
+        if (defined("IN_GOHOME_APLUGIN")) {
             $file_path = WE7_BANBANJIA_PATH . 'inc/web/' . $_W['_ctrl'] . '/gohome/' . $_W['_ac'] . '/' . $_W['_op'] . '.inc.php';
         }
         if (!is_file($file_path)) {
@@ -61,14 +61,15 @@ if (defined("IN_SYS")) { //web/index 后台入口文件进入
             require $plugin_init;
             $file_init = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W['_ctrl'] . '/inc/web/__init.php';
             $file_path = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W["_ctrl"] . "/inc/web/" . $_W["_ac"] . ".inc.php";
-            if(defined("IN_AGENT")){
-
-            }else{
-                
+            if (defined("IN_AGENT")) { } else {
+                if (defined('IN_GOHOME_WPLUGIN')) {
+                    $file_path = WE7_BANBANJIA_PLUGIN_PATH . "gohome/" . $_W['_ctrl'] . "/inc/web/" . $_W['_ac'] . ".inc.php";
+                }
             }
         }
     }
 
+    // var_dump($file_path);exit;
     if (is_file($file_init)) { //引入初始化文件
         require $file_init;
     }

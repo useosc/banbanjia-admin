@@ -7,7 +7,9 @@ function build_menu()
     global $_W;
     global $_GPC;
     if (defined('IN_PLUGIN')) {
-        include itemplate('tabs');
+        if (defined("IN_AGENT")) { } else {
+            include itemplate('tabs');
+        }
     } else {
         if (defined('IN_MERCHANT')) {
             include itemplate((string) $_W["_ctrl"] . "/" . $_W["_ac"] . "/tabs");

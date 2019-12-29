@@ -12,6 +12,16 @@ function itemplate($filename, $flag = TEMPLATE_DISPLAY)
             $filename_old = $filename;
             $filename = (string) $_W['_plugin']['name'] . '/template/web/' . $filename . '.html';
             $source = WE7_BANBANJIA_PLUGIN_PATH . $filename;
+            if(defined("IN_AGENT_PLUGIN")){
+
+            }else{
+                if(defined("IN_GOHOME_WPLUGIN")){
+                    $source = WE7_BANBANJIA_PLUGIN_PATH . "gohome/" . $_W['_ctrl'] . "/template/web/" . $filename_old . ".html";
+                    if (!is_file($source) || $filename_old == "tabs") {
+                        $source = WE7_BANBANJIA_PLUGIN_PATH . "gohome/template/web/" . $filename_old . ".html";
+                    }
+                }
+            }
             if (!is_file($source)) {
                 $source = WE7_BANBANJIA_PATH . 'template/web/' . $filename_old . '.html';
             }
