@@ -41,7 +41,24 @@ if (!function_exists("get_system_config")) { //获取系统配置
         }
     }
 }
-
+function set_cache($key, $value)
+{
+    global $_W;
+    if (empty($value["starttime"])) {
+        $value["starttime"] = TIMESTAMP;
+    }
+    cache_write($key, $value);
+    return true;
+}
+function get_cache($key)
+{
+    global $_W;
+    $cache = cache_read($key);
+    if (empty($cache) || 0 < $cache["starttime"] && $cache["starttime"] + $timelimit < TIMESTAMP) {
+        return false;
+    }
+    return $cache;
+}
 //系统设置
 function set_system_config($key, $value)
 {

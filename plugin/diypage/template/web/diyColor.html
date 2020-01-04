@@ -1,0 +1,36 @@
+{itemplate 'public/header'}
+{if $op == 'index'}
+<div class="page clearfix">
+    <form class="form-horizontal form form-validate" id="form1" action="" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">页面头部</label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">背景颜色</div>
+                    <div class="col-sm-4">
+                        <div class="input-group">
+							<input class="form-control input-sm diy-bind color" name="header[background]" value="{php echo $diycolor['header']['background'] ? $diycolor['header']['background'] : '#ff2d4b'}" type="color"/>
+							<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#ff2d4b').trigger('propertychange')">重置</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+					<div class="col-sm-2 control-label">文字颜色</div>
+					<div class="col-sm-4">
+						<div class="input-group">
+							<input class="form-control input-sm diy-bind color" name="header[color]" value="{php echo $diycolor['header']['color'] ? $diycolor['header']['color'] : '#ffffff'}" type="color" />
+							<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#ffffff').trigger('propertychange')">重置</span>
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-9 col-xs-12">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
+{/if}
+{itemplate 'public/footer'}

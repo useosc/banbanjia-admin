@@ -1,0 +1,178 @@
+/*社区文章组件样式*/
+.diy-article-wenzhang{
+	padding: 0 10px 10px 10px;
+	background-color: #fff;
+	font-size: 14px;
+}
+.diy-article-wenzhang .wenzhang-header{
+	font-weight: bold;
+	position: relative;
+	text-align: center;
+	font-size: 14px;
+	padding-top: 10px;
+	min-height: 30px;
+}
+.diy-article-wenzhang .wenzhang-header a{
+	position: absolute;
+	bottom: 0;
+	right: 10px;
+	color: #333;
+	font-size: 12px;
+	font-weight: normal;
+}
+.diy-article-wenzhang .diy-article-wenzhang-list{
+	padding-top: 10px;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-wenzhang-userinfo{
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: space-between;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-wenzhanginfo{
+	padding-left: 50px;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-userinfo-left{
+	width: 40px;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-userinfo-left .avatar{
+	width: 40px;
+	height: 40px;
+	font-size: 0px;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-userinfo-left .avatar img{
+	width: 100%;
+	height: 100%;
+	border-radius: 100%;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-userinfo-right{
+	flex: 1;
+	padding-left: 10px;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: space-between;
+	line-height: 1;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-userinfo-right .wenzhang-title{
+	line-height: 22px;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-userinfo-right li{
+	display: flex;
+	align-items: center;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-userinfo-right .tags{
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	justify-content: flex-start;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-userinfo-right .tag-top{
+	background-color: #ff2d4b;
+	color: #fff;
+	font-size: 10px;
+	padding: 3px 5px;
+	border-radius: 3px;
+	margin-right: 5px;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-userinfo-right .tag-cate{
+	background-color: #FFE0E5;
+	color: #ff2d4b;
+	font-size: 10px;
+	padding: 3px 10px;
+	border-radius: 3px;
+	margin-right: 5px;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-userinfo-right .nickname{
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .tags .tag-item{
+	font-size: 10px;
+	color: #ff2d4b;
+	border: 1px solid #ff2d4b;
+	padding: 3px 5px;
+	border-radius: 3px;
+	margin: 5px 5px 0 0;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-userinfo-right .icon{
+	font-size: 20px;
+	color: #ff2d4b;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-wenzhanginfo .wenzhang-text{
+	line-height: 1.5;
+	padding: 7px 0;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-wenzhanginfo .all-text{
+	display: flex;
+	align-items: center;
+	color: #999;
+	font-size: 14px;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-wenzhanginfo .all-text span{
+	margin-right: 5px;
+	font-size: 13px;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-wenzhanginfo .wenzhang-time{
+	margin-top: 10px;
+	color: #999;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 12px;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-wenzhanginfo .wenzhang-time .wenzhang-detail{
+	display: flex;
+	align-items: center;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-wenzhanginfo .thumbs{
+	width: 100%;
+	margin: 5px -10px -5px -5px;
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-wenzhanginfo .thumbs .thumb-item{
+	width: 25%;
+	height: 60px;
+	padding: 5px;
+	overflow: hidden;
+	position: relative;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-wenzhanginfo .thumbs .thumb-item img{
+	border-radius: 3px;
+	width: 100%;
+	height: 100%;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-wenzhanginfo .thumbs .thumb-item .thumb-num{
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	bottom: 5px;
+	right: 5px;
+	background-color: rgba(0, 0, 0, 0.6);
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 24px;
+	border-radius: 3px;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-wenzhanginfo .wenzhang-info{
+	font-size: 13px;
+	margin-top: 10px;
+	color: #999;
+	display: flex;
+	align-items: center;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-wenzhanginfo .wenzhang-info .info{
+	display: flex;
+	align-items: center;
+	margin-right: 10px;
+}
+.diy-article-wenzhang .diy-article-wenzhang-item .diy-article-wenzhanginfo .wenzhang-info .info .icon{
+	font-size: 15px;
+}

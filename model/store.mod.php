@@ -303,3 +303,21 @@ function store_fetch_category()
     $cid = intval($_GPC["cid"]);
     // $category = pdo_get
 }
+
+function store_fetchall_by_condition($type = "hot", $option = array())
+{
+    global $_W;
+    if (empty($option['limit'])) {
+        $option['limit'] = 6;
+    }
+    if (empty($option["extra_type"])) {
+        $option["extra_type"] = "all";
+    }
+    $condition = " where uniacid = :uniacid and agentid = :agentid and status = 1";
+    $params = array(':uniacid' => $_W['uniacid'], ':agentid' => $_W['agentid']);
+    if (isset($option["is_rest"])) {
+        $condition .= " and is_rest = :is_rest";
+        $params[":is_rest"] = intval($option["is_rest"]);
+    }
+    
+}

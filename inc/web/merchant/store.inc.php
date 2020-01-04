@@ -59,3 +59,29 @@ if($op == 'post'){
     
     include itemplate('merchant/post');
 }
+
+if($op == 'is_in_business') {
+    $sid = intval($_GPC['id']);
+    $is_in_business = intval($_GPC['is_in_business']);
+    pdo_update("hello_banbanjia_store", array("is_in_business" => $is_in_business), array("uniacid" => $_W["uniacid"], "id" => $sid));
+    mlog(2012, $sid);
+    imessage(error(0,''),'','ajax');
+}
+if ($op == "status") {
+    $sid = intval($_GPC["id"]);
+    $status = intval($_GPC["status"]);
+    pdo_update("hello_banbanjia_store", array("status" => $status), array("uniacid" => $_W["uniacid"], "id" => $sid));
+    imessage(error(0, ""), "", "ajax");
+}
+if ($op == "is_recommend") {
+    $sid = intval($_GPC["id"]);
+    $recommend = intval($_GPC["is_recommend"]);
+    pdo_update("hello_banbanjia_store", array("is_recommend" => $recommend), array("uniacid" => $_W["uniacid"], "id" => $sid));
+    imessage(error(0, ""), "", "ajax");
+}
+if ($op == "is_stick") {
+    $sid = intval($_GPC["id"]);
+    $is_stick = intval($_GPC["is_stick"]);
+    pdo_update("hello_banbanjia_store", array("is_stick" => $is_stick), array("uniacid" => $_W["uniacid"], "id" => $sid));
+    imessage(error(0, ""), "", "ajax");
+}

@@ -28,4 +28,30 @@
     </li>
 </ul>
 {/if}
+{ifp 'gohome.config' || 'gohome.poster' || 'article.basic'}
+<div class="menu-header">设置</div>
+<ul class="menu-item">
+    {ifp 'gohome.config'}
+        <li {if $_W['_ac'] == 'config' && $_W['_op'] == 'activity'}class="active"{/if}>
+        <a href="{php echo iurl('gohome/config/activity');}">活动设置</a>
+        </li>
+        <li {if $_W['_ac'] == 'config' && $_W['_op'] == 'serve_fee'}class="active"{/if}>
+        <a href="{php echo iurl('gohome/config/serve_fee');}">费率设置</a>
+        </li>
+        <li {if $_W['_router'] == 'gohome/config/share'}class="active"{/if}>
+        <a href="{php echo iurl('gohome/config/share');}">分享设置</a>
+        </li>
+    {/if}
+    {ifp 'gohome.poster'}
+        <li {if $_W['_ac'] == 'poster'}class="active"{/if}>
+        <a href="{php echo iurl('gohome/poster/index');}">活动海报</a>
+        </li>
+    {/if}
+    {ifp 'article.basic'}
+        <li {if $_W['_router'] == 'article/basic/index'}class="active"{/if}>
+        <a href="{php echo iurl('article/basic/index');}">文章设置</a>
+        </li>
+    {/if}
+</ul>
+{/if}
 </div>

@@ -1,16 +1,20 @@
-<!-- <link rel="stylesheet" href="../addons/hello_banbanjia/plugin/diypage/static/css/diy.web.css?t={php echo time();}" type="text/css"/>
-<link rel="stylesheet" href="../addons/hello_banbanjia/plugin/diypage/static/css/diy.vue.preview.css?t={php echo time();}" type="text/css">
-<link href="https://cdn.bootcss.com/jqueryui/1.11.0/jquery-ui.css" rel="stylesheet"> -->
-<link href="../addons/we7_wmall/plugin/diypage/static/css/diy.vue.web.css?t={php echo time();}" rel="stylesheet" type="text/css"/>
-<link href="../addons/we7_wmall/plugin/diypage/static/css/diy.vue.purview.css?t={php echo time();}" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+<link rel="stylesheet" href="../addons/hello_banbanjia/plugin/diypage/static/css/diy.web.css?t={php echo time();}" type="text/css"/>
+<link rel="stylesheet" href="../addons/hello_banbanjia/plugin/diypage/static/css/diy.preview.css?t={php echo time();}" type="text/css">
+<link href="https://cdn.bootcss.com/jqueryui/1.11.0/jquery-ui.css" rel="stylesheet">
 
-
+<!--editor-->
 <script type="text/html" id="tpl-parts">
 	<nav class="btn btn-link" data-id="page"><i class="fa fa-cog"></i> 页面设置</nav>
 	<(each initPart as part)>
 	<nav class="btn btn-link" data-id="<(part.id)>"><i class="fa fa-plus"></i> <(part.name)></nav>
 	<(/each)>
+</script>
+
+<script type="text/html" id="tpl-editor-del">
+	<div class="btn-edit-del">
+		<div class="btn-edit">编辑</div>
+		<div class="btn-del">删除</div>
+	</div>
 </script>
 
 <script type="text/html" id="tpl-editor-page">
@@ -137,22 +141,6 @@
 		</div>-->
 </script>
 
-<!--绑定手机-->
-<script type="text/html" id="tpl-show-memberBindMobile" >
-	<div class="drag" data-itemid="<(itemid)>" >
-		<div class="diy-mobile-bind " style="margin-top: <(style.margintop)>px;background: <(style.background)>;">
-			<div class="wui-cell">
-				<div class="wui-cell-text">
-					<i class="icon icon-phone1"></i>
-					<span style="color: <(style.titlecolor)>;">绑定手机号</span>
-					<div class="cell-text-info" style="color: <(style.placeholdercolor)>;"><(params.placeholdertext)></div>
-				</div>
-				<div class="wui-cell-remark icon icon-right1"></div>
-			</div>
-		</div>
-	</div>
-</script>
-
 <!--会员中心绑定手机-->
 <script type="text/html" id="tpl-editor-memberBindMobile">
 	<div class="alert alert-info">提示：此元素仅在用户未绑定手机时显示。</div>
@@ -198,6 +186,184 @@
 		<div class="col-sm-2 control-label">提示文字</div>
 		<div class="col-sm-10">
 			<input class="form-control input-sm diy-bind" data-bind-child="params" data-bind="placeholdertext" value="<(params.placeholdertext)>" placeholder="请输入绑定手机的提示信息" />
+		</div>
+	</div>
+</script>
+<!-- 社区文章 -->
+<script type="text/html" id="tpl-editor-article">
+	<div class="form-group">
+		<div class="col-sm-2 control-label">上外边距</div>
+		<div class="col-sm-10">
+			<div class="form-group margin-t-5">
+				<div class="slider col-sm-8" data-value="<(style.margintop)>" data-min="0" data-max="50"></div>
+				<div class="col-sm-4 control-labe count"><span><(style.margintop)></span>px(像素)</div>
+				<input class="diy-bind input" data-bind-child="style" data-bind="margintop" value="<(style.margintop)>" type="hidden" />
+			</div>
+		</div>
+	</div>
+	<div class="line"></div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">标题是否显示</div>
+		<div class="col-sm-10">
+			<label class="radio-inline"><input type="radio" name="headline_show" value="1" class="diy-bind" data-bind-child="params" data-bind="headline_show" data-bind-init="true" <(if params.headline_show == 1 )>checked="checked"<(/if)>> 显示</label>
+			<label class="radio-inline"><input type="radio" name="headline_show" value="0" class="diy-bind" data-bind-child="params" data-bind="headline_show" data-bind-init="true" <(if params.headline_show == 0 )>checked="checked"<(/if)>> 隐藏</label>
+		</div>
+	</div>
+	<(if params.headline_show == 1)>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">标题文字</div>
+		<div class="col-sm-10">
+			<div class="input-group">
+				<input class="form-control input-sm diy-bind" data-bind-child="params" data-bind="headline"  value="<(params.headline)>" type="text" placeholder="请输入标题文字" />
+				<span class="input-group-addon">文字颜色</span>
+				<input class="form-control input-sm diy-bind color" data-bind-child="style" data-bind="headlinecolor" value="<(style.headlinecolor)>" type="color" style="width: 130px;" />
+				<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#333333').trigger('propertychange')" style="width: 90px;">重置</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">提示文字</div>
+		<div class="col-sm-10">
+			<div class="input-group">
+				<input class="form-control input-sm diy-bind" data-bind-child="params" data-bind="more" value="<(params.more)>" type="text" placeholder="请输入提示文字" />
+				<span class="input-group-addon">文字颜色</span>
+				<input class="form-control input-sm diy-bind color" data-bind-child="style" data-bind="morecolor" value="<(style.morecolor)>" type="color" style="width: 130px;" />
+				<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#999999').trigger('propertychange')" style="width: 90px;">重置</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label"></div>
+		<div class="col-sm-10">
+			<div class="input-group">
+				<input type="text" class="form-control input-sm diy-bind" data-bind-child="params" data-bind="more_link" id="tongcheng-<(itemid)>" placeholder="请选择链接或输入链接地址" value="<(params.more_link)>" />
+				<span class="input-group-addon btn btn-default js-selectWxappLink" data-input="#tongcheng-<(itemid)>">选择链接</span>
+			</div>
+		</div>
+	</div>
+	<(/if)>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">帖子数量</div>
+		<div class="col-sm-10">
+			<label class="radio-inline"><input type="radio" name="informationdata" value="0" class="diy-bind" data-bind-child="params" data-bind="informationdata" data-bind-init="true" <(if params.informationdata=='0' || !params.informationdata)>checked="checked"<(/if)>> 固定数量</label>
+			<label class="radio-inline"><input type="radio" name="informationdata" value="1" class="diy-bind" data-bind-child="params" data-bind="informationdata" data-bind-init="true" <(if params.informationdata=='1')>checked="checked"<(/if)>> 下拉加载</label>
+		</div>
+	</div>
+	<(if params.informationdata != '1')>
+		<div class="form-group">
+			<div class="col-sm-2 control-label">显示数量</div>
+			<div class="col-sm-10">
+				<div class="form-group margin-t-5">
+					<div class="slider col-sm-8" data-value="<(params.informationnum)>" data-min="1" data-max="100"></div>
+					<div class="col-sm-4 control-labe count"><span><(params.informationnum)></span>个</div>
+					<input class="diy-bind input" data-bind-child="params" data-bind="informationnum" value="<(params.informationnum)>" type="hidden" />
+				</div>
+			</div>
+		</div>
+	<(/if)>
+</script>
+
+<!-- show -->
+
+<!--绑定手机-->
+<script type="text/html" id="tpl-show-memberBindMobile" >
+	<div class="drag" data-itemid="<(itemid)>" >
+		<div class="diy-mobile-bind " style="margin-top: <(style.margintop)>px;background: <(style.background)>;">
+			<div class="wui-cell">
+				<div class="wui-cell-text">
+					<i class="icon icon-phone1"></i>
+					<span style="color: <(style.titlecolor)>;">绑定手机号</span>
+					<div class="cell-text-info" style="color: <(style.placeholdercolor)>;"><(params.placeholdertext)></div>
+				</div>
+				<div class="wui-cell-remark icon icon-right1"></div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<!--会员中心头部-->
+<script type="text/html" id="tpl-show-memberHeader">
+	<div class="drag" data-itemid="<(itemid)>">
+		<div class="diy-memberHeader">
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="tpl-show-article">
+	<div class="drag drag-article" data-itemid="<(itemid)>">
+		<div class="diy-article-wenzhang" style="margin-top: <(style.margintop)>px;">
+			<(if params.headline_show == 1)>
+			<div class="wenzhang-header" style="color: <(style.headlinecolor)>">
+				<(params.headline)>
+				<a href="javascript:;" style="color: <(style.morecolor)>"><(params.more)><i class="fa fa-chevron-right"></i></a>
+			</div>
+			<(/if)>
+			<div class="diy-article-wenzhang-list">
+				<div class="diy-article-wenzhang-item">
+					<div class="diy-article-wenzhang-userinfo">
+						<div class="diy-article-userinfo-left">
+							<(each data as item)>
+								<div class="avatar">
+									<img src="<(item.thumb)>" alt="">
+								</div>
+							<(/each)>
+						</div>
+						<div class="diy-article-userinfo-right">
+							<div>
+								<div class="wenzhang-title">
+									<span class="tag-top">置顶</span>
+									<span class="tag-cate">咨询</span>
+									<span class="nickname">昵称123</span>
+								</div>
+								<div class="tags">
+									<div class="tag-item">国内搬家</div>
+									<div class="tag-item">办公室搬迁</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="diy-article-wenzhanginfo">
+						<div class="wenzhang-text">搬搬家--国内最好的搬家平台</div>
+						<div class="all-text">
+							<span>查看全文</span>
+							<i class="fa fa-chevron-down"></i>
+						</div>
+						<div class="wenzhang-time">
+							<div>2019-11-30 11:05发布</div>
+							<div class="wenzhang-detail">
+								<span>查看详情</span>
+								<i class="fa fa-chevron-right"></i>
+							</div>
+						</div>
+						<ul class="thumbs">
+							<(each data as item)>
+								<(each item.wenzhangimg as thumb index)>
+									<li class="thumb-item">
+										<img src="<(thumb)>" alt="">
+										<(if index == 'C0123456789104')>
+										<div class="thumb-num">+4</div>
+										<(/if)>
+									</li>
+								<(/each)>
+							<(/each)>
+						</ul>
+						<div class="wenzhang-info">
+							<div class="info">
+								<i class="fa fa-eye"></i>
+								<span>10</span>
+							</div>
+							<div class="info">
+								<i class="fa fa-thumbs-o-up"></i>
+								<span>10</span>
+							</div>
+							<div class="info">
+								<i class="fa fa-commenting-o"></i>
+								<span>10</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </script>

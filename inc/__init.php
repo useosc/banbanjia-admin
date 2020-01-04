@@ -31,6 +31,11 @@ if ($_W['_ctrl'] == 'gohome' || defined('IN_GOHOME_WPLUGIN')) {
 }
 if (strexists($_W["siteurl"], "web/index.php")) { //判断是否是后台管理页面
     define("IN_MANAGE", 1);
+} else {
+    if (strexists($_W['siteurl'], 'web/agent.php')) {
+        define("IN_PLUGIN", 1);
+        define("IN_AGENT", 1);
+    }
 }
 
 if (defined("IN_SYS")) { //web/index 后台入口文件进入
@@ -148,6 +153,10 @@ if (defined("IN_SYS")) { //web/index 后台入口文件进入
                 require $plugin_init;
                 $file_init = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W['_ctrl'] . '/inc/wxapp/__init.php';
                 $file_path = $file_init = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W['_ctrl'] . '/inc/wxapp/' . $_W['_ac'] . '.inc.php';
+                if (defined("IN_GOHOME_WPLUGIN")) { //gohome wxapp api
+                    $file_init = WE7_BANBANJIA_PLUGIN_PATH . "gohome/" . $_W["_ctrl"] . "/inc/wxapp/__init.php";
+                    $file_path = WE7_BANBANJIA_PLUGIN_PATH . "gohome/" . $_W["_ctrl"] . "/inc/wxapp/" . $_W["_ac"] . ".inc.php";
+                }
             }
         }
     }
