@@ -36,5 +36,59 @@ if ($op == 'index') {
     $_W['_nav'] = 1;
     imessage(error(0, $result), '', 'ajax');
 } else {
-    if ($op == 'information') { }
+    if ($op == 'information') { } else {
+        if ($op == 'detail') {
+            $id = intval($_GPC['id']);
+            gohome_update_activity_flow("article", $id, "looknum");
+            $information = article_get_information($id, array("like_member_show" => 1));
+            $comments = article_get_comments($id);
+            // $_W[];
+            $result = array("detail" => $information, "comments" => $comments);
+            imessage(error(0, $result), "", "ajax");
+        } else {
+            if ($op == 'comment') {
+                $id = intval($_GPC['id']);
+                $update = array('uniacid' => $_W['uniacid'], 'agentid' => $_W['agentid'], 'aid' => $id, 'content' => trim($_GPC['content']), 'uid' => $_W['member']['uid'], 'nickname' => $_W['member']['nickname'], "avatar" => $_W["member"]["avatar"], "addtime" => TIMESTAMP);
+                pdo_insert("hello_banbanjia_article_comment", $update);
+                $extra = array("content" => $update["content"], "nickname" => $update["nickname"], "addtime" => $update["addtime"]);
+                // article_wenzhang_notice($id, "comment", $extra);
+                imessage(error(0, '评论成功'), '', 'ajax');
+            } else {
+                if ($op == 'reply') {
+                    $id = intval($_GPC['id']);
+                    $aid = intval($_GPC["aid"]);
+                    $to_uid = intval($_GPC["to_uid"]);
+                    $to_member = pdo_get("hello_banbanjia_members", array("uniacid" => $_W["uniacid"], "uid" => $to_uid), array("uid", "nickname", "avatar"));
+                    $update = array("uniacid" => $_W["uniacid"], "aid" => $aid, "cid" => $id, "content" => trim($_GPC["content"]), "from_uid" => $_W["member"]["uid"], "from_nickname" => $_W["member"]["nickname"], "from_avatar" => $_W["member"]["avatar"], "to_uid" => $to_member["uid"], "to_nickname" => $to_member["nickname"], "to_avatar" => $to_member["avatar"], "addtime" => TIMESTAMP);
+                    pdo_insert("hello_banbanjia_article_reply", $update);
+                    $extra = array("content" => "回复:" . $update["content"], "nickname" => $update["from_nickname"], "addtime" => $update["addtime"]);
+                    // article_wenzhang_notice($id, "reply", $extra);
+                    imessage(error(0, "回复成功"), "", "ajax");
+                } else {
+                    if ($op == 'del') { } else {
+                        if ($op == 'like') {
+                            $id = intval($_GPC['id']);
+                            $information = pdo_get("hello_banbanjia_article_information", array('uniacid' => $_W['uniacid'], 'id' => $id), array('id', 'likenum', 'like_uid'));
+                            if (!empty($information)) {
+                                $like_uid = iunserializer($information['like_uid']);
+                                if (empty($like_uid)) {
+                                    $like_uid = array();
+                                }
+                                if (in_array($_W['member']['uid'], $like_uid)) {
+                                    imessage(error(-1, '您已赞过了'), '', 'ajax');
+                                }
+                                $like_uid[] = $_W['member']['uid'];
+                            }
+                            // article_flow_update("falselikenum");
+                            $update = array('like_uid' => iserializer($like_uid), 'likenum' => $information['likenum'] + 1);
+                            pdo_update("hello_banbanjia_article_information", $update, array("uniacid" => $_W['uniacid'], "id" => $id));
+                            $extra = array("content" => '点赞', 'addtime' => TIMESTAMP, 'nickname' => $_W['member']['nickname']);
+                            // article_wenzhang_notice($id,"like",$extra);
+                            imessage(error(0, ''), '', 'ajax');
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

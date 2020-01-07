@@ -263,6 +263,212 @@
 	<(/if)>
 </script>
 
+<!-- 会员中心头部 -->
+<script type="text/html" id="tpl-editor-memberHeader">
+	<div class="form-group">
+		<div class="col-sm-2 control-labe">背景设置</div>
+		<div class="col-sm-10">
+			<label class="radio-inline">
+				<input type="radio" name="headerbg" value="color" class="diy-bind" data-bind-child="params" data-bind="headerstyle" data-bind-init="true" <(if params.headerstyle == 'color' || !params.headerstyle)>checked="checked"<(/if)>>背景颜色
+			</label>
+			<label class="radio-inline"><input type="radio" name="headerbg" value="img" class="diy-bind" data-bind-child="params" data-bind="headerstyle" data-bind-init="true" <(if params.headerstyle == 'img')>checked="checked"<(/if)>> 背景图片</label>
+		</div>
+	</div>
+	<(if params.headerstyle == 'color' || !params.headerstyle)>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">背景颜色</div>
+		<div class="col-sm-4">
+			<div class="input-group">
+				<input class="form-control input-sm diy-bind color" data-bind-child="style" data-bind="background" value="<(style.background)>" type="color" />
+				<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#ffffff').trigger('propertychange')">重置</span>
+			</div>
+		</div>
+	</div>
+	<(/if)>
+	<(if params.headerstyle == 'img')>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">背景图片</div>
+		<div class="col-sm-10">
+			<div class="input-group">
+				<input class="form-control input-sm diy-bind" data-bind-child="params" data-bind="backgroundimgurl" value="<(params.backgroundimgurl)>" id="header-background-img" />
+				<span data-input="#header-background-img" data-element="#header-background-img-box" class="input-group-addon btn btn-default js-selectImg">选择图片</span>
+			</div>
+			<div class="input-group " style="margin-top:10px;">
+				<img src="<(tomedia params.backgroundimgurl)>" onerror="this.src='../addons/we7_wmall/static/img/nopic.jpg';" class="img-responsive img-thumbnail" width="150" id="header-background-img-box" style="max-height: 100px;">
+				<span class="close" style="position:absolute; top: -10px; right: -14px;" title="移除图片" onclick="$('#header-background-img').val('').trigger('change');$(this).prev().attr('src', '')">×</span>
+			</div>
+		</div>
+	</div>
+	<(/if)>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">左侧按钮</div>
+		<div class="col-sm-10">
+			<div class="input-group">
+				<span class="input-group-addon">文字</span>
+				<input type="text" class="form-control input-sm diy-bind" data-bind-parent="params" data-bind-child="leftbtn" data-bind="text" placeholder="请输入按钮名称" value="<(params.leftbtn.text)>"/>
+				<span class="input-group-addon">链接</span>
+				<input type="text" class="form-control input-sm diy-bind" data-bind-parent="params" data-bind-child="leftbtn" data-bind="linkurl" id="curl-leftbtn" placeholder="请选择链接或输入链接地址" value="<(params.leftbtn.linkurl)>" style="width: 200px;"/>
+				<span class="input-group-addon btn btn-default js-selectWxappLink" data-input="#curl-leftbtn">选择链接</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">右侧按钮</div>
+		<div class="col-sm-10">
+			<div class="input-group">
+				<span class="input-group-addon">文字</span>
+				<input type="text" class="form-control input-sm diy-bind" data-bind-parent="params" data-bind-child="rightbtn" data-bind="text" placeholder="请输入按钮名称" value="<(params.rightbtn.text)>"/>
+				<span class="input-group-addon">链接</span>
+				<input type="text" class="form-control input-sm diy-bind" data-bind-parent="params" data-bind-child="rightbtn" data-bind="linkurl" id="curl-rightbtn" placeholder="请选择链接或输入链接地址" value="<(params.rightbtn.linkurl)>" style="width: 200px;" />
+				<span class="input-group-addon btn btn-default js-selectWxappLink" data-input="#curl-rightbtn">选择链接</span>
+			</div>
+		</div>
+	</div>
+</script>
+
+<!-- 会员中心导航块 -->
+<script type="text/html" id="tpl-editor-blockNav">
+	<div class="form-group">
+		<div class="col-sm-2 control-label">上外边距</div>
+		<div class="col-sm-10">
+			<div class="form-group margin-t-5">
+				<div class="slider col-sm-8" data-value="<(style.margintop)>" data-min="0" data-max="50"></div>
+				<div class="col-sm-4 control-labe count"><span><(style.margintop)></span>px(像素)</div>
+				<input class="diy-bind input" data-bind-child="style" data-bind="margintop" value="<(style.margintop)>" type="hidden" />
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">背景颜色</div>
+		<div class="col-sm-4">
+			<div class="input-group" style="width: 160px;">
+				<input class="form-control input-sm diy-bind color" data-bind-child="style" data-bind="background" value="<(style.background)>" type="color" />
+				<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#ffffff').trigger('propertychange')">重置</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">图标样式</div>
+		<div class="col-sm-10">
+			<label class="radio-inline"><input type="radio" name="navstyle" value="icon" class="diy-bind" data-bind-child="params" data-bind="navstyle" data-bind-init="true" <(if params.navstyle == 'icon' || !params.navstyle)>checked="checked"<(/if)>> 使用图标</label>
+			<label class="radio-inline"><input type="radio" name="navstyle" value="img" class="diy-bind" data-bind-child="params" data-bind="navstyle" data-bind-init="true" <(if params.navstyle == 'img')>checked="checked"<(/if)>> 使用图片</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">是否显示标题</div>
+		<div class="col-sm-10">
+			<label class="radio-inline"><input type="radio" name="has_title" value="1" class="diy-bind" data-bind-child="params" data-bind="has_title" data-bind-init="true" <(if params.has_title == 1)>checked="checked"<(/if)>> 是</label>
+			<label class="radio-inline"><input type="radio" name="has_title" value="0" class="diy-bind" data-bind-child="params" data-bind="has_title" data-bind-init="true" <(if params.has_title == 0)>checked="checked"<(/if)>> 否</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">是否显示<br>提示信息</div>
+		<div class="col-sm-10">
+			<label class="radio-inline"><input type="radio" name="has_placeholder" value="1" class="diy-bind" data-bind-child="params" data-bind="has_placeholder" data-bind-init="true" <(if params.has_placeholder == 1)>checked="checked"<(/if)>> 是</label>
+			<label class="radio-inline"><input type="radio" name="has_placeholder" value="0" class="diy-bind" data-bind-child="params" data-bind="has_placeholder" data-bind-init="true" <(if params.has_placeholder == 0)>checked="checked"<(/if)>> 否</label>
+		</div>
+	</div>
+	<div class="line"></div>
+	<(if params.has_title == 1)>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">标题颜色</div>
+		<div class="col-sm-4">
+			<div class="input-group" style="width: 160px;">
+				<input class="form-control input-sm diy-bind color" data-bind-child="style" data-bind="titlecolor" value="<(style.titlecolor)>" type="color" />
+				<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#000000').trigger('propertychange')">重置</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-2 control-label">标题文字</div>
+		<div class="col-sm-10">
+			<input class="form-control input-sm diy-bind" data-bind-child="params" data-bind="title" value="<(params.title)>" placeholder="请输入标题" />
+		</div>
+	</div>
+	<div class="line"></div>
+	<(/if)>
+	<div class="form-items" data-min="1">
+		<div class="alert alert-danger">
+			提示：此处若设置为我的红包、我的代金券、配送会员卡、我的余额中的一项，必须设置对应的链接才能正确显示会员的相关信息。
+			<ul>
+				<li>我的红包 应选链接为 我的红包（pages/member/redPacket/index）</li>
+				<li>我的代金券 应选链接为 我的代金券（pages/member/coupon/index）</li>
+				<li>配送会员卡 应选链接为 配送会员卡（package/pages/deliveryCard/index）</li>
+				<li>我的余额 应选链接为 余额充值（pages/member/recharge）</li>
+			</ul>
+		</div>
+		<div class="inner">
+			<(each data as item index)>
+			<div class="item" data-id="<(index)>">
+				<span class="btn-del del-item" title="删除"></span>
+				<div class="item-body">
+					<(if params.navstyle == 'icon' || !params.navstyle)>
+					<div class="item-image">
+						<span class="del-btn" title="清空图标" onclick='$("#pbnicon-<(index)>").val("").trigger("change")'></span>
+						<div class="icon-main">
+							<(if item.icon)>
+							<span class="icon <(item.icon)>" id="bnicon-<(index)>"></span>
+							<(else)>
+							<p>无图标</p>
+							<(/if)>
+						</div>
+						<input type="hidden" class="diy-bind" value="<(item.icon)>"  id="pbnicon-<(index)>" data-bind="icon" data-bind-child="<(index)>" data-bind-parent="data" data-bind-init="true"/>
+						<div class="select-icon js-selectIcon" data-input="#pbnicon-<(index)>" data-element="bnicon-<(index)>">选择图标</div>
+					</div>
+					<(/if)>
+					<(if params.navstyle == 'img')>
+					<div class="item-image">
+						<img src="<(tomedia item.imgurl)>" id="bnimg-<(index)>" onerror="this.src='../addons/we7_wmall/static/img/nopic.jpg';" style="width: 68px;height: 68px;">
+						<div class="text js-selectImg" data-input="#bncimg-<(index)>" data-img="#bnimg-<(index)>" data-element="#bnimg-<(index)>">选择图片</div>
+						<input type="hidden" class="diy-bind" data-bind-parent="data" data-bind-child="<(index)>" data-bind="imgurl"  id="bncimg-<(index)>" value="<(item.imgurl)>" />
+					</div>
+					<(/if)>
+					<div class="item-form">
+						<div class="input-group">
+							<span class="input-group-addon">文字</span>
+							<input type="text" class="form-control input-sm diy-bind" value="<(item.text)>" placeholder="留空则不显示文字" data-bind-parent="data" data-bind-child="<(index)>" data-bind="text">
+							<span class="input-group-addon">颜色</span>
+							<input class="form-control input-sm diy-bind color" data-bind-parent="data" data-bind-child="<(index)>" data-bind="textcolor" value="<(item.textcolor)>" type="color" style="width: 150px;"/>
+							<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#000000').trigger('propertychange')">重置</span>
+						</div>
+						<(if params.has_placeholder == 1)>
+						<div class="input-group" style="margin-top: 10px;">
+							<span class="input-group-addon">提示</span>
+							<input type="text" class="form-control input-sm diy-bind" value="<(item.placeholder)>" placeholder="留空则不显示文字" data-bind-parent="data" data-bind-child="<(index)>" data-bind="placeholder">
+							<span class="input-group-addon">颜色</span>
+							<input class="form-control input-sm diy-bind color" data-bind-parent="data" data-bind-child="<(index)>" data-bind="placeholdercolor" value="<(item.placeholdercolor)>" type="color" style="width: 150px;"/>
+							<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#cccccc').trigger('propertychange')">重置</span>
+						</div>
+						<(/if)>
+						<div class="input-group" style="margin-top: 10px">
+							<(if params.navstyle == 'icon' || !params.navstyle)>
+							<span class="input-group-addon">图标颜色</span>
+							<input class="form-control input-sm diy-bind color" data-bind-parent="data" data-bind-child="<(index)>" data-bind="iconcolor" value="<(item.iconcolor)>" type="color"/>
+							<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#676A6B').trigger('propertychange')">重置</span>
+							<(/if)>
+							<input type="text" class="form-control input-sm diy-bind" value="<(item.linkurl)>" placeholder="请选择链接或输入链接地址" id="bnlink-<(index)>" data-bind-parent="data" data-bind-child="<(index)>" data-bind="linkurl">
+							<span class="input-group-addon btn btn-default js-selectWxappLink" data-input="#bnlink-<(index)>">选择链接</span>
+						</div>
+						<div class="input-group" style="margin-top: 10px">
+							<span class="input-group-addon">上角标文字</span>
+							<input type="text" class="form-control input-sm diy-bind" value="<(item.marktext)>" placeholder="留空则不显示" data-bind-parent="data" data-bind-child="<(index)>" data-bind="marktext">
+							<span class="input-group-addon">颜色</span>
+							<input class="form-control input-sm diy-bind color" data-bind-parent="data" data-bind-child="<(index)>" data-bind="markcolor" value="<(item.markcolor)>" type="color" style="width: 75px;" />
+							<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#ffffff').trigger('propertychange')">重置</span>
+							<span class="input-group-addon">背景</span>
+							<input class="form-control input-sm diy-bind color" data-bind-parent="data" data-bind-child="<(index)>" data-bind="markbackground" value="<(item.markbackground)>" type="color" style="width: 75px;"/>
+							<span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#FE4C44').trigger('propertychange')">重置</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<(/each)>
+		</div>
+		<div class="btn btn-w-m btn-block btn-default btn-outline" id="addChild"><i class="fa fa-plus"></i> 添加一个</div>
+	</div>
+	<div style="width: 100px;height: 50px;"></div>
+</script>
+
 <!-- show -->
 
 <!--绑定手机-->
@@ -285,10 +491,94 @@
 <script type="text/html" id="tpl-show-memberHeader">
 	<div class="drag" data-itemid="<(itemid)>">
 		<div class="diy-memberHeader">
+			<div class="member-bg" style="background: <(if params.headerstyle == 'color')><(style.background;)><(/if)> <(if params.headerstyle == 'img')>url(<(tomedia params.backgroundimgurl)>) no-repeat<(/if)>;background-size:100% 100%;"></div>
+			<div class="member-headinfo">
+				<div class="headinfo-user">
+					<div class="info_box">
+						<div class="user-head">
+							<img class="user-head" src="http://banbanjia.useosc.com/attachment/images/1/2019/07/f9t939zkK1YD71c3Y88Yck5wBKbCaK.jpg" alt="">
+						</div>
+						<div>
+							<div class="auth">
+								<div class="user-name">搬搬家</div>
+								<img src="../addons/hello_banbanjia/static/img/plugin/diypage/sm.png" alt="">
+							</div>
+							<div class="user-level">青铜</div>
+						</div>
+					</div>
+					<div class="set_box">
+						<img src="../addons/hello_banbanjia/static/img/plugin/diypage/ringing.png" alt="">
+						<img src="../addons/hello_banbanjia/static/img/plugin/diypage/sheizhi.png" alt="">
+					</div>
+				</div>
+				<div class="headinfo-balance">
+					<div>
+						<img class="balance-img" src="../addons/hello_banbanjia/static/img/plugin/diypage/myorder.png" alt="">
+						<div class="balance-name"><(params.leftbtn.text)></div>
+					</div>
+					<div>
+						<img class="balance-img" src="../addons/hello_banbanjia/static/img/plugin/diypage/mywallet.png" alt="">
+						<div class="balance-name"><(params.rightbtn.text)></div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </script>
 
+<!-- 会员中心导航块 -->
+<script type="text/html" id="tpl-show-blockNav">
+	<div class="drag" data-itemid="<(itemid)>">
+		<(if params.navstyle == 'icon')>
+		<div class="diy-blockNav" style="margin-top: <(style.margintop)>px; background:<(style.background)>;">
+			<(if params.has_title == 1)>
+			<div class="blockNav-title border-1px-b" style="color: <(style.titlecolor)>;"><(params.title)></div>
+			<(/if)>
+			<div class="col-4">
+				<(each data as item)>
+				<a href="javascript:;" class="diy-icon-col">
+					<div class="icon-img">
+						<i class="icon <(item.icon)>" style="color: <(item.iconcolor)>;"></i>
+						<(if item.marktext)>
+						<span class="nav-mark" style="color: <(item.markcolor)>;background: <(item.markbackground)>;"><(item.marktext)></span>
+						<(/if)>
+					</div>
+					<div class="text-icon"></div>
+					<(if params.has_placeholder == 1)>
+					<div class="icon-tips" style="color: <(item.placeholdercolor)>"><(item.placeholder)></div>
+					<(/if)>
+				</a>
+				<(/each)>
+			</div>
+		</div>
+		<(/if)>
+		<(if params.navstyle == 'img')>
+		<div class="diy-blockNav" style="margin-top: <(style.margintop)>px; background: <(style.background)>;">
+			<(if params.has_title == 1)>
+			<div class="blockNav-title border-1px-b" style="color: <(style.titlecolor)>;"><(params.title)></div>
+			<(/if)>
+			<div class="col-4">
+				<(each data as item)>
+				<a href="javascript: ;" class="diy-icon-col">
+					<div class="icon-img">
+						<img src="<(tomedia item.imgurl)>" >
+						<(if item.marktext)>
+						<span class="nav-mark" style="color: <(item.markcolor)>;background: <(item.markbackground)>;"><(item.marktext)></span>
+						<(/if)>
+					</div>
+					<div class="text-icon" style="color: <(item.textcolor)>;"><(item.text)></div>
+					<(if params.has_placeholder == 1)>
+					<div class="icon-tips" style="color: <(item.placeholdercolor)>"><(item.placeholder)></div>
+					<(/if)>
+				</a>
+				<(/each)>
+			</div>
+		</div>
+		<(/if)>
+	</div>
+</script>
+
+<!-- 社区文章 -->
 <script type="text/html" id="tpl-show-article">
 	<div class="drag drag-article" data-itemid="<(itemid)>">
 		<div class="diy-article-wenzhang" style="margin-top: <(style.margintop)>px;">

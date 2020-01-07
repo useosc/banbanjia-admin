@@ -14,11 +14,11 @@ if ($op == 'index') {
             'save_key' => 'use_diy_home',
             'pages' => get_wxapp_pages(array('type' => 1, 'from' => 'wap'), array('id', 'name'))
         ),
-        'my' => array(
+        'member' => array(
             'name' => '会员中心',
             'url' => 'pages/my/my',
-            'key' => 'my',
-            'save_key' => 'use_diy_my',
+            'key' => 'member',
+            'save_key' => 'use_diy_member',
             'pages' => get_wxapp_pages(array('type' => 2, 'from' => 'wap'), array('id', 'name'))
         )
     );

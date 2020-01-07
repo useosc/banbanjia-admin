@@ -193,6 +193,61 @@ function article_flow_update($type = '')
     }
     return array("falselooknum" => intval($config["falselooknum"]), "falsefabunum" => intval($config["falsefabunum"]), "falselikenum" => intval($config["falselikenum"]));
 }
+function article_get_information($id, $filter = array())
+{
+    global $_W;
+    global $_GPC;
+    $condition = " where a.uniacid = :uniacid and a.id = :id";
+    $params = array(":uniacid" => $_W["uniacid"], ":id" => $id);
+    $information = pdo_fetch("select a.*, b.realname as ft_realname, b.mobile as ft_mobile, b.avatar as ft_avatar from " . tablename("hello_banbanjia_article_information") . " as a left join" . tablename("hello_banbanjia_members") . " as b on a.uid =b.uid" . $condition, $params);
+    if(!empty($information)) {
+        if (!empty($information["thumbs"])) {
+            $information["thumbs"] = iunserializer($information["thumbs"]);
+            foreach ($information["thumbs"] as &$thumb) {
+                $thumb = tomedia($thumb);
+            }
+        }
+        if ($filter["like_member_show"] == 1) {
+            $information["like_uid"] = iunserializer($information["like_uid"]);
+            if (!empty($information["like_uid"])) {
+                $like_uids = implode(",", $information["like_uid"]);
+                $like_members = pdo_fetchall("select avatar from" . tablename("hello_banbanjia_members") . " where uniacid = :uniacid and uid in (" . $like_uids . ")", array(":uniacid" => $_W["uniacid"]));
+                foreach ($like_members as $avatar) {
+                    $information["like_avatar"][] = tomedia($avatar["avatar"]);
+                }
+            }
+        }
+        $information["keyword"] = iunserializer($information["keyword"]);
+        $cid = $information["childid"] ? $information["childid"] : $information["parentid"];
+        $information["category"] = article_get_category($cid);
+        $information["addtime_cn"] = date("Y-m-d H:i", $information["addtime"]);
+        $information["status_all"] = article_information_status($information["status"]);
+        $information["content_share"] = $information["content"];
+        $information["content"] = nl2br($information["content"]);
+    }
+    return $information;
+}
+function article_get_comments($id)
+{
+    global $_W;
+    $comments = pdo_getall("hello_banbanjia_article_comment", array("uniacid" => $_W['uniacid'], 'aid' => $id));
+    if (!empty($comments)) {
+        foreach ($comments as &$val) {
+            $val['avatar'] = tomedia($val['avatar']);
+            $val['addtime_cn'] = date("Y-m-d H:i", $val['addtime']);
+            $replys = pdo_getall("hello_banbanjia_article_reply", array('uniacid' => $_W['uniacid'], 'cid' => $val['id']));
+            if (!empty($replys)) {
+                foreach ($replys as &$v) {
+                    $v['from_avatar'] = tomedia($v['from_avatar']);
+                    $v["to_avatar"] = tomedia($v["to_avatar"]);
+                    $v["addtime_cn"] = date("Y-m-d H:i", $v["addtime"]);
+                }
+            }
+            $val["reply"] = $replys;
+        }
+    }
+    return $comments;
+}
 function article_get_informations($filter = array())
 {
     global $_W;

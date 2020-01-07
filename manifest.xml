@@ -1171,6 +1171,20 @@
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_article_comment` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `aid` int(10) unsigned DEFAULT '0',
+            `content` text NOT NULL,
+            `uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `nickname` varchar(50) NOT NULL,
+            `avatar` varchar(255) NOT NULL,
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `agentid` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid_tid` (`uniacid`,`tid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_article_information` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `uniacid` int(11) NOT NULL,
@@ -1200,6 +1214,23 @@
             `channel` varchar(20) NOT NULL DEFAULT 'wechat',
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=80 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_article_reply` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `aid` int(10) unsigned NOT NULL DEFAULT '0',
+            `cid` int(10) unsigned DEFAULT '0',
+            `content` text NOT NULL,
+            `from_uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `from_nickname` varchar(50) NOT NULL,
+            `from_avatar` varchar(255) NOT NULL,
+            `to_uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `to_nickname` varchar(50) NOT NULL,
+            `to_avatar` varchar(255) NOT NULL,
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid_aid_cid` (`uniacid`,`aid`,`cid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
         INSERT INTO ims_hello_banbanjia_plugin VALUES
         ('47','gohome','biz','搬家社区','../addons/hello_banbanjia/static/img/plugin/gohome.jpg','','搬家社区','1','0','1');
@@ -1288,7 +1319,9 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_workflow`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_gohome_slide`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_article_category`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_article_comment`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_article_information`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_article_reply`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_agent`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_diypage_menu`;
         ]]>

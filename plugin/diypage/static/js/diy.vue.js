@@ -1331,22 +1331,18 @@ define(["jquery.ui"], function (a) {
                     name: "会员中心头部",
                     params: {
                         headerstyle: "color",
-                        avatarstyle: "circle",
                         backgroundimgurl: "",
-                        explainurl: "",
                         leftbtn: {
-                            text: "充值",
+                            text: "我的订单",
                             linkurl: ""
                         },
                         rightbtn: {
-                            text: "兑换",
+                            text: "我的钱包",
                             linkurl: ""
                         }
                     },
                     style: {
-                        background: "#FFD161",
-                        color: "#333333",
-                        highlightcolor: "#fef31f"
+                        background: "rgba(236, 65, 73, 0.7428571428571428)",
                     }
                 },
                 memberBindMobile: {

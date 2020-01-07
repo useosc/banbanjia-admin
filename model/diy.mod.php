@@ -95,6 +95,13 @@ function get_wxapp_diy($pageOrid, $mobile = false, $extra = array())
                     $informations = article_get_informations($infor_filter);
                     $page["article"]["informationdata"] = $informations["informations"];
                     $page["article"]["has_get_all"] = !$item["params"]["informationdata"];
+                } else {
+                    if ($item['id'] == 'memberHeader') {
+                        $item['member'] = $_W['member'];
+                        if ($item['params']['headerstyle'] == 'img') {
+                            $item['params']['backgroundimgurl'] = tomedia($item["params"]["backgroundimgurl"]);
+                        }
+                    }
                 }
             }
             unset($item);
