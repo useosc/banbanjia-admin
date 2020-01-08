@@ -213,6 +213,7 @@
             `type` varchar(20) NOT NULL DEFAULT 'homeTop',
             `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '是否显示：1显示，0不显示',
             `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+            `agentid` int(10) unsigned NOT NULL DEFAULT '0',
             `wxapp_link` varchar(255) NOT NULL COMMENT '跳转微信小程序链接',
             PRIMARY KEY (`id`),
             KEY `uniacid` (`uniacid`)

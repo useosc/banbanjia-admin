@@ -53,7 +53,45 @@ function get_wxapp_diy($pageOrid, $mobile = false, $extra = array())
                 }
             }
             $page['fixedsearch'] = $item;
-        } else { }
+        } else {
+            if ($item['id'] == 'guide') {
+                $page['guide'] = $item;
+                if (!isset($item["params"]["guidedata"])) {
+                    $item["params"]["guidedata"] = 0;
+                }
+                if (empty($item["params"]["guidedata"])) {
+                    if (!empty($item["data"])) {
+                        foreach ($item["data"] as &$gvalue) {
+                            $gvalue["imgUrl"] = tomedia($gvalue["imgUrl"]);
+                        }
+                    }
+                } else {
+                    if ($item['params']['guidedata'] == 1) {
+                        $table = "hello_banbanjia_slide";
+                        $keys = "id,title,thumb,link,displayorder";
+                        $type = "startpage";
+                    }
+                    $condition = " where uniacid = :uniacid and type = :type and status = 1 ";
+                    $params = array(":uniacid" => $_W["uniacid"], ":type" => $type);
+                    if ($mobile || 0 < $_W["agentid"]) {
+                        $condition .= " and agentid = :agentid ";
+                        $params[":agentid"] = $_W["agentid"];
+                    }
+                    $slides = pdo_fetchall("select " . $keys . " from " . tablename($table) . $condition . " order by displayorder desc", $params);
+                    $item["data"] = array();
+                    if (!empty($slides)) {
+                        foreach ($slides as $val) {
+                            $childid = rand(1000000000, 9999999999.0);
+                            $childid = "C" . $childid;
+                            $item["data"][$childid] = array("pagePath" => $val["link"], "imgUrl" => tomedia($val["thumb"]));
+                        }
+                    }
+                }
+                if (empty($item["data"])) {
+                    unset($page["guide"]);
+                }
+            }
+        }
     }
     if (!$mobile) {
         if (!empty($page['data']['items']) && is_array($page['data']['items'])) {
@@ -100,6 +138,22 @@ function get_wxapp_diy($pageOrid, $mobile = false, $extra = array())
                         $item['member'] = $_W['member'];
                         if ($item['params']['headerstyle'] == 'img') {
                             $item['params']['backgroundimgurl'] = tomedia($item["params"]["backgroundimgurl"]);
+                        }
+                    } else {
+                        if ($item['id'] == 'blockNav') {
+                            if (!empty($item['data'])) {
+                                foreach ($item['data'] as &$value) {
+                                    $value["imgurl"] = tomedia($value["imgurl"]);
+                                }
+                            }
+                        } else {
+                            if ($item['id'] == 'picture') {
+                                $result = get_wxapp_slides($item, true);
+                                $item['data'] = array_values($result['data']);
+                                if (empty($item["data"])) {
+                                    unset($page["data"]["items"][$itemid]);
+                                }
+                            }
                         }
                     }
                 }
@@ -224,6 +278,42 @@ function get_wxapp_navs($item, $mobile = false)
     if (in_array($item['params']['navsdata'], array(1, 3, 4))) {
         $condition .= " and parentid = 0";
     }
-    $limit = intval($item['params']['navsnum']) ? intval($item['params']['navsnum']) : 4;
-    $navs = pdo_fetchall("select " . $keys . " from " . tablename($table) . $condition . " and status = 1 order by displayorder desc limit " . $limit, $params);
+    // $limit = intval($item['params']['navsnum']) ? intval($item['params']['navsnum']) : 4;
+    // $navs = pdo_fetchall("select " . $keys . " from " . tablename($table) . $condition . " and status = 1 order by displayorder desc limit " . $limit, $params);
+
+    return $result;
+}
+
+function get_wxapp_slides($item,$mobile = false){
+    global $_W;
+    if (empty($item["params"]["picturedata"])) {
+        if (!empty($item["data"])) {
+            foreach ($item["data"] as &$val) {
+                $val["imgurl"] = tomedia($val["imgurl"]);
+            }
+        }
+    }else{
+        if ($item["params"]["picturedata"] == 1) {
+            $table = "hello_banbanjia_slide";
+            $keys = "id,title,thumb,wxapp_link,link,displayorder";
+            $type = "homeTop";
+        }
+        $condition = " where uniacid = :uniacid and type = :type and status = 1 ";
+        $params = array(":uniacid" => $_W["uniacid"], ":type" => $type);
+        // if ($mobile || 0 < $_W["agentid"]) {
+        //     $condition .= " and agentid = :agentid ";
+        //     $params[":agentid"] = $_W["agentid"];
+        // }
+        $slides = pdo_fetchall("select " . $keys . " from " . tablename($table) . $condition . " order by displayorder desc", $params);
+        $item["data"] = array();
+        if (!empty($slides)) {
+            foreach ($slides as $val) {
+                $childid = rand(1000000000, 9999999999.0);
+                $childid = "C" . $childid;
+                $item["data"][$childid] = array("linkurl" => empty($val["wxapp_link"]) ? $val["link"] : $val["wxapp_link"], "imgurl" => tomedia($val["thumb"]));
+            }
+        }
+    }
+    $result = array("data" => $item["data"]);
+    return $result;
 }

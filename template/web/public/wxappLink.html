@@ -26,6 +26,9 @@
 					<li role="presentation">
 						<a href="#other" role="tab" data-toggle='pill'>其他</a>
 					</li>
+					<li role="presentation" class="#wxdiy">
+						<a href="#wxdiy" role="tab" data-toggle='pill'>自定义页面</a>
+					</li>
 				</ul>
 				<div class="tab-content">
 					<div style="margin-top: 20px;"></div>
@@ -47,6 +50,14 @@
 							{loop $da['items'] $item}
 								<div class="btn btn-default btn-sm btn-link" data-href="{$item['url']}" title="{$item['title']}">{$item['title']}</div>
 							{/loop}
+						{/loop}
+					</div>
+					<div class="tab-pane" role="tabpanel" id="wxdiy">
+						<div class="page-header">
+							<h4><i class="fa fa-folder-open-o"></i> 自定义页面链接</h4>
+						</div>
+						{loop $data['diyPages'] $item}
+							<div class="btn btn-default btn-sm btn-link" data-href="pages/diy/index?id={$item['id']}" title="{$item['name']}">{$item['name']}</div>
 						{/loop}
 					</div>
 				</div>

@@ -37,8 +37,25 @@ function wxapp_urls($type = 'mall')
     global $_GPC;
     $data = array();
     if ($type == 'mall') {
-        $data['platform']['sys'] = array('title' => '平台链接', 'items' => array(array('title' => '平台首页', 'url' => 'pages/home/home')));
+        $data['platform']['sys'] = array('title' => '平台链接', 'items' => array(
+            array('title' => '平台首页', 'url' => '/pages/home/home'),
+            array('title' => '搜索商家','url' => '/pages/home/search'),
+            array('title' => '会员中心','url' => '/pages/my/my'),
+            array('title' => '我的订单','url' => '/pages/my/myorder/orderlist'),
+            array('title' => '我的优惠券','url' => '/pages/my/mywallet/coupon'),
+            array('title' => '我的收藏**','url' => ''),
+        ));
+
+        $data['platform']['dis'] = array('title' => '优惠活动', 'items' => array());
+
+        $diypages = pdo_getall("hello_banbanjia_diypage",array("uniacid" => $_W['uniacid'],'version' => 2),array('id','name'));
+        if(!empty($diypages)){
+            $data['diyPages'] = $diypages;
+        }
+
         $data['deliveryer']['sys'] = array('title' => '平台链接1', 'items' => array(array('title' => '平台首页', 'url' => 'pages/home/home')));
+    }else{
+
     }
     return $data;
 }

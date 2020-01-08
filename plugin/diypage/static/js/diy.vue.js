@@ -1313,16 +1313,16 @@ define(["jquery.ui"], function (a) {
                     },
                     data: {
                         C0123456789101: {
-                            pagePath: "pages/home/index",
-                            imgUrl: "https://1.xinzuowl.com/attachment/images/1/2017/03/qra8AS8rF5m8MUom19Bo521maA8oF8.jpg"
+                            pagePath: "pages/home/home",
+                            imgUrl: "http://banbanjia.useosc.com/attachment/images/1/2020/01/Yo08ObF1hbzOG8bdq2DIDd25OqBb1D.jpg"
                         },
                         C0123456789102: {
-                            pagePath: "pages/home/index",
-                            imgUrl: "https://1.xinzuowl.com/attachment/images/1/2016/11/yammcm8C22RvxXR2E2RrRX262rHkZP.jpg"
+                            pagePath: "pages/home/home",
+                            imgUrl: "http://banbanjia.useosc.com/attachment/images/1/2020/01/cwV16VY0lvRe6yEvCrM11cW36g9c0v.jpg"
                         },
                         C0123456789103: {
-                            pagePath: "pages/home/index",
-                            imgUrl: "https://1.xinzuowl.com/attachment/images/1/2016/11/z6KuY8xzb8NnKb0B1cW6wK46W9Dlnu.jpg"
+                            pagePath: "pages/home/home",
+                            imgUrl: "http://banbanjia.useosc.com/attachment/images/1/2020/01/IP7DCxDOE47ROvoxdw7uEO1dk91kVe.jpg"
                         }
                     },
                     max: 1

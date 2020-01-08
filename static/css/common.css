@@ -1623,6 +1623,35 @@ select.we7-select+.we7-select, select+.we7-select {
     border-color: #08c;
 }
 
+.we7-modal-dialog .modal-header, .modal-dialog .modal-header {
+	/*border-bottom: 0;*/
+}
+#newUploaderImg.image .selected-all, .uploader-modal.image .selected-all {
+	float: left;
+	padding: 7.5px 0;
+	display: flex;
+	align-items: center;
+}
+.we7-form input[type=radio]+label, .we7-form input[type=checkbox]+label {
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+	margin-left: 3px;
+	color: #252424;
+	font-weight: 400;
+}
+
+.dialog-secret-mobile .secret-mobile{
+	font-size: 20px;
+	font-weight: bold;
+	margin-right: 10px;
+}
+.dialog-secret-mobile .extension{
+	font-size: 20px;
+	color: #ff2d4b;
+	margin-left: 10px;
+}
+
 .material-content .material-head {
     padding: 15px 20px;
     border-bottom: 1px solid #e7e7eb;

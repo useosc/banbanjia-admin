@@ -261,7 +261,7 @@ define(["jquery", "bootstrap"], function ($, bs) {
     }), $(document).on("click", ".js-selectWxappLink", function () {
         var a = $(this).data("input"),
             b = $(this).data("scene") || "page",
-            c = $(this).data("type") || "wmall",
+            c = $(this).data("type") || "mall",
             d = {
                 scene: b,
                 type: c
@@ -286,7 +286,7 @@ define(["jquery", "bootstrap"], function ($, bs) {
         var a = $(this).data("input"),
             b = $(this).data("element");
         if (a || b) {
-            var c = $(this).data("type") || "wmall",
+            var c = $(this).data("type") || "mall",
                 d = {
                     type: c
                 };
