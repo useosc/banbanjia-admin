@@ -1,0 +1,154 @@
+{itemplate 'public/header'}
+{if $ta == 'list'}
+<form action="./index.php" class="form-horizontal form-filter">
+    <input type="hidden" name="c" value="site">
+	<input type="hidden" name="a" value="entry">
+	<input type="hidden" name="m" value="hello_banbanjia">
+    <input type="hidden" name="do" value="web"/>
+    <input type="hidden" name="ctrl" value="store"/>
+	<input type="hidden" name="ac" value="shop"/>
+    <input type="hidden" name="op" value="bankAccount"/>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">搜索</label>
+		<div class="col-sm-4 col-xs-4">
+			<input type="text" name="keyword" value="{$keyword}" class="form-control" placeholder="请输入搜索名称">
+        </div>
+        <div class="col-sm-4 col-xs-4">
+			<input type="submit" value="筛选" class="btn btn-primary">
+		</div>
+    </div>
+</form>
+<form action="" class="form-table form" id="form1" method="post">
+    <div class="panel panel-table">
+        <div class="panel-heading">
+			<a href="{php echo iurl('store/shop/bankAccount/post');}" class="btn btn-primary btn-sm btn-add">添加银行账号</a>
+        </div>
+    </div>
+    <div class="panel-body table-responsive js-table">
+        {if empty($data)}
+            <div class="no-result">
+                <p>还没有相关数据</p>
+            </div>
+        {else}
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th width="40">
+                    <div class="checkbox checkbox-inline">
+                        <input type="checkbox">
+                        <label></label>
+                    </div>
+                </th>
+                <th>银行名称</th>
+                <th>银行账号</th>
+                <th>开户人</th>
+                <th>开户地址</th>
+                <th>排序</th>
+                <th>是否启用</th>
+                <th>添加时间</th>
+                <th style="width:350px; text-align:right;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $data $item}
+            <tr>
+                <td>
+                    <div class="checkbox checkbox-inline">
+                        <input type="checkbox" name="ids[]" value="{$item['id']}">
+                        <label></label>
+                    </div>
+                </td>
+                <td>{$item['name']}</td>
+                <td>{$item['card']}</td>
+                <td>{$item['holders']}</td>
+                <td>{$item['address']}</td>
+                <td width="100px">
+                    <input type="text" name="displayorder[]" value="{$item['displayorder']}" class="form-control"/>
+                </td>
+                <td>
+                    <input type="checkbox" class="js-checkbox" data-on-text="启用" data-off-text="关闭" data-href="{php echo iurl('store/shop/bankAccount/status',array('id' => $item['id']));}" data-name="status" value="1" {if $item['status'] == 1}checked{/if}>
+                </td>
+                <td>{php echo date('Y-m-d H:i', $item['addtime']);}</td>
+                <td style="text-align:right;">
+                    {if $item['role'] != 'manager'}
+                        <a href="{php echo iurl('store/shop/bankAccount/post',array('id' => $item['id']))}" class="btn btn-default btn-sm">编辑</a>
+                        <a href="{php echo iurl('store/shop/bankAccount/del', array('id' => $item['id']))}" class="btn btn-default btn-sm js-remove" data-confirm="确定删除此账户吗?">删除</a>
+                    {else}
+                    <a href="{php echo iurl('store/shop/bankAccount/post',array('id' => $item['id']))}" class="btn btn-default btn-sm">编辑</a>
+                    {/if}
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+        <div class="btn-region clearfix">
+            <div class="pull-left">
+                <input name="token" type="hidden" value="{$_W['token']}" />
+                <input type="submit" class="btn btn-primary btn-sm pull-left" name="submit" value="提交修改" />
+            </div>
+            <div class="pull-right">
+                {$pager}
+            </div>
+        </div>
+        {/if}
+    </div>
+</form>
+{/if}
+
+{if $ta == 'post'}
+<div class="page clearfix">
+    <form action="" method="post" class="form form-horizontal">
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">银行名称</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" name="name" value="{$bankAccount['name']}" class="form-control" required="true" placeholder="请输入银行名称"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">开户户头</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" name="holders" value="{$bankAccount['holders']}" class="form-control" placeholder="请输入银行开户姓名或者单位名称"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">开户账号</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" name="card" value="{$bankAccount['card']}" class="form-control" placeholder="开户银行的开户账号"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">开户网点</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" name="address" value="{$bankAccount['address']}" class="form-control" placeholder="请输入银行开户网点"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">排序号</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" name="displayorder" value="{$bankAccount['displayorder']}" class="form-control"/>
+                <div class="help-block">数字越大，越靠前</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否启用</label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="radio radio-inline">
+                    <input type="radio" value="1" name="status" id="status-1" {if $bankAccount['status'] == 1}checked{/if}>
+                    <label for="status-1">启用</label>
+                </div>
+                <div class="radio radio-inline">
+                    <input type="radio" value="0" name="status" id="status-0" {if $bankAccount['status'] == 0}checked{/if}>
+                    <label for="status-0">禁用</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-9 col-xs-12">
+                <input type="hidden" name="token" value="{$_W['token']}">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
+{/if}
+{itemplate 'public/footer'}

@@ -63,6 +63,7 @@ function mload() //返回加载器
     // ihttp_email();
 }
 
+mload()->lmodel('plugin');
 function pload() //插件加载器
 {
     static $ploader = NULL;

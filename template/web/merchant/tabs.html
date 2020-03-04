@@ -22,7 +22,12 @@
 				<li {if $_W['_ac'] == 'activity' && $_W['op'] == 'index'}class="active"{/if}>
 					<a href="{php echo iurl('merchant/activity/displayorder');}">活动展示排序</a>
 				</li>
-			{/if}
+            {/if}
+            {ifp 'merchant.comment'}
+                <li {if $_W['_ac'] == 'comment'}class="active"{/if}>
+                    <a href="{php echo iurl('merchant/comment/index');}">企业评价</a>
+                </li>
+            {/if}
         </ul>
     {/if}
     {ifp 'merchant.settle' || 'merchant.storage'}

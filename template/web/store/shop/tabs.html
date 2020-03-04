@@ -9,10 +9,16 @@
             </li>
         </ul>
         {if !empty($_W['clerk'])}
-            <div class="menu-header">账户设置</div>
+            <div class="menu-header">财务类型</div>
             <ul class="menu-item">
-                <li {if $_W['_op'] == 'account'}class="active"{/if}>
-                <a href="{php echo iurl('store/shop/account', array('id' => $_W['clerk']['id']));}">账户设置</a>
+                <li {if $_W['_op'] == 'incomeType'}class="active"{/if}>
+                <a href="{php echo iurl('store/shop/incomeType', array('id' => $_W['clerk']['id']));}">收入类型</a>
+                </li>
+                <li {if $_W['_op'] == 'expensesType'}class="active"{/if}>
+                    <a href="{php echo iurl('store/shop/expensesType', array('id' => $_W['clerk']['id']));}">开支类型</a>
+                </li>
+                <li {if $_W['_op'] == 'bankAccount'}class="active"{/if}>
+                    <a href="{php echo iurl('store/shop/bankAccount', array('id' => $_W['clerk']['id']));}">账户设置</a>
                 </li>
             </ul>
         {/if}

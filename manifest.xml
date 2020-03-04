@@ -75,6 +75,9 @@
             `openid_wx` varchar(50) NOT NULL,
             `credit1` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
             `credit2` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+            `last_sign_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上次签到时间',
+            `continue_sign_day` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '连续签到天数',
+            `sign_total_day` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '总共签到天数',
             `register_type` varchar(20) NOT NULL DEFAULT 'wechat',
             `success_first_time` int(10) unsigned NOT NULL DEFAULT '0',
             `success_last_time` int(10) unsigned NOT NULL DEFAULT '0',
@@ -143,14 +146,15 @@
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
             `uid` int(10) unsigned NOT NULL DEFAULT '0',
-            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `cid` int(10) unsigned NOT NULL DEFAULT '0',
+            `type` varchar(20) NOT NULL DEFAULT 'store',
             `addtime` int(10) unsigned NOT NULL DEFAULT '0',
             `stat_day` int(10) unsigned NOT NULL DEFAULT '0',
             `agentid` int(10) unsigned NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
             KEY `uniacid` (`uniacid`),
             KEY `uid` (`uid`),
-            KEY `sid` (`sid`),
+            KEY `cid` (`cid`),
             KEY `stat_day` (`stat_day`),
             KEY `agentid` (`agentid`),
             KEY `addtime` (`addtime`)
@@ -343,7 +347,16 @@
             `content` varchar(255) NOT NULL,
             `payment` varchar(255) NOT NULL,
             `sailed` int(10) unsigned NOT NULL DEFAULT '0',
-            `score` varchar(10) NOT NULL COMMENT '评分',
+            `tender_num` int(8) unsigned NOT NULL DEFAULT '0',
+            `case_num` int(8) unsigned NOT NULL DEFAULT '0',
+            `site_num` int(8) unsigned NOT NULL DEFAULT '0',
+            `yuyue_num` int(8) unsigned NOT NULL DEFAULT '0',
+            `score` int(8) NOT NULL DEFAULT '0' COMMENT '评分',
+            `score1` int(8) NOT NULL DEFAULT '0',
+            `score2` int(8) NOT NULL DEFAULT '0',
+            `score3` int(8) NOT NULL DEFAULT '0',
+            `score4` int(8) NOT NULL DEFAULT '0',
+            `score5` int(8) NOT NULL DEFAULT '0',
             `comment_status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '评论审核.1:直接通过',
             `sms_use_times` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '短信使用条数',
             `wechat_qrcode` varchar(500) NOT NULL,
@@ -359,6 +372,7 @@
             `agentid` int(10) unsigned NOT NULL DEFAULT '0',
             `position` tinyint(3) NOT NULL DEFAULT '1',
             `data` text NOT NULL,
+            `flushtime` int(10) DEFAULT '0',
             `deltime` int(10) unsigned NOT NULL DEFAULT '0',
             `cate_parentid1` int(10) unsigned NOT NULL,
             `cate_childid1` int(10) unsigned NOT NULL,
@@ -384,11 +398,60 @@
             `wechat` varchar(1000) NOT NULL,
             `bank` varchar(1000) NOT NULL,
             `alipay` varchar(1000) NOT NULL,
-            `fee_period` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMETN '提现周期'
+            `fee_period` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '提现周期'
             PRIMARY KEY (`id`),
             KEY `uniacid` (`uniacid`),
             KEY `sid` (`sid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=1500 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_comment` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `score1` int(8) NOT NULL DEFAULT '0' COMMENT '准时到达',
+            `score2` int(8) NOT NULL DEFAULT '0' COMMENT '耐心细致',
+            `score3` int(8) NOT NULL DEFAULT '0' COMMENT '经验丰富',
+            `score4` int(8) NOT NULL DEFAULT '0' COMMENT '小心拜访',
+            `score5` int(8) NOT NULL DEFAULT '0' CONNENT '性价比高',
+            `content` text,
+            `reply` text,
+            `replyip` varchar(15) DEFAULT '',
+            `replytime` int(10) DEFAULT '0',
+            `status` tinyint(1) DEFAULT '1',
+            `closed` tinyint(1) DEFAULT '0',
+            `clientip` varchar(15) DEFAULT '',
+            `addtime` int(10) DEFAULT '0',
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_case` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(150) DEFAULT '',
+            `thumbs` varchar(1000) NOT NULL,
+            `views` int(8) DEFAULT '0',
+            `likes` int(8) DEFAULT '0',
+            `content` text,
+            `thumb_num` int(8) DEFAULT '0',
+            `lasttime` int(10) DEFAULT '0',
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+             PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_yuyue` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `contact` varchar(32) DEFAULT NULL,
+            `mobile` varchar(20) DEFAULT NULL,
+            `addtime` int(10) NOT NULL DEAULT '0',
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_clerk` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1137,6 +1200,34 @@
             KEY `uniacid` (`uniacid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_bank_account` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `name` varchar(256) NOT NULL COMMENT '开户银行名称',
+            `card` varchar(256) NOT NULL COMMENT '账号',
+            `address` varchar(256) NOT NULL COMMENT '开户地址',
+            `holders` varchar(256) NOT NULL COMMENT '开户人',
+            `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_customer` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `name` varchar(64) NOT NULL COMMENT '客户姓名',
+            `customer_no` varchar(64) NOT NULL cOMMENT '客户编号',
+            `create_clerk_id` int(16) NOT NULL COMMENT '创建人员',
+            `owner_clerk_id` int(16) NOT NULL COMMENT '归属人员',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `next_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '下次沟通时间',
+            `conn_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最近沟通时间',
+            `
+        ) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_gohome_slide` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1153,6 +1244,57 @@
             KEY `type` (`type`),
             KEY `status` (`status`)
         ) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_ask_category` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `agentid` int(10) unsigned NOT NULL DEFAULT '0',
+            `parentid` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(20) NOT NULL,
+            `thumb` varchar(255) NOT NULL,
+            `link` varchar(255) NOT NULL,
+            `config` text NOT NULL,
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `is_hot` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `content` varchar(255) NOT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_ask_information` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `uniacid` int(11) NOT NULL,
+            `uid` int(10) NOT NULL,
+            `parentid` int(10) unsigned NOT NULL DEFAULT '0',
+            `childid` int(10) unsigned NOT NULL DEFAULT '0',
+            `status` tinyint(3) NOT NULL,
+            `title` varchar(255) NOT NULL,
+            `content` text,
+            `thumbs` text,
+            `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `looknum` int(10) NOT NULL DEFAULT '0',
+            `answernum` int(11) NOT NULL DEFAULT '0',
+            `sharenum` int(11) NOT NULL DEFAULT '0',
+            `share_title` varchar(500) NOT NULL,
+            `addtime` int(10) unsigned NOT NULL,  
+            `agentid` int(10) unsigned NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=80 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_ask_answer` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `aid` int(10) unsigned DEFAULT '0',
+            `content` text NOT NULL,
+            `uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `nickname` varchar(50) NOT NULL,
+            `avatar` varchar(255) NOT NULL,
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `agentid` int(10) unsigned NOT NULL DEFAULT '0',
+            `status` tinyint(3) NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `uniacid_aid` (`uniacid`,`aid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_article_category` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -1183,7 +1325,7 @@
             `addtime` int(10) unsigned NOT NULL DEFAULT '0',
             `agentid` int(10) unsigned NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
-            KEY `uniacid_tid` (`uniacid`,`tid`)
+            KEY `uniacid_aid` (`uniacid`,`aid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_article_information` (
@@ -1233,6 +1375,112 @@
             KEY `uniacid_aid_cid` (`uniacid`,`aid`,`cid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_creditshop_goods` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(50) NOT NULL,
+            `category_id` int(10) NOT NULL,
+            `type` varchar(20) NOT NULL DEFAULT '',
+            `thumb` varchar(255) NOT NULL,
+            `old_price` varchar(10) NOT NULL,
+            `chance` tinyint(3) unsigned NOT NULL,
+            `totalday` tinyint(3) unsigned NOT NULL,
+            `use_credit1` varchar(10) NOT NULL DEFAULT '0',
+            `use_credit2` varchar(10) NOT NULL DEFAULT '0',
+            `description` text NOT NULL,
+            `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+            `credit2` varchar(10) NOT NULL,
+            `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `redpacket` text NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `type` (`type`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_creditshop_order_new` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `acid` int(10) unsigned NOT NULL DEFAULT '0',
+            `agentid` int(10) unsigned NOT NULL DEFAULT '0',
+            `uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `openid` varchar(50) NOT NULL,
+            `channel` varchar(15) NOT NULL DEFAULT 'wechat',
+            `goods_id` int(10) unsigned NOT NULL DEFAULT '0',
+            `goods_type` varchar(20) NOT NULL,
+            `order_sn` varchar(50) NOT NULL,
+            `pay_type` varchar(15) NOT NULL,
+            `is_pay` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `paytime` int(10) unsigned NOT NULL DEFAULT '0',
+            `status` tinyint(3) NOT NULL DEFAULT '1',
+            `total_fee` varchar(10) NOT NULL DEFAULT '0.00',
+            `discount_fee` varchar(20) NOT NULL DEFAULT '0.00',
+            `final_fee` varchar(20) NOT NULL DEFAULT '0.00',
+            `transaction_id` varchar(60) NOT NULL,
+            `use_credit1` varchar(10) NOT NULL DEFAULT '0.00',
+            `use_credit2` varchar(10) NOT NULL DEFAULT '0.00',
+            `data` text NOT NULL,
+            `username` varchar(50) NOT NULL,
+            `mobile` varchar(50) NOT NULL,
+            `code` varchar(10) NOT NULL,
+            `grant_status` int(10) NOT NULL DEFAULT '0',
+            `use_credit1_status` tinyint(3) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `uid` (`uid`),
+            KEY `addtime` (`addtime`),
+            KEY `paytime` (`paytime`),
+            KEY `is_pay` (`is_pay`),
+            KEY `pay_type` (`pay_type`),
+            KEY `status` (`status`),
+            KEY `agentid` (`agentid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+
+       CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_creditshop_adv` (
+            `id` int(10) NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) DEFAULT '0',
+            `advname` varchar(50) DEFAULT '',
+            `link` varchar(255) DEFAULT '',
+            `wxapp_link` varchar(255) DEFAULT '',
+            `thumb` varchar(255) DEFAULT '',
+            `displayorder` int(10) DEFAULT '0',
+            `status` int(10) DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `status` (`status`),
+            KEY `displayorder` (`displayorder`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_creditshop_category` (
+            `id` int(10) NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) DEFAULT '0',
+            `name` varchar(50) DEFAULT NULL,
+            `thumb` varchar(255) DEFAULT NULL,
+            `displayorder` tinyint(3) unsigned DEFAULT '0',
+            `status` tinyint(3) DEFAULT '1',
+            `advimg` varchar(255) DEFAULT '',
+            `advurl` varchar(500) DEFAULT '',
+            `isrecommand` tinyint(3) DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`),
+            KEY `displayorder` (`displayorder`),
+            KEY `status` (`status`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_sign_log` (
+            `id` int(10) NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) DEFAULT '0',
+            `uid` int(10) unsigned NOT NULL DEFAULT '0',
+            `signtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `addcredit1` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '增加的积分',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+
+
+
+
         INSERT INTO ims_hello_banbanjia_plugin VALUES
         ('47','gohome','biz','搬家社区','../addons/hello_banbanjia/static/img/plugin/gohome.jpg','','搬家社区','1','0','1');
         INSERT INTO ims_hello_banbanjia_plugin VALUES
@@ -1251,6 +1499,8 @@
         ('46','hetong','biz','合同模板','../addons/hello_banbanjia/static/img/plugin/hetong.jpg','','给商家设置合同模板','1','0','1');
         INSERT INTO ims_hello_banbanjia_plugin VALUES 
         ('48','agent','biz','区域代理','../addons/hello_banbanjia/static/img/plugin/agent.jpg','','区域代理,平台可发展其他区域进行代理,建议有发展代理能力的平台购买 ! ','1','0','1');
+        INSERT INTO ims_hello_banbanjia_plugin VALUES 
+        ('49','creditshop','biz','积分商城','../addons/hello_banbanjia/static/img/plugin/creditshop.jpg','','积分兑换好礼活动利器','1','0','1');
 
         INSERT INTO ims_hello_banbanjia_service_config VALUES
         ('1','1','5','1');
@@ -1274,6 +1524,9 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_account`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_comment`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_case`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_yuyue`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_clerk`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_clerk_role`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_clerk_permit`;
@@ -1316,15 +1569,24 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_hetong;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_hetong_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_hetong;
-        DROP TABLE IF EXISTS `ims_hello_banbanjia__store_hetong_category`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_hetong_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_workflow`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_bank_account`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_gohome_slide`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_ask_category`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_ask_information`;
+        DROP TABLE IF EIXSTS `ims_hello_banbanjia_ask_answer`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_article_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_article_comment`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_article_information`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_article_reply`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_agent`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_diypage_menu`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_creditshop_goods`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_creditshop_order_new`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_creditshop_adv`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_creditshop_category`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_sign_log`;
         ]]>
     </upgrade>
 </manifest>

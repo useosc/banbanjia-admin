@@ -17,13 +17,13 @@ $_plugins = pdo_getall("hello_banbanjia_plugin", array(), array("name", "title")
 $_W["_plugins"] = $_plugins;
 //检测是否是插件
 in_array($_W["_ctrl"], array_keys($_plugins)) and define("IN_PLUGIN", 1);
-if (in_array($_W['_ctrl'], array('seckill', 'kanjia', 'pintuan', 'article', 'haodian'))) {
+if (in_array($_W['_ctrl'], array('seckill', 'kanjia', 'pintuan', 'article', 'ask', 'haodian'))) {
     define('IN_GOHOME_WPLUGIN', 1);
     if (!defined('IN_PLUGIN')) {
         define('IN_PLUGIN', 1);
     }
 }
-if (in_array($_W['_ac'], array('seckill', 'kanjia', 'pintuan', 'article', 'haodian'))) {
+if (in_array($_W['_ac'], array('seckill', 'kanjia', 'pintuan', 'article', 'ask','haodian'))) {
     define('IN_GOHOME_APLUGIN', 1);
 }
 if ($_W['_ctrl'] == 'gohome' || defined('IN_GOHOME_WPLUGIN')) {

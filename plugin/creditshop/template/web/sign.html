@@ -1,0 +1,146 @@
+{itemplate 'public/header'}
+{if $op == 'list'}
+<form action="" class="form-table form form-validate" method="post">
+    <div class="panel panel-table">
+        <div class="panel-heading">
+			<a href="{php echo iurl('creditshop/sign/post');}" class="btn btn-primary btn-sm">编辑签到规则</a>
+        </div>
+        <div class="panel-body table-responsive js-table">
+			{if empty($lists)}
+				<div class="no-result">
+					<p>还没有相关数据</p>
+				</div>
+            {else}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>头像</th>
+                    <th>用户</th>
+                    <th>增加积分</th>
+                    <th>签到时间</th>
+                </tr>
+                </thead>
+                {loop $lists $list}
+                    <tr>
+                        <td>
+                            <img src="{php echo tomedia($list['avatar']);}" width="50">
+                        </td>
+                        <td>
+                            {$list['nickname']}
+                        </td>
+                        <td>
+                           {$list['addcredit1']}
+                        </td>
+                        <td>
+                            {php echo date('Y-m-d m:i:s',$list['signtime'])}
+                        </td>
+                    </tr>
+                {/loop}
+            </table>
+            <div class="btn-region clearfix">
+                <div class="pull-right">
+                    {$pager}
+                </div>
+            </div>
+        {/if}
+    </div>
+</div>
+</form>
+{/if}
+
+{if $op == 'post'}
+<div class="page clearfix">
+    <h2>设置积分规则</h2>
+	<form class="form-horizontal form form-validate" id="form1" action="" method="post" enctype="multipart/form-data">
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">第一天增加</label>
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <input type="number" class="form-control" name="sign[]" value="{$sign[0]}" required="true">
+                    <div class="input-group-addon">积分</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">第二天增加</label>
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <input type="number" class="form-control" name="sign[]" value="{$sign[1]}" required="true">
+                    <div class="input-group-addon">积分</div>
+                </div>
+                <div class="help-block">
+                    签到中断后从第一天算起
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">第三天增加</label>
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <input type="number" class="form-control" name="sign[]" value="{$sign[2]}" required="true">
+                    <div class="input-group-addon">积分</div>
+                </div>
+                <div class="help-block">
+                    签到中断后从第一天算起
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">第四天增加</label>
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <input type="number" class="form-control" name="sign[]" value="{$sign[3]}" required="true">
+                    <div class="input-group-addon">积分</div>
+                </div>
+                <div class="help-block">
+                    签到中断后从第一天算起
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">第五天增加</label>
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <input type="number" class="form-control" name="sign[]" value="{$sign[4]}" required="true">
+                    <div class="input-group-addon">积分</div>
+                </div>
+                <div class="help-block">
+                    签到中断后从第一天算起
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">第六天增加</label>
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <input type="number" class="form-control" name="sign[]" value="{$sign[5]}" required="true">
+                    <div class="input-group-addon">积分</div>
+                </div>
+                <div class="help-block">
+                    签到中断后从第一天算起
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">第七天增加</label>
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <input type="number" class="form-control" name="sign[]" value="{$sign[6]}" required="true">
+                    <div class="input-group-addon">积分</div>
+                </div>
+                <div class="help-block">
+                    签到中断后从第一天算起
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-9 col-xs-9 col-md-9">
+                <input type="hidden" name="token" value="{$_W['token']}">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
+{/if}
+{itemplate 'public/footer'}

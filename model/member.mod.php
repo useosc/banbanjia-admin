@@ -1,6 +1,6 @@
 <?php
 
-use function Qiniu\json_decode;
+// use function Qiniu\json_decode;
 
 defined("IN_IA") or exit("Access Denied");
 if (!function_exists("member_wxapp2openid")) {
@@ -137,7 +137,7 @@ function get_member($openid, $field = 'openid')
 {
     global $_W;
     $uid = intval($openid);
-    $fields = array("id", "uid", "groupid", "groupid_updatetime", "openid", "openid_wxapp", "token", "credit1", "credit2", "avatar", "nickname", "sex", "realname", "mobile", "password", "mobile_audit", "setmeal_id", "setmeal_day_free_limit", "setmeal_deliveryfee_free_limit", "setmeal_starttime", "setmeal_endtime", "is_sys", "status", "addtime", "spread1", "spread2", "spreadcredit2", "spreadfixed", "svip_status", "svip_starttime", "svip_endtime", "svip_credit1", "account");
+    $fields = array("id", "uid", "groupid", "groupid_updatetime", "openid", "openid_wxapp", "token", "credit1", "credit2", "avatar", "nickname", "sex", "realname", "mobile", "password", "mobile_audit", "setmeal_id", "setmeal_day_free_limit", "setmeal_deliveryfee_free_limit", "setmeal_starttime", "setmeal_endtime", "is_sys", "status", "addtime", "spread1", "spread2", "spreadcredit2", "spreadfixed", "svip_status", "svip_starttime", "svip_endtime", "svip_credit1", "account","continue_sign_day","last_sign_time","sign_total_day");
     if ($uid == 0) {
         $info = pdo_get('hello_banbanjia_members', array('uniacid' => $_W['uniacid'], $field => $openid), $fields);
     } else {

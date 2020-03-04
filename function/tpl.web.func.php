@@ -91,3 +91,24 @@ function tpl_form_field_hello_coordinate($field, $value = array(), $required = f
     $s .= "\r\n\t\t<div class=\"row row-fix\">\r\n\t\t\t<div class=\"col-xs-4 col-sm-4\">\r\n\t\t\t\t<input type=\"text\" name=\"" . $field . "[lng]\" value=\"" . $value["lng"] . "\" placeholder=\"地理经度\"  class=\"form-control\" " . ($required ? "required" : "") . "/>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"col-xs-4 col-sm-4\">\r\n\t\t\t\t<input type=\"text\" name=\"" . $field . "[lat]\" value=\"" . $value["lat"] . "\" placeholder=\"地理纬度\"  class=\"form-control\" " . ($required ? "required" : "") . "/>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"col-xs-4 col-sm-4\">\r\n\t\t\t\t<button onclick=\"showCoordinate(this);\" class=\"btn btn-default\" type=\"button\">选择坐标</button>\r\n\t\t\t</div>\r\n\t\t</div>";
     return $s;
 }
+function tpl_form_field_hello_category_2level($name, $parents, $children, $parentid, $childid)
+{
+    $html = "\r\n\t\t<script type=\"text/javascript\">\r\n\t\t\twindow._" . $name . " = " . json_encode($children) . ";\r\n\t\t</script>";
+    if (!defined("TPL_INIT_HELLO_CATEGORY")) {
+        $html .= "\r\n\t\t\t\t\t<script type=\"text/javascript\">\r\n\t\t\t\t\t\tfunction irenderCategory(obj, name){\r\n\t\t\t\t\t\t\tvar index = obj.options[obj.selectedIndex].value;\r\n\t\t\t\t\t\t\trequire(['jquery', 'util'], function(\$, u){\r\n\t\t\t\t\t\t\t\t\$selectChild = \$('#'+name+'_child');\r\n\t\t\t\t\t\t\t\tvar html = '<option value=\"0\">请选择二级分类</option>';\r\n\r\n\t\t\t\t\t\t\t\tif (!window['_'+name] || !window['_'+name][index]) {\r\n\t\t\t\t\t\t\t\t\t\$selectChild.html(html);\r\n\t\t\t\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\tfor(var i in window['_'+name][index]){\r\n\t\t\t\t\t\t\t\t\thtml += '<option value=\"'+window['_'+name][index][i]['id']+'\">'+window['_'+name][index][i]['name']+'</option>';\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\t\$selectChild.html(html);\r\n\t\t\t\t\t\t\t});\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t</script>\r\n\t\t\t\t\t";
+        define("TPL_INIT_HELLO_CATEGORY", true);
+    }
+    $html .= "<div class=\"row row-fix tpl-category-container\">\r\n\t<div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\r\n\t\t<select class=\"form-control tpl-category-parent\" id=\"" . $name . "_parent\" name=\"" . $name . "[parentid]\" onchange=\"irenderCategory(this,'" . $name . "')\">\r\n\t\t\t\t\t<option value=\"0\">请选择一级分类</option>";
+    $ops = "";
+    foreach ($parents as $row) {
+        $html .= "\r\n\t\t\t\t\t<option value=\"" . $row["id"] . "\" " . ($row["id"] == $parentid ? "selected=\"selected\"" : "") . ">" . $row["name"] . "</option>";
+    }
+    $html .= "\r\n\t\t\t\t</select>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\r\n\t\t\t\t<select class=\"form-control tpl-category-child\" id=\"" . $name . "_child\" name=\"" . $name . "[childid]\">\r\n\t\t\t\t\t<option value=\"0\">请选择二级分类</option>";
+    if (!empty($parentid) && !empty($children[$parentid])) {
+        foreach ($children[$parentid] as $row) {
+            $html .= "\r\n\t\t\t\t\t<option value=\"" . $row["id"] . "\"" . ($row["id"] == $childid ? "selected=\"selected\"" : "") . ">" . $row["name"] . "</option>";
+        }
+    }
+    $html .= "\r\n\t\t\t\t</select>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t";
+    return $html;
+}

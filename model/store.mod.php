@@ -1,6 +1,19 @@
 <?php
 defined('IN_IA') or exit('Access Denied');
 
+function is_favorite_store($sid, $uid = 0)
+{
+    global $_W;
+    if (empty($uid)) {
+        $uid = $_W["member"]["uid"];
+    }
+    $is_ok = pdo_get("hello_banbanjia_favorite", array("sid" => $sid, "uid" => $uid));
+    if (!empty($is_ok)) {
+        return true;
+    }
+    return false;
+}
+
 function store_set_data($sid, $key, $value)
 {
     global $_W;
@@ -66,6 +79,32 @@ function clerk_manage($id)
     }
     return array_keys($permit);
 }
+
+function store_case_fetch($sid,$field = array()){ //案例
+    global $_W;
+    if (empty($sid)) {
+        return false;
+    }
+    $field_str = "*";
+    if (!empty($field)) {
+        $field = array_unique($field);
+        $field_str = implode(",", $field);
+    }
+    $data = pdo_fetchall("SELECT " . $field_str . " FROM " . tablename("hello_banbanjia_store_case") . " WHERE uniacid = :uniacid AND sid = :sid",array(":uniacid" => $_W['uniacid'],':sid' => $sid));
+    foreach($data as $key => &$item){
+        if(!empty($item['thumbs'])){
+            $item['thumbs'] = iunserializer($item['thumbs']);
+            foreach ($item['thumbs'] as &$thumb) {
+                $thumb['image'] = tomedia($thumb['image']);
+            }
+        }
+    }
+    if (empty($data)) {
+        return error(-1, "还没有案例");
+    }
+    return $data;
+}
+
 function store_fetch($id, $field = array())
 {
     global $_W;
@@ -119,6 +158,8 @@ function store_fetch($id, $field = array())
         }
     }
 
+    $data['cases'] = store_case_fetch($id);  
+    $data['case_num'] = count($data['cases']);
     $data["address_type"] = 0;
 
     return $data;
@@ -319,5 +360,45 @@ function store_fetchall_by_condition($type = "hot", $option = array())
         $condition .= " and is_rest = :is_rest";
         $params[":is_rest"] = intval($option["is_rest"]);
     }
-    
+}
+
+//获取企业相关评价
+function store_get_comments($filter = array())
+{
+    global $_W;
+    global $_GPC;
+    if(empty($filter)){
+        $filter = $_GPC;
+    }
+    $condition = " where c.uniacid = :uniacid";
+    $params = array(":uniacid" => $_W['uniacid']);
+    // $agentid = intval($filter["agentid"]) ? intval($filter["agentid"]) : $_W["agentid"];
+    // if (!empty($agentid)) {
+    //     $condition .= " and c.agentid = :agentid";
+    //     $params[":agentid"] = $agentid;
+    // }
+    $uid = intval($filter["uid"]);
+    if (0 < $uid) {
+        $condition .= " and c.uid = :uid";
+        $params[":uid"] = $uid;
+    }
+    $sid = intval($filter['sid']);
+    if(0 < $sid) {
+        $condition .= " and c.sid = :sid";
+        $params[":sid"] = $sid;
+    }
+    $status = isset($filter["status"]) ? intval($filter["status"]) : 1;
+    if (0 < $status) {
+        $condition .= " and c.status = :status";
+        $params[":status"] = $status;
+    }
+
+    $page = empty($filter['page']) ? intval($_GPC['page']) : intval($filter['page']);
+    $psize = empty($filter['psize']) ? intval($_GPC['psize']) : intval($filter['psize']);
+    $page = max(1,$page);
+    $psize = $psize ? $psize : 10;
+    $total = pdo_fetchcolumn("select count(*) from " . tablename("hello_banbanjia_store_comment") . " as c" . $condition,$params);
+    $comments = pdo_fetchall("SELECT c.*,m.nickname as memberName,m.avatar as memberAvatar FROM " . tablename("hello_banbanjia_store_comment") . " as c,". tablename("hello_banbanjia_members") ." as m " . $condition . " and c.uid = m.uid ORDER BY id DESC LIMIT " . ($page - 1) * $psize . "," . $psize,$params);
+    $pager = pagination($total,$page,$psize);
+    return array("comments" => $comments,"total" => $total,"pager" => $pager);
 }

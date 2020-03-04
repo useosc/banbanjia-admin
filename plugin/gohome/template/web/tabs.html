@@ -8,11 +8,11 @@
         <a href="{php echo iurl('article/category/list');}">分类列表</a>
     </li>
     {/if}
-    {ifp 'article.slide'}
+    <!-- {ifp 'article.slide'}
     <li {if $_W['_router'] == 'article/slide/list'}class="active"{/if}>
         <a href="{php echo iurl('article/slide/list');}">幻灯片</a>
     </li>
-    {/if}
+    {/if} -->
     {ifp 'article.information'}
     <li {if $_W['_router'] == 'article/information/list'}class="active"{/if}>
         <a href="{php echo iurl('article/information/list');}">文章列表</a>
@@ -23,9 +23,32 @@
         <a href="{php echo iurl('article/comment/list');}">评论列表</a>
     </li>
     {/if}
-    <li {if $_W['_router'] == 'article/statcenter/list'}class="active"{/if}>
+    <!-- <li {if $_W['_router'] == 'article/statcenter/list'}class="active"{/if}>
         <a href="{php echo iurl('article/statcenter/list');}">文章统计</a>
+    </li> -->
+</ul>
+{/if}
+{ifp 'ask.category' || 'ask.index' || 'ask.comment'}
+<div class="menu-header">问答</div>
+<ul class="menu-item">
+    {ifp 'ask.category'}
+    <li {if $_W['_router'] == 'ask/category/list'}class="active"{/if}>
+        <a href="{php echo iurl('ask/category/list');}">分类列表</a>
     </li>
+    {/if}
+    {ifp 'ask.index'}
+    <li {if $_W['_router'] == 'ask/index/list'}class="active"{/if}>
+        <a href="{php echo iurl('ask/index/list');}">问题列表</a>
+    </li>
+    {/if}
+    {ifp 'ask.answer'}
+    <li {if $_W['_router'] == 'ask/answer/list'}class="active"{/if}>
+        <a href="{php echo iurl('ask/answer/list');}">答案列表</a>
+    </li>
+    {/if}
+    <!-- <li {if $_W['_router'] == 'ask/statcenter/list'}class="active"{/if}>
+        <a href="{php echo iurl('ask/statcenter/list');}">问答统计</a>
+    </li> -->
 </ul>
 {/if}
 {ifp 'gohome.config' || 'gohome.poster' || 'article.basic'}
@@ -50,6 +73,11 @@
     {ifp 'article.basic'}
         <li {if $_W['_router'] == 'article/basic/index'}class="active"{/if}>
         <a href="{php echo iurl('article/basic/index');}">文章设置</a>
+        </li>
+    {/if}
+    {ifp 'ask.basic'}
+        <li {if $_W['_router'] == 'ask/basic/index'}class="active"{/if}>
+        <a href="{php echo iurl('ask/basic/index');}">问答设置</a>
         </li>
     {/if}
 </ul>

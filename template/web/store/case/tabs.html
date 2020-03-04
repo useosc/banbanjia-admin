@@ -1,0 +1,11 @@
+<div class="second-sidebar-title">
+	案例管理
+</div>
+<div class="nav slimscroll">
+    <div class="menu-header">案例管理</div>
+    <ul class="menu-item">
+		<li {if $_W['_op'] == 'index' && $_W['_ta'] != 'export' && $_W['_ta'] != 'eleme_category'}class="active"{/if}>
+		<a href="{php echo iurl('store/case/index/list');}">案例列表</a>
+		</li>
+	</ul>
+</div>

@@ -113,6 +113,30 @@ function get_wxapp_diy($pageOrid, $mobile = false, $extra = array())
                     } else {
                         if (!empty($page['data']['items']) && is_array($page['data']['items'])) {
                             foreach ($page['data']['items'] as $itemid => &$item) { }
+                        } else {
+                            if ($item["id"] == "picturew" && !empty($item["data"])) {
+                                foreach ($item["data"] as &$v) {
+                                    $v["imgurl"] = tomedia($v["imgurl"]);
+                                }
+                                $item["data_num"] = count($item["data"]);
+                                if (in_array($item["params"]["row"], array("1", "5", "6"))) {
+                                    $item["data"] = array_values($item["data"]);
+                                } else {
+                                    if ($item["params"]["showtype"] == 1 && $item["params"]["pagenum"] < count($item["data"])) {
+                                        $item["data"] = array_chunk($item["data"], $item["params"]["pagenum"]);
+                                        $item["style"]["rows_num"] = ceil($item["params"]["pagenum"] / $item["params"]["row"]);
+                                        $row_base_height = array("2" => 122, "3" => 85, "4" => 65);
+                                        $item["style"]["base_height"] = $row_base_height[$item["params"]["row"]];
+                                    } else {
+                                        if ($item["id"] == "notice") {
+                                            $item["data"] = get_wxapp_notice($item, false);
+                                            if (empty($item["data"])) {
+                                                unset($page["data"]["items"][$itemid]);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -152,6 +176,23 @@ function get_wxapp_diy($pageOrid, $mobile = false, $extra = array())
                                 $item['data'] = array_values($result['data']);
                                 if (empty($item["data"])) {
                                     unset($page["data"]["items"][$itemid]);
+                                }
+                            } else {
+                                if ($item["id"] == "picturew" && !empty($item["data"])) {
+                                    foreach ($item["data"] as &$v) {
+                                        $v["imgurl"] = tomedia($v["imgurl"]);
+                                    }
+                                    $item["data_num"] = count($item["data"]);
+                                    if (in_array($item["params"]["row"], array("1", "5", "6"))) {
+                                        $item["data"] = array_values($item["data"]);
+                                    } else {
+                                        if ($item["params"]["showtype"] == 1 && $item["params"]["pagenum"] < count($item["data"])) {
+                                            $item["data"] = array_chunk($item["data"], $item["params"]["pagenum"]);
+                                            $item["style"]["rows_num"] = ceil($item["params"]["pagenum"] / $item["params"]["row"]);
+                                            $row_base_height = array("2" => 122, "3" => 85, "4" => 65);
+                                            $item["style"]["base_height"] = $row_base_height[$item["params"]["row"]];
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -268,23 +309,29 @@ function get_wxapp_navs($item, $mobile = false)
                 $val['imgurl'] = tomedia($val['imgurl']);
             }
         }
-    } else { }
-    $condition = " where uniacid = :uniacid";
-    $params = array(":uniacid" => $_W['uniacid']);
-    if ($mobile || 0 < $_W['agentid']) {
-        $condition .= " and agentid = :agentid";
-        $params[":agentid"] = $_W['agentid'];
+    } else {
+        $condition = " where uniacid = :uniacid";
+        $params = array(":uniacid" => $_W['uniacid']);
+        if ($mobile || 0 < $_W['agentid']) {
+            $condition .= " and agentid = :agentid";
+            $params[":agentid"] = $_W['agentid'];
+        }
+        if (in_array($item['params']['navsdata'], array(1, 3, 4))) {
+            $condition .= " and parentid = 0";
+        }
+        $limit = intval($item['params']['navsnum']) ? intval($item['params']['navsnum']) : 4;
+        // $navs = pdo_fetchall("select " . $keys . " from " . tablename($table) . $condition . " and status = 1 order by displayorder desc limit " . $limit, $params);
     }
-    if (in_array($item['params']['navsdata'], array(1, 3, 4))) {
-        $condition .= " and parentid = 0";
+    $item["data_num"] = count($item["data"]);
+    if ($mobile && $item["params"]["showtype"] == 1 && $item["params"]["pagenum"] < $item["data_num"]) {
+        $item["data"] = array_chunk($item["data"], $item["params"]["pagenum"]);
     }
-    // $limit = intval($item['params']['navsnum']) ? intval($item['params']['navsnum']) : 4;
-    // $navs = pdo_fetchall("select " . $keys . " from " . tablename($table) . $condition . " and status = 1 order by displayorder desc limit " . $limit, $params);
-
+    $result = array("data" => $item["data"], "data_num" => $item["data_num"], "row" => ceil($item["params"]["pagenum"] / $item["params"]["rownum"]));
     return $result;
 }
 
-function get_wxapp_slides($item,$mobile = false){
+function get_wxapp_slides($item, $mobile = false)
+{
     global $_W;
     if (empty($item["params"]["picturedata"])) {
         if (!empty($item["data"])) {
@@ -292,7 +339,7 @@ function get_wxapp_slides($item,$mobile = false){
                 $val["imgurl"] = tomedia($val["imgurl"]);
             }
         }
-    }else{
+    } else {
         if ($item["params"]["picturedata"] == 1) {
             $table = "hello_banbanjia_slide";
             $keys = "id,title,thumb,wxapp_link,link,displayorder";

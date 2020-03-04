@@ -39,6 +39,13 @@ if ($op == 'index') {
     if ($op == 'information') { } else {
         if ($op == 'detail') {
             $id = intval($_GPC['id']);
+            //浏览记录
+            $footmark = pdo_get("hello_banbanjia_member_footmark", array("uniacid" => $_W['uniacid'], 'uid' => $_W['member']['uid'], "cid" => $id, 'type' => 'article', 'stat_day' => date("Ymd")), array("id"));
+            if (empty($footmark)) {
+                $insert = array("uniacid" => $_W['uniacid'], 'uid' => $_W['member']['uid'], 'cid' => $id, 'type' => 'article', 'addtime' => TIMESTAMP, 'stat_day' => date("Ymd"));
+                pdo_insert("hello_banbanjia_member_footmark", $insert);
+            }
+
             gohome_update_activity_flow("article", $id, "looknum");
             $information = article_get_information($id, array("like_member_show" => 1));
             $comments = article_get_comments($id);

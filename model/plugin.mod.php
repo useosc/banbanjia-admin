@@ -29,7 +29,7 @@ class Ploader
         if (!is_file($file)) {
             $file = WE7_BANBANJIA_PLUGIN_PATH . (string) $_W["_plugin"]["name"] . "/model/" . $name . ".mod.php";
         }
-        if (!is_file($file) && in_array($name, array("seckill", "kanjia", "pintuan", "article", "haodian"))) {
+        if (!is_file($file) && in_array($name, array("seckill", "kanjia", "pintuan", "article", "ask", "haodian"))) {
             $file = WE7_BANBANJIA_PLUGIN_PATH . "gohome/" . $name . "/model.php";
         }
         if (file_exists($file)) {
@@ -59,8 +59,15 @@ class Ploader
 
 function plugin_fetch($name) //获取插件信息
 {
-    $routers = array('pintuan' => array('name' => 'pintuan', 'title' => '拼团', 'status' => 1), 'kanjia' => array('name' => 'kanjia', 'title' => '砍价', 'status' => 1), 'seckill' => array('name' => 'seckill', 'title' => '抢购', 'status' => 1), 'article' => array('name' => 'article', 'title' => '文章', 'status' => 1), 'haodian' => array('name' => 'haodian', 'title' => '好店', 'status' => 1));
-    if(in_array($name,array_keys($routers))){
+    $routers = array(
+        'pintuan' => array('name' => 'pintuan', 'title' => '拼团', 'status' => 1),
+        'kanjia' => array('name' => 'kanjia', 'title' => '砍价', 'status' => 1),
+        'seckill' => array('name' => 'seckill', 'title' => '抢购', 'status' => 1),
+        'article' => array('name' => 'article', 'title' => '文章', 'status' => 1),
+        'haodian' => array('name' => 'haodian', 'title' => '好店', 'status' => 1),
+        'ask' => array('name' => 'ask', 'title' => '问答', 'status' => 1)
+    );
+    if (in_array($name, array_keys($routers))) {
         return $routers[$name];
     }
     $condition = " where name = :name";

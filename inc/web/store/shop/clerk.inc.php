@@ -45,7 +45,6 @@ if ($ta == 'post') {
             $val["permits"] = explode(",", $val["permits"]);
         }
     }
-
     if ($_W['ispost']) {
         mload()->lmodel('clerk');
         $clerk = array();

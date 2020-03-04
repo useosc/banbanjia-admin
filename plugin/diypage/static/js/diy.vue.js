@@ -196,12 +196,12 @@ define(["jquery.ui"], function (a) {
         b.initParts = function () {
             b.getParts();
             var a = {
-                0: ["picture", "title", "img_card", "banner", "picturew", "listmenu", "buttons", "richtext", "line", "blank", "copyright"],
-                1: ["fixedsearch", "searchbar", "navs", "notice", "activity", "danmu", "selective", "bargain", "waimai_goods", "goodsTab", "waimai_stores", "storesTab", "waimai_allstores", "selftake_stores", "brand_stores", "graphic", "listmenu", "cart", "redpacket", "guide", "service", "urltags"],
+                0: ["picture", "title", "img_card", "banner", "fab", "picturew", "listmenu", "buttons", "richtext", "line", "blank", "copyright"],
+                1: ["fixedsearch", "searchbar", "navs", "notice", "activity", "danmu", "selective", "bargain","banjia_stores", "banjia_allstores", "brand_stores", "graphic", "listmenu", "cart", "redpacket", "guide", "service", "urltags"],
                 2: ["memberHeader", "memberBindMobile", "blockNav"],
                 3: ["operation", "info", "tags", "coupon", "onsale", "evaluate"],
                 4: ["fixedsearch", "searchbar", "navs", "notice", "activity", "danmu", "graphic", "listmenu", "guide", "service"],
-                5: ["fixedsearch", "searchbar", "navs", "notice", "activity", "danmu", "selective", "bargain", "waimai_goods", "waimai_stores", "graphic", "listmenu", "cart", "guide", "service"]
+                5: ["fixedsearch", "searchbar", "navs", "notice", "activity", "danmu", "selective", "bargain", "banjia_stores", "graphic", "listmenu", "cart", "guide", "service"]
             };
             if (b.checkPluginExist("svip") && (a[1].push("svipGuide"), a[2].push("svipGuide")),
             // b.has_gohome && 2 != b.type && a[0].push("gohomeActivity"), 
@@ -318,6 +318,37 @@ define(["jquery.ui"], function (a) {
                             imgurl: "../addons/hello_banbanjia/plugin/diypage/static/img/default/banner-2.jpg",
                             linkurl: ""
                         }
+                    }
+                },
+                fab: {
+                    name: "悬浮按钮",
+                    params: {
+                        horizontal: 'left',
+                        vertical: 'bottom',
+                        direction: 'horizontal'
+                    },
+                    style: {
+                        color: '#7A7E83',
+                        backgroundcolor: '#fff',
+                        selectedcolor: '#007AFF',
+                        buttoncolor: '#007AFF',
+                    },
+                    data: {
+                        C0123456789101: {
+                            imgurl: "../addons/hello_banbanjia/plugin/diypage/static/img/default/navs-1.png",
+                            linkurl: "",
+                            text: "导航文字1",
+                        },
+                        C0123456789102: {
+                            imgurl: "../addons/hello_banbanjia/plugin/diypage/static/img/default/navs-2.png",
+                            linkurl: "",
+                            text: "导航文字2",
+                        },
+                        C0123456789103: {
+                            imgurl: "../addons/hello_banbanjia/plugin/diypage/static/img/default/navs-3.png",
+                            linkurl: "",
+                            text: "导航文字3",
+                        },
                     }
                 },
                 picture: {
@@ -761,7 +792,7 @@ define(["jquery.ui"], function (a) {
                         }
                     }
                 },
-                waimai_stores: {
+                banjia_stores: {
                     name: "商户组",
                     params: {
                         showdiscount: "1",
@@ -997,7 +1028,7 @@ define(["jquery.ui"], function (a) {
                         }
                     }
                 },
-                waimai_allstores: {
+                banjia_allstores: {
                     name: "商户列表",
                     params: {
                         showdiscount: 1,

@@ -46,11 +46,8 @@ if ($op == 'index') {
             if (!empty($publish["keyword"])) {
                 $update["keyword"] = iserializer($publish["keyword"]);
             }
-            if (!empty($publish["thumbs"])) {
-                foreach ($publish["thumbs"] as $val) {
-                    $update["thumbs"][] = $val["filename"];
-                }
-                $update["thumbs"] = iserializer($update["thumbs"]);
+            if(!empty($publish['thumbs'])) {
+                $update['thumbs'] = iserializer($publish['thumbs']);
             }
             if (empty($information_id)) {
                 $update["uniacid"] = $_W["uniacid"];
