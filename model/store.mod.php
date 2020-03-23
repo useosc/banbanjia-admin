@@ -402,3 +402,13 @@ function store_get_comments($filter = array())
     $pager = pagination($total,$page,$psize);
     return array("comments" => $comments,"total" => $total,"pager" => $pager);
 }
+
+//获取企业客户
+function store_fetch_customers($id){
+    global $_W;
+    $customers = pdo_get("hello_banbanjia_store_customer",array("uniacid" => $_W['uniacid'],"id" => $id));
+    if (empty($customers)) {
+        return error(-1, "客户不存在或已删除");
+    }
+    return $customers;
+}

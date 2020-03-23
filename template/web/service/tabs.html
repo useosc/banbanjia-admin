@@ -61,4 +61,18 @@
             </li>
         </ul>
     {/if}
+    {ifp 'service.robot'}
+        <div class="menu-header">智能问答</div>
+        <ul class="menu-item">
+            <!-- <li {if $_W['_op'] == 'chatlog'}class="active"{/if}>
+                <a href="{php echo iurl('service/robot/chatlog');}">问答历史</a>
+            </li> -->
+            <li {if $_W['_op'] == 'wiki'}class="active"{/if}>
+                <a href="{php echo iurl('service/robot/wiki');}">知识库</a>
+            </li>
+            <li {if $_W['_op'] == 'feedback'}class="active"{/if}>
+                <a href="{php echo iurl('service/robot/feedback');}">客户反馈</a>
+            </li>
+        </ul>
+    {/if}
 </div>

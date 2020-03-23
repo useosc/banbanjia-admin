@@ -6,9 +6,8 @@ global $_GPC;
 mload()->lmodel('manage');
 mload()->lmodel('clerk');
 mload()->lmodel('common');
-// $relation = array();
 
-if ($_W['_ac'] != 'auth') {
+if ($_W['_ac'] != 'auth') { //如果不是登录页面，就检查是否登录
     icheckmanage();
     $sids = pdo_getall("hello_banbanjia_store_clerk", array('uniacid' => $_W['uniacid'], 'clerk_id' => $_W['manager']['id']), array(), 'sid');
     if (empty($sids)) {
@@ -53,5 +52,6 @@ if ($_W['_ac'] != 'auth') {
     
 }
 
+$_W['sid'] = $sid;
 $_W["role"] = "clerker";
 $_W["role_cn"] = "企业员工:" . $_W["manager"]["title"];

@@ -31,7 +31,7 @@ if ($ta == 'post') {
         $insert = array(
             "uniacid" => $_W['uniacid'], 'sid' => $_W['sid'],
             "name" => trim($_GPC['name']), 'card' => trim($_GPC['card']), 'address' => trim($_GPC['card']),
-            'holders' => trim($_GPC['holders']), 'displayorder' => intval($_GPC['displayorder']), 'status' => 'status',
+            'holders' => trim($_GPC['holders']), 'displayorder' => intval($_GPC['displayorder']), 'status' => 1,
             'addtime' => TIMESTAMP
         );
         pdo_insert("hello_banbanjia_store_bank_account",$insert);
