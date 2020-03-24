@@ -1244,6 +1244,25 @@
             `payment` 
         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_room_category` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `title` varchar(30) NOT NULL,
+            `thumb` varchar(255) NOT NULL DEFAULT '',
+            `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `isdelete` tinyint(1) DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_goods` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_customers` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1263,6 +1282,47 @@
             `intro` varchar(250) DEFAULT NULL COMMENT '客户介绍',
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_invoice` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `billno` varchar(25) NOT NULL DEFAULT '' COMMENT '单据编号',
+            `uid` int(10) unsigned NOT NULL,
+            `create_clerk_id` int(16) NOT NULL COMMENT '制单人员',
+            `username` varchar(25) NOT NULL DEFAULT '' COMMENT '制单人名称',
+            `totalamount` double DEFAULT '0' COMMENT '搬家总金额',
+            `amount` double DEFAULT '0' COMMENT '折扣后金额',
+            `rpamount` double DEFAULT '0' COMMENT '本次付款',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '单据日期',
+            `description` varchar(100) DEFAULT '' COMMENT '备注',
+            `arrears` double DEFAULT '0' COMMENT '本次欠款',
+            `disrate` double DEFAULT '0' COMMENT '折扣率',
+            `disamount` double DEFAULT '0' COMMENT '折扣金额',
+            `totalqty` double DEFAULT '0' COMMENT '总数量',
+            `totalarrears` double DEFAULT '0',
+            `billstatus` tinyint(1) DEFAULT '0' COMMENT '订单状态 ',
+            `accid` int(10) DEFAULT '0' COMMENT '结算账户ID',
+            `modifytime` int(10) DEFAULT '0' COMMENT '更新时间',
+            `hxstatecode` tinyint(4) DEFAULT '0' COMMENT '0未付款  1部分付款  2全部付款',
+            `totaldiscount` double DEFAULT '0',
+            `customerfree` double DEFAULT '0' COMMENT '客户承担费用',
+            `isdelete` tinyint(1) DEFAULT '0' COMMENT '1删除  0正常',
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+
+       CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_invoice_info` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `iid` int(10) unsigned NOT NULL COMMENT '关联订单id',
+            `billno` varchar(25) NOT NULL DEFAULT '' COMMENT '单据编号',
+            `amount` double DEFAULT '0' COMMENT '购货金额',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '单据日期',
+            `description` varchar(100) DEFAULT '' COMMENT '备注',
+            `goodid` int(10) DEFAULT '0' COMMENT '货物id',
+            `
+
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
 
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_gohome_slide` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -1610,7 +1670,11 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_hetong_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_workflow`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_bank_account`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_room_category`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_goods`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_customers`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_invoice`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_invoice_info`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_gohome_slide`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_ask_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_ask_information`;
