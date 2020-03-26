@@ -11,7 +11,6 @@ if ($config_store["settle"]["status"] != 1) {
     imessage(error(-1, "暂时不支持商户入驻"), "", "ajax");
 }
 
-// var_dump($_W);exit;
 $clerk = pdo_get("hello_banbanjia_clerk", array("uniacid" => $_W['uniacid'], 'openid_wxapp' => $_W['openid']));
 if (empty($clerk)) {
     $clerk = pdo_get("hello_banbanjia_clerk", array("uniacid" => $_W['uniacid'], 'mid' => $_W['member']['id']));

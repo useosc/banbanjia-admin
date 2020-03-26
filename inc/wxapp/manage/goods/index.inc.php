@@ -10,6 +10,22 @@ if($ta == 'list') {
     imessage(error(0,$result),'','ajax');
 }
 
+if($ta == 'cglist') {
+    error_reporting(E_ERROR);
+    // $result = pdo_fetchall(" select * from " . tablename("hello_banbanjia_store_goods") . " where uniacid = :uniacid and sid = :sid group by cateid order by cateid",
+    //  array(":uniacid" => $_W['uniacid'],":sid" => $_W['sid']),'id');
+    $result = array();
+    $cates = pdo_getall("hello_banbanjia_store_room_category",array("uniacid"=>$_W['uniacid'],'sid'=>$sid));
+    foreach($cates as $cate) {
+        $result[$cate[id]] = pdo_getall("hello_banbanjia_store_goods",array("uniacid"=>$_W['uniacid'],'sid'=>$sid,'cateid'=>$cate['id']));
+    }
+    //  if(!empty($result)) {
+
+    //  }
+
+     imessage(error(0,$result),'','ajax');
+}
+
 if($ta == 'post') {
     // error_reporting(E_ALL);
     $_W["page"]["title"] = "添加家具";

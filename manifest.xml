@@ -1296,6 +1296,83 @@
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_trace` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `cusid` int(10) unsigned NOT NULL COMMENT '客户编号',
+            `cusname` varchar(100) DEFAULT '' COMMENT '客户名称',
+            `type` varchar(50) DEFAULT '' COMMENT '跟单类型',
+            `state` varchar(50) DEFAULT '' COMMENT '跟单进度',
+            `linkman` varchar(100) DEFAULT '',
+            `remind` int(50) DEFAULT '0' COMMENT '提醒',
+            `nexttime` int(10) DEFAULT NULL COMMENT '下次提醒时间',
+            `content` text COMMENT '提醒内容',
+            `create_clerk_id` int(16) NOT NULL COMMENT '制单人员id',
+            `create_clerk_name` varchar(50) NOT NULL DEFAULT '' COMMENT '制单人员名字',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '单据日期',
+            `modifytime` int(10) DEFAULT '0' COMMENT '更新时间',
+            `isdelete` tinyint(1) DEFAULT '0' COMMENT '1删除  0正常',
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='跟单管理';
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_set_select` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `name` varchar(50) DEFAULT '' DEFAULT '' COMMENT '字段名称',
+            `type` varchar(50) DEFAULT '' COMMENT '字段分类',
+            `remark` varchar(255) DEFAULT '',
+            `isdelete` tinyint(1) DEFAULT '0' COMMENT '1删除  0正常',
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='系统字段管理';
+
+        INSERT INTO ims_hello_banbanjia_store_set_select VALUES
+        ('0','0','已成交','type','系统字段','0');
+        INSERT INTO ims_hello_banbanjia_store_set_select VALUES
+        ('0','0','未成交','type','系统字段','0');
+        INSERT INTO ims_hello_banbanjia_store_set_select VALUES
+        ('0','0','跟进中','type','系统字段','0');
+        INSERT INTO ims_hello_banbanjia_store_set_select VALUES
+        ('0','0','有意向','type','系统字段','0');
+
+        INSERT INTO ims_hello_banbanjia_store_set_select VALUES
+        ('0','0','电话跟进','records','系统字段','0');
+        INSERT INTO ims_hello_banbanjia_store_set_select VALUES
+        ('0','0','上门拜访','records','系统字段','0');
+        INSERT INTO ims_hello_banbanjia_store_set_select VALUES
+        ('0','0','QQ交谈','records','系统字段','0');
+        INSERT INTO ims_hello_banbanjia_store_set_select VALUES
+        ('0','0','Email邮件','records','系统字段','0');
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_order` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `billno` varchar(25) NOT NULL DEFAULT '' COMMENT '单据编号',
+            `cusid` int(10) unsigned NOT NULL COMMENT '客户编号',
+            `create_clerk_id` int(16) NOT NULL COMMENT '制单人员id',
+            `create_clerk_name` varchar(50) NOT NULL DEFAULT '' COMMENT '制单人员名字',
+            `transtype` tinyint(3) DEFAULT '0' COMMENT '1客户下单 2客户退单',
+            `totalamount` double DEFAULT '0' COMMENT '搬家总金额',
+            `amount` double DEFAULT '0' COMMENT '折扣后金额',
+            `rpamount` double DEFAULT '0' COMMENT '本次付款',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '单据日期',
+            `description` varchar(100) DEFAULT '' COMMENT '备注',
+            `arrears` double DEFAULT '0' COMMENT '本次欠款',
+            `disrate` double DEFAULT '0' COMMENT '折扣率',
+            `disamount` double DEFAULT '0' COMMENT '折扣金额',
+            `totalqty` double DEFAULT '0' COMMENT '总数量',
+            `totalarrears` double DEFAULT '0',
+            `billstatus` tinyint(1) DEFAULT '0' COMMENT '订单状态 ',
+            `accid` int(10) DEFAULT '0' COMMENT '结算账户ID',
+            `modifytime` int(10) DEFAULT '0' COMMENT '更新时间',
+            `hxstatecode` tinyint(4) DEFAULT '0' COMMENT '0未付款  1部分付款  2全部付款',
+            `totaldiscount` double DEFAULT '0',
+            `customerfree` double DEFAULT '0' COMMENT '客户承担费用',
+            `isdelete` tinyint(1) DEFAULT '0' COMMENT '1删除  0正常',
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_invoice` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1686,6 +1763,8 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_room_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_goods`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_customers`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_trace`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_set_select`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_invoice`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_invoice_info`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_gohome_slide`;
