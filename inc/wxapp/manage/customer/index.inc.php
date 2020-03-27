@@ -35,3 +35,16 @@ if ($ta == 'add') {
     imessage(error(0, $result), '', 'ajax');
     return 1;
 }
+
+if($ta == 'search') { //搜索
+    // error_reporting(E_ALL);
+    $name = trim($_GPC['name']);
+    if(empty($name)) {
+        imessage(error(0,''),'','ajax');
+    }
+    $result = pdo_fetchall("select * from " . tablename("hello_banbanjia_store_customers") . " where name like '%" . $name . "%'");
+
+    imessage(error(0,$result),'','ajax');
+    // $result = pdo_getall("hello_banbanjia_store_customer",array("uniacid" => $_W['uniacid'],"sid" => $_W['sid'],))
+
+}

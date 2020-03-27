@@ -1,1 +1,2 @@
 1.数据库 core_attachment 增加 sid（商家）字段
+2.数据库 attachment_group 增加 sid（商家）字段
