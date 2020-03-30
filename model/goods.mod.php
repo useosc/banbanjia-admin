@@ -38,14 +38,15 @@ function store_order_fetchall($filter = array())
     if(!empty($goods)) {
         foreach($goods as &$good) {
             $good['addtime_cn'] = date("Y-m-d H:i:s",$good['addtime']);
-            $thumbs = array();
-            if (!empty($good["thumbs"])) {
-                $good["thumbs"] = iunserializer($good["thumbs"]);
-                foreach ($good["thumbs"] as $val) {
-                    $thumbs[] = array("url" => tomedia($val), "filename" => $val);
-                }
-                $good["thumbs"] = $thumbs;
-            }
+            $good['thumbs'] = htmlspecialchars_decode($good['thumbs']);
+            // $thumbs = array();
+            // if (!empty($good["thumbs"])) {
+            //     $good["thumbs"] = iunserializer($good["thumbs"]);
+            //     foreach ($good["thumbs"] as $val) {
+            //         $thumbs[] = array("url" => tomedia($val), "filename" => $val);
+            //     }
+            //     $good["thumbs"] = $thumbs;
+            // }
         }
     }
     $pager = pagination($total,$page,$psize);

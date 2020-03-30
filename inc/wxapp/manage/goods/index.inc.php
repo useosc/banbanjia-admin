@@ -18,6 +18,9 @@ if($ta == 'cglist') {
     $cates = pdo_getall("hello_banbanjia_store_room_category",array("uniacid"=>$_W['uniacid'],'sid'=>$sid));
     foreach($cates as $cate) {
         $result[$cate[id]] = pdo_getall("hello_banbanjia_store_goods",array("uniacid"=>$_W['uniacid'],'sid'=>$sid,'cateid'=>$cate['id']));
+        foreach($result[$cate[id]] as &$item){
+            $item['thumbs'] = htmlspecialchars_decode($item['thumbs']);
+        }
     }
     //  if(!empty($result)) {
 
@@ -39,7 +42,7 @@ if($ta == 'post') {
 
         $data = array("uniacid" => $_W["uniacid"], "sid" => $sid, "cateid" => $_GPC['cateid'],"catename" => trim($_GPC['catename']), "title" => $_GPC["title"],
         "carryprice" => $_GPC['carryprice'],"unloadprice" => $_GPC['unloadprice'],"packprice" => $_GPC['packprice'],"addtime" => TIMESTAMP,
-        "thumbs" => trim($_GPC['thumbs']), "remark" => $_GPC['remark'], "status" => intval($_GPC['status']),"volume" => trim($_GPC['volume']), "displayorder" => intval($_GPC["displayorder"]));
+        "thumbs" => $_GPC['thumbs'], "remark" => $_GPC['remark'], "status" => intval($_GPC['status']),"volume" => trim($_GPC['volume']), "displayorder" => intval($_GPC["displayorder"]));
         if (!$id) {
             pdo_insert("hello_banbanjia_store_goods", $data);
         } else {
@@ -49,6 +52,12 @@ if($ta == 'post') {
     }
     if (0 < $id) {
         $item = pdo_get("hello_banbanjia_store_goods", array("uniacid" => $_W["uniacid"], "id" => $id));
+        if(!empty($item['thumbs'])) {
+            $item['thumbs'] = htmlspecialchars_decode($item['thumbs']);
+            // foreach($item['thumbs'] as &$thumb) {
+            //     $thumb = 
+            // }
+        }
         imessage(error(0, $item), "", "ajax");
     }
 }
