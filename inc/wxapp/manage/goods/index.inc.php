@@ -5,7 +5,7 @@ global $_GPC;
 $ta = trim($_GPC["ta"]) ? trim($_GPC["ta"]) : "list";
 mload()->lmodel("goods");
 if($ta == 'list') {
-    $records = store_order_fetchall();
+    $records = store_goods_fetchall();
     $result = array("goods"=>$records['goods']);
     imessage(error(0,$result),'','ajax');
 }

@@ -1282,6 +1282,7 @@
             `sid` int(10) unsigned NOT NULL DEFAULT '0',
             `name` varchar(64) NOT NULL COMMENT '客户姓名',
             `customer_no` varchar(64) NOT NULL cOMMENT '客户编号',
+            `
             `create_clerk_id` int(16) NOT NULL COMMENT '创建人员',
             `owner_clerk_id` int(16) NOT NULL COMMENT '归属人员',
             `addtime` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1295,6 +1296,23 @@
             `intro` varchar(250) DEFAULT NULL COMMENT '客户介绍',
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_supplier` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `name` varchar(64) NOT NULL COMMENT '供应商姓名',
+            `supplier_no` varchar(64) NOT NULL cOMMENT '供应商编号',
+            `create_clerk_id` int(16) NOT NULL COMMENT '创建人员',
+            `owner_clerk_id` int(16) NOT NULL COMMENT '归属人员',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `source` varchar(250) DEFAULT NULL COMMENT '供应商来源',
+            `grade` varchar(250) DEFAULT NULL COMMENT '供应商等级',
+            `mobile` varchar(250) DEFAULT NULL COMMENT '联系手机',
+            `address` varchar(250) DEFAULT NULL COMMENT '联系地址',
+            `intro` varchar(250) DEFAULT NULL COMMENT '供应商介绍', 
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_trace` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -1315,6 +1333,21 @@
             `isdelete` tinyint(1) DEFAULT '0' COMMENT '1删除  0正常',
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='跟单管理';
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_storage` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `name` varchar(256) NOT NULL COMMENT '名称',
+            `owner_clerk_id` int(10) NOT NULL COMMENT '负责人员',
+            `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+            `addtime` int(10) unsigned NOT NULL DEFAULT '0',
+            `modifytime` int(10) DEFAULT '0' COMMENT '更新时间',
+            `status` tinyint(1) DEFAULT '1' COMMENT '状态',
+            `remark` varchar(255) DEFAULT '',
+            `isdelete` tinyint(1) DEFAULT '0' COMMENT '1删除  0正常',
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='仓库';
 
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_set_select` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -1361,8 +1394,8 @@
             `receiveremail` varchar(50) NOT NULL DEFAULT '' COMMENT' 收货人邮箱',
             `receiveraddress` varchar(50) NOT NULL DEFAULT '',
             `receiverdetailaddress` varchar(100)  DEFAULT '' COMMENT '详细地址',
-            `carrydate` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '搬家日期',
-            `contacttime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '联系时间',
+            `carrydate` varchar(25) DEFAULT '0' COMMENT '搬家日期',
+            `contacttime` varchar(10) DEFAULT '0' COMMENT '联系时间',
             `goodslist` text COMMENT '家具清单',            
             `create_clerk_id` int(16) NOT NULL COMMENT '制单人员id',
             `create_clerk_name` varchar(50) NOT NULL DEFAULT '' COMMENT '制单人员名字',
@@ -1370,7 +1403,10 @@
             `totalamount` double DEFAULT '0' COMMENT '搬家总金额',
             `amount` double DEFAULT '0' COMMENT '折扣后金额',
             `rpamount` double DEFAULT '0' COMMENT '本次付款',
-            `busdate` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '业务日期',
+            `totalcarryprice` double DEFAULT '0' COMMENT '搬运费',
+            `totalunloadprice` double DEFAULT '0' COMMENT '拆卸费',
+            `totalpackprice` double DEFAULT '0' COMMENT '包装费',
+            `busdate` varchar(25) DEFAULT '0' COMMENT '业务日期',
             `addtime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '单据日期',
             `description` varchar(100) DEFAULT '' COMMENT '备注',
             `arrears` double DEFAULT '0' COMMENT '本次欠款',
@@ -1778,7 +1814,9 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_room_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_goods`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_customers`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_supplier`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_trace`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_storage`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_set_select`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_invoice`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_invoice_info`;

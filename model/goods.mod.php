@@ -2,7 +2,7 @@
 
 defined("IN_IA") or exit("Access Denied");
 
-function store_order_fetchall($filter = array())
+function store_goods_fetchall($filter = array())
 {
     global $_W;
     global $_GPC;

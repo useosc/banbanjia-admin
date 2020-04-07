@@ -6,7 +6,7 @@ $ta = trim($_GPC["ta"]) ? trim($_GPC["ta"]) : "list";
 mload()->lmodel("busorder");
 if($ta == 'list') {
     $records = store_order_fetchall();
-    $result = array("goods"=>$records['goods']);
+    $result = array("orders"=>$records['orders']);
     imessage(error(0,$result),'','ajax');
 }
 
@@ -27,10 +27,10 @@ if($ta == 'cglist') {
 }
 
 if($ta == 'post') {
-    // error_reporting(E_ALL);
+    error_reporting(E_ERROR);
     $_W["page"]["title"] = "新建订单";
 
-    var_dump($_GPC);exit;
+    // var_dump($_GPC);exit;
     $id = intval($_GPC['id']);
     if ($_W["ispost"]) {
 
@@ -44,29 +44,34 @@ if($ta == 'post') {
         // $_GPC["unloadprice"] = floatval($_GPC["unloadprice"]) ? floatval($_GPC["unloadprice"]) : imessage(error(-1, "拆卸费不能为空"), "", "ajax");
         // $_GPC["packprice"] = floatval($_GPC["carryprice"]) ? floatval($_GPC["carryprice"]) : imessage(error(-1, "搬运费不能为空"), "", "ajax");
 
-        $data = array("uniacid" => $_W["uniacid"], "sid" => $sid, "billno" => date("YmdHis").rand(0,9), "cusid" => $_GPC['cusid'],
+        $data = array("uniacid" => $_W["uniacid"], "sid" => $_W['sid'], "billno" => date("YmdHis").rand(0,9), "cusid" => $_GPC['cusid'],
         "cusname" => trim($_GPC['name']),"shippername" => trim($_GPC['shippername']), "shipperphone" => trim($_GPC['shipperphone']),
         "shipperemail" => trim($_GPC['shipperemail']), "shipperaddress" => trim($_GPC['shipperaddress']),
         "shipperdetailaddress" => trim($_GPC['shipperdetailaddress']),"receivername" => trim($_GPC['receivername']),
         "receiverphone" => trim($_GPC['receiverphone']),"receiveremail" => trim($_GPC['receiveremail']),
         "receiveraddress" => trim($_GPC['receiveraddress']),"receiverdetailaddress" => trim($_GPC['receiverdetailaddress']),
-        // "carrydate" => 
-
+        "carrydate" => trim($_GPC['carrydate']),"contacttime" => trim($_GPC['contacttime']), "goodslist" => $_GPC['goodslist'],
         "create_clerk_id" => $_W['manager']['id'],"create_clerk_name" => $_W['manage']['realname'], "transtype" => 1, 
-        "totalamount" => 100, "totalcarryprice" => $_GPC['totalcarryprice'],"totalunloadprice" => $_GPC['totalunloadprice'],
-        "totalpackprice" => $_GPC['totalpackprice'],"addtime" => TIMESTAMP,"volume" => trim($_GPC['volume']), 
-        "displayorder" => intval($_GPC["displayorder"]));
+        "totalamount" => floatval($_GPC['amount']),"rpamount" => floatval($_GPC['rpamount']), "totalcarryprice" => $_GPC['totalcarryprice'],"totalunloadprice" => $_GPC['totalunloadprice'],
+        // "totalpackprice" => $_GPC['totalpackprice'],"busdate" => $_GPC['busdate'], "addtime" => TIMESTAMP,"volume" => trim($_GPC['volume']), 
+        "totalpackprice" => $_GPC['totalpackprice'],"busdate" => $_GPC['busdate'], "description" => trim($_GPC['description']),
+        "totalqty" => intval($_GPC['totalqty']), "billstatus" => intval($_GPC['billstatus']), "accid" => $_GPC['accid'], "modifytime" => TIMESTAMP,
+        "hxstatecode" => 0, "isdelete" => 0);
         if (!$id) {
+            $data["addtime"] = TIMESTAMP;
             pdo_insert("hello_banbanjia_store_order", $data);
         } else {
             pdo_update("hello_banbanjia_store_order", $data, array("uniacid" => $_W["uniacid"], "id" => $id));
         }
-        imessage(error(0, "编辑家具成功"), "", "ajax");
+        imessage(error(0, "新增订单成功"), "", "ajax");
     }
 
 
     if (0 < $id) {
         $item = pdo_get("hello_banbanjia_store_order", array("uniacid" => $_W["uniacid"], "id" => $id));
+        if(!empty($item)) {
+            $item['goodslist'] = htmlspecialchars_decode($item['goodslist']);
+        }
         imessage(error(0, $item), "", "ajax");
     }
 }
