@@ -385,6 +385,119 @@
             KEY `uniacid` (`uniacid`),
             KEY `title` (`title`)
         ) ENGINE=MyISAM AUTO_INCREMENT=1500 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_action_log` (
+            `action_log_id` int(11) UNSIGNED NOT NULL,
+            `client_type` tinyint(1) DEFAULT '-1' COMMENT '-1=游客 0=顾客组 1=管理组',
+            `user_id` int(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '账号编号',
+            `username` varchar(80) NOT NULL DEFAULT '' COMMENT '用户名',
+            `path` varchar(255) NOT NULL DEFAULT '' COMMENT '访问路径',
+            `module` varchar(150) NOT NULL DEFAULT '' COMMENT '模型',
+            `header` text NOT NULL COMMENT '请求头部',
+            `params` text NOT NULL COMMENT '请求参数',
+            `result` longtext COMMENT '处理结果',
+            `ip` varchar(15) NOT NULL DEFAULT '' COMMENT 'IP地址',
+            `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0=成功 1=错误',
+            `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建日期'
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家操作日志';
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_admin` (
+            `admin_id` int(11) unsigned NOT NULL DEFAULT '0',
+            `username` varchar(80) NOT NULL COMMENT '账号',
+            `password` varchar(60) NOT NULL COMMENT '密码',
+            `nickname` varchar(50) NOT NULL DEFAULT '' COMMENT '昵称',
+            `head_pic` varchar(512) NOT NULL DEFAULT '' COMMENT '头像',
+            `last_login` int(11) NOT NULL DEFAULT '0' COMMENT '最后登录日期',
+            `last_ip` varchar(15) NOT NULL DEFAULT '' COMMENT '最后登录ip',
+            `last_sid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录商户id',
+            `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0=禁用 1=启用',
+            `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0=未删 1=已删 ',
+            `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建日期',
+            `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新日期'，
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家管理组账号';
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_admin_store` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `client_id` int(11) unsigned NOT NULL DEFAULT '0',
+            `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0=禁用 1=启用',
+            `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0=未删 1=已删',
+            `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建日期',
+            `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新日期'，
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员对应商家';
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_token` (
+            `token_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+            `client_id` int(11) unsigned NOT NULL COMMENT '编号',
+            `sid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '商户id',
+            `group_id` int(8) UNSIGNED NOT NULL COMMENT '用户组id',
+            `username` varchar(80) NOT NULL COMMENT '账号',
+            `client_type` tinyint(1)  COMMENT '-1=游客 0=顾客组 1=管理组',
+            `platform` varchar(50) NOT NULL COMMENT '来源终端',
+            `code` varchar(32) NOT NULL COMMENT '随机秘钥',
+            `token` varchar(32) NOT NULL COMMENT '授权码',
+            `token_expires` int(11) NOT NULL DEFAULT '0' COMMENT '授权码过期时间',
+            `refresh` varchar(32) NOT NULL COMMENT '刷新授权码',
+            `refresh_expires` int(11) NOT NULL DEFAULT '0' COMMENT '刷新授权码过期时间'
+            PRIMARY KEY (`token_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家token';
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_admin_auth` (
+            `admin_id` int(11) unsigned NOT NULL DEFAULT '0',
+            `sid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '商户id',
+            `group_id` int(8) UNSIGNED NOT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家账号权限对应中间表';
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_auth_group` (
+            `sid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '商户id',
+            `group_id` int(8) UNSIGNED NOT NULL,
+            `name` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '名称',
+            `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '描述',
+            `system` tinyint(1) NOT NULL DEFAULT '0' COMMENT '系统保留',
+            `sort` tinyint(3) UNSIGNED NOT NULL DEFAULT '50' COMMENT '排序',
+            `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0=禁用 1=启用'
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家用户组';
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_auth_rule` (
+            `sid` int(11) unsigned NOT NULL DEFAULT '0',
+            `rule_id` int(8) UNSIGNED NOT NULL,
+            `module` varchar(16) NOT NULL COMMENT '所属模块',
+            `group_id` int(8) UNSIGNED NOT NULL COMMENT '用户组Id',
+            `name` varchar(32) NOT NULL COMMENT '规则名称',
+            `menu_auth` text NOT NULL COMMENT '菜单权限',
+            `log_auth` text NOT NULL COMMENT '记录权限',
+            `sort` tinyint(3) UNSIGNED NOT NULL DEFAULT '50' COMMENT '排序',
+            `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0=禁用 1=启用'
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家权限规则';
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_menu` (
+            `menu_id` int(5) unsigned NOT NULL,
+            `parent_id` int(5) unsigned NOT NULL DEFAULT '0' COMMENT '父级id',
+            `name` varchar(32) NOT NULL COMMENT '名称',
+            `alias` varchar(16) NOT NULL DEFAULT '' COMMENT '别名',
+            `icon` varchar(64) NOT NULL DEFAULT '' COMMENT '图标',
+            `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
+            `module` varchar(16) NOT NULL COMMENT '所属模块',
+            `type` tinyint(1) NOT NULL COMMENT '0=模块 1=外链',
+            `url` varchar(255) NOT NULL DEFAULT '' COMMENT '链接',
+            `params` varchar(255) NOT NULL DEFAULT '' COMMENT '参数',
+            `target` varchar(10) NOT NULL DEFAULT '_self' COMMENT '_self _blank',
+            `is_navi` tinyint(1) NOT NULL DEFAULT '0' COMMENT '导航 0=否 1=是',
+            `sort` tinyint(3) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
+            `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0=禁用 1=启用'
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家菜单';
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_setting` (
+            `sid` int(11) unsigned NOT NULL DEFAULT '0',
+            `setting_id` smallint(5) UNSIGNED NOT NULL,
+            `code` varchar(30) NOT NULL COMMENT '变量名',
+            `value` text NOT NULL COMMENT '变量值',
+            `module` varchar(30) NOT NULL COMMENT '模块(作用域)',
+            `description` varchar(100) NOT NULL DEFAULT '' COMMENT '描述',
+            `help_text` varchar(100) NOT NULL DEFAULT '' COMMENT '帮助'
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家系统配置';
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_account` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -455,7 +568,7 @@
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_clerk` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
-            `mid` int(10) unsigned NOT NULL,
+            `mid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'member_id',
             `title` varchar(15) NOT NULL,
             `nickname` varchar(15) NOT NULL,
             `openid` varchar(60) NOT NULL,
@@ -513,7 +626,7 @@
             KEY `uniacid` (`uniacid`),
             KEY `sid` (`sid`),
             KEY `clerk_id` (`clerk_id`)
-        ) ENGINE=MyISAM AUTO_INCREMENT=600 DEFAULT CHARSET=utf8;
+        ) ENGINE=MyISAM AUTO_INCREMENT=600 DEFAULT CHARSET=utf8 COMMENT '公司员工的对应关系';
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_category` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1170,6 +1283,38 @@
             KEY `uniacid` (`uniacid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_app` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `name` varchar(30) NOT NULL COMMENT '名称',
+            `key` int(8) NOT NULL COMMENT '钥匙',
+            `secret` varchar(32) NOT NULL COMMENT '秘钥',
+            `captcha` tinyint(1) NOT NULL DEFAULT '0' COMMENT '启用验证码 0=否 1=是',
+            `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0=禁用 1=启用 ',
+            `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0=未删 1=已删',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_token` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `client_id` int(11) unsigned NOT NULL DEFAULT '0',
+            `group_id` int(8) unsigned NOT NULL COMMENT '用户组ID',
+            `username` varchar(80) NOT NULL DEFAULT '' COMMENT '账号',
+            `client_type` tinyint(1) unsigned NOT NULL COMMENT '0=顾客 1=管理组',
+            `platform` varchar(50) NOT NULL COMMENT '来源终端',
+            `code` varchar(32) NOT NULL COMMENT '随机密码',
+            `token` varchar(32) NOT NULL COMMENT '授权码',
+            `token_expires` int(11) NOT NULL COMMENT '授权码过期时间',
+            `refresh` varchar(32) NOT NULL COMMENT '刷新授权码',
+            `refresh_expires` int(11) NOT NULL COMMENT '刷新授权码过期时间',
+            PRIMARY KEY (`id`),
+            KEY `uniacid` (`uniacid`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_hetong_category` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1276,6 +1421,57 @@
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_busgoods` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `name` varchar(50) DEFAULT '',
+            `number` varchar(50) DEFAULT '' COMMENT '商品编号',
+            `quantity` double DEFAULT '0' COMMENT '起初数量',
+            `spec` varchar(50) DEFAULT '' COMMENT '规格',
+            `baseUnitId` tinyint(6) DEFAULT '0' COMMENT '单位ID',
+            `unitName` varchar(10) DEFAULT '' COMMENT '单位名称',
+            `categoryId` tinyint(6) DEFAULT '0' COMMENT '商品分类ID',
+            `categoryName` varchar(50) DEFAULT '' COMMENT '分类名称',
+            `purPrice` double DEFAULT '0' COMMENT '预计采购价',
+            `salePrice` double DEFAULT '0' COMMENT '预计销售价',
+            `unitCost` double DEFAULT '0' COMMENT '单位成本',
+            `amount` double DEFAULT '0' COMMENT '期初总价',
+            `remark` varchar(50) DEFAULT '',
+            `status` tinyint(1) DEFAULT '1' COMMENT '状态',
+            `vipPrice` double DEFAULT '0' COMMENT '会员价',
+            `lowQty` double DEFAULT '0' COMMENT '报警库存下限',
+            `length` varchar(25) DEFAULT '',
+            `height` varchar(25) DEFAULT '',
+            `highQty` double DEFAULT '0' COMMENT '报警库存上限',
+            PRIMARY KEY (`id`),
+            KEY `number` (`number`),
+            KEY `id` (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=500 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_cate` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `name` varchar(50) DEFAULT '' COMMENT '分类名称',
+            `parentId` int(10) DEFAULT '0' COMMENT '父级分类id',
+            `status` tinyint(1) DEFAULT '1' COMMENT '状态',
+            `typeNumber` varchar(25) DEFAULT '' COMMENT '分类区别:busgoods',
+            `remark` varchar(255) DEFAULT '',
+            `isDelete` tinyint(1) DEFAULT '0',
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='通用无限分类';
+
+        CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_unit` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
+            `sid` int(10) unsigned NOT NULL DEFAULT '0',
+            `name` varchar(50) DEFAULT '' COMMENT '单位名称',
+            `status` tinyint(1) DEFAULT '1',
+            `isDelete` tinyint(1) DEFAULT '0',
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
         CREATE TABLE IF NOT EXISTS `ims_hello_banbanjia_store_customers` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `uniacid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1340,6 +1536,7 @@
             `sid` int(10) unsigned NOT NULL DEFAULT '0',
             `name` varchar(256) NOT NULL COMMENT '名称',
             `owner_clerk_id` int(10) NOT NULL COMMENT '负责人员',
+            `create_clerk_id` int(10) NOT NULL COMMENT '创建人员',
             `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
             `addtime` int(10) unsigned NOT NULL DEFAULT '0',
             `modifytime` int(10) DEFAULT '0' COMMENT '更新时间',
@@ -1715,6 +1912,52 @@
             KEY `uniacid` (`uniacid`)
         ) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
 
+        INSERT INTO ims_hello_banbanjia_store_auth_group VALUES
+        (1500, 1, '超级管理员', '系统保留，拥有最高权限', 1, 50, 1),
+        (1500, 2, '普通管理员', '系统保留，拥有较高权限', 1, 50, 1),
+        (1500, 3, '普通顾客', '系统保留，前台普通顾客', 1, 50, 1),
+        (1500, 4, '游客', '系统保留，无需授权即可访问', 1, 50, 1)
+
+        INSERT INTO ims_hello_banbanjia_store_auth_rule VALUES
+        (1500, 1, 'api', 1, '超级管理员', '[1,2,3,4,5,6,7,8,9,10,11,12,13,14]','[1,2,3,4,5,6,7,8,9,10,11,12,13,14]', 1, 1),
+        (1500, 2, 'api', 2, '普通管理员', '[1,2,3,4,5,6,7,8,9,10,11,12,13,14]', '[1,2,3,4,5,6,7,8,9,10,11,12,13,14]', 2, 1),
+        (1500, 3, 'api', 3, '普通顾客', '[]', '[]', 3, 1),
+        (1500, 4, 'api', 4, '游客', '[13]', '[13]', 4, 1),
+        (1500, 5, 'admin', 1, '超级管理员', '[513,514,515,516,517,518,519,520,521,522]', '[]', 1, 1),
+        (1500, 6, 'admin', 2, '普通管理员', '[513,514,515,516,517,518,519,520,521,522]', '[]', 2, 1),
+
+
+        INSERT INTO ims_hello_banbanjia_store_menu VALUES
+        (1,0,'管理组账户','','','','api',0,'','','_self',0,1,1),
+        (2, 1, '验证账号是否合法', '', '', '', 'api', 0, 'api/v1/admin/check.admin.username', '', '_self', 0, 50, 1),
+        (3, 1, '验证账号昵称是否合法', '', '', '', 'api', 0, 'api/v1/admin/check.admin.nickname', '', '_self', 0, 50, 1),
+        (4, 1, '添加一个账号', '', '', '', 'api', 0, 'api/v1/admin/add.admin.item', '', '_self', 0, 50, 1),
+        (5, 1, '编辑一个账号', '', '', '', 'api', 0, 'api/v1/admin/set.admin.item', '', '_self', 0, 50, 1),
+        (6, 1, '批量设置账号状态', '', '', '', 'api', 0, 'api/v1/admin/set.admin.status', '', '_self', 0, 50, 1),
+        (7, 1, '修改一个账号密码', '', '', '', 'api', 0, 'api/v1/admin/set.admin.password', '', '_self', 0, 50, 1),
+        (8, 1, '重置一个账号密码', '', '', '', 'api', 0, 'api/v1/admin/reset.admin.item', '', '_self', 0, 50, 1),
+        (9, 1, '批量删除账号', '', '', '', 'api', 0, 'api/v1/admin/del.admin.list', '', '_self', 0, 50, 1),
+        (10, 1, '获取一个账号', '', '', '', 'api', 0, 'api/v1/admin/get.admin.item', '', '_self', 0, 50, 1),
+        (11, 1, '获取账号列表', '', '', '', 'api', 0, 'api/v1/admin/get.admin.list', '', '_self', 0, 50, 1),
+        (12, 1, '注销账号', '', '', '', 'api', 0, 'api/v1/admin/logout.admin.user', '', '_self', 0, 50, 1),
+        (13, 1, '登录账号', '', '', '', 'api', 0, 'api/v1/admin/login.admin.user', '', '_self', 0, 50, 1),
+        (14, 1, '刷新Token', '', '', '', 'api', 0, 'api/v1/admin/refresh.admin.token', '', '_self', 0, 50, 1),
+
+        (513, 0, '首页', '', 'shouye', '', 'admin', 0, '/index', '', '_self', 1, 1, 1),
+        (514, 0, '商品', '', 'bangongbao', '', 'admin', 0, '/goods', '', '_self', 1, 2, 1),
+        (515, 0, '订单', '', 'yemianliu', '', 'admin', 0, '/order', '', '_self', 1, 3, 1),
+        (516, 0, '营销', '', 'liwu', '', 'admin', 0, '/marketing', '', '_self', 1, 4, 1),
+        (517, 0, '会员', '', 'CPhezuo', '', 'admin', 0, '/member', '', '_self', 1, 5, 1),
+        (518, 0, '数据', '', 'zhuzhuangtu', '/data', 'admin', 0, '', '', '_self', 1, 6, 0),
+        (519, 0, '小程序', '', 'yingyongAPP', '/app', 'admin', 0, '', '', '_self', 1, 7, 0),
+        (520, 0, '系统', '', 'zhongkong', '', 'admin', 0, '/system', '', '_self', 1, 8, 1),
+        (521, 0, '设置', '', 'kongzhizhongxin', '', 'admin', 0, '/setting', '', '_self', 1, 9, 1),
+        (522, 0, '云端', '', 'yun', '/cloud', 'admin', 0, 'https://www.useosc.com/', '', '_blank', 1, 10, 1),
+
+        (525, 521, '权限分配', '', 'RectangleCopy173', '', 'admin', 0, '/system/auth', '', '_self', 1, 3, 1),
+        (526, 525, '用户组', '', 'qunzu_o', '为系统分配前后台用户组', 'admin', 0, '/system/auth/group', '', '_self', 1, 1, 1),
+        (527, 525, '权限规则', '', 'RectangleCopy176', '将菜单访问权限分配给不同的用户组', 'admin', 0, '/system/auth/rule', '', '_self', 1, 3, 1),
+        (528, 525, '菜单管理', '', 'RectangleCopy51', '为系统配置前后台导航菜单', 'admin', 0, '/system/auth/menu', '', '_self', 1, 2, 1),
 
 
 
@@ -1760,6 +2003,15 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_permit_user`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_action_log`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_admin`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_admin_store`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_token`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_admin_auth`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_auth_group`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_auth_rule`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_menu`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_setting`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_account`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_comment`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_case`;
@@ -1808,11 +2060,16 @@
         DROP TABLE IF EXISTS `ims_hello_banbanjia_hetong;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_hetong_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_hetong;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_app;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_token;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_hetong_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_workflow`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_bank_account`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_room_category`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_goods`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_busgoods`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_cate`;
+        DROP TABLE IF EXISTS `ims_hello_banbanjia_store_unit`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_customers`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_supplier`;
         DROP TABLE IF EXISTS `ims_hello_banbanjia_store_trace`;

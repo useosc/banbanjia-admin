@@ -142,5 +142,26 @@ if(!function_exists('uuid'))
   }  
 }
 
+//生成无限级分类树
+if(!function_exists('getTree'))
+{
+    function getTree($array){
+        //遍历数组，按照id作为键名重新组建新的数组
+        $new_array = [];        
+        foreach($array as $v){
+            $new_array[$v['id']] = $v;
+        }
+        //遍历新的数组，对每一个值的pid进行判断，判断新数组中是否存在键名为pid的值，如果存在，当前值为存在的pid的子节点，不存在，当前值为一级节点，添加到返回的数据中作为一级节点。这里使用引用传值是因为直接传值是不会影响到函数外边的变量值，我们这里要给一级节点添加子节点（sons），所以需要用到引用传值。
+        $return_tree = [];
+        foreach($new_array as $kk=>$vv){
+            if(isset($new_array[$vv['parentId']])){
+                $new_array[$vv['parentId']]['child'][] = &$new_array[$kk];
+            }else{
+                $return_tree[] = &$new_array[$kk];
+            }
+        }
+        return $return_tree;
+    }
+}
 //请求bpm系统
 // if(!)
